@@ -46,8 +46,9 @@ async function start() {
 
     // Avvia il server solo dopo la connessione DB
     app.listen(PORT, () => {
-      console.log(`Server in esecuzione su http://localhost:${PORT}`);
-    });
+  console.log(`Server in esecuzione su http://localhost:${PORT}`);
+  console.log(`PORT env: ${process.env.PORT || 'non impostata, usando fallback'}`);
+});
   } catch (error) {
     console.error("❌ Errore connessione MongoDB:", error);
     // Non terminare il processo: lascia nodemon riavviare dopo correzione
