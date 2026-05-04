@@ -27,10 +27,15 @@ async function inviaAnnuncio() {
   };
 
  const res = await fetch("https://antispreco-app-2.onrender.com/api/annunci", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(nuovoAnnuncio)
-  });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(nuovoAnnuncio)
+});
+
+const data = await res.json();
+console.log("Dati inviati:", nuovoAnnuncio);
+console.log("Risposta backend:", data);
+
 
   if (res.ok) {
     alert("Annuncio pubblicato!");
