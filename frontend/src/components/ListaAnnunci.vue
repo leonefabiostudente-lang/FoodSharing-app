@@ -4,7 +4,7 @@ import { ref, onMounted } from "vue";
 const annunci = ref([]);
 
 async function caricaAnnunci() {
-  const res = await fetch("http://localhost:5000/api/annunci");
+  const res = await fetch("https://antispreco-app-2.onrender.com/api/annunci");
   annunci.value = await res.json();
 }
 
