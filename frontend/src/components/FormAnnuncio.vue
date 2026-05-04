@@ -26,20 +26,18 @@ async function inviaAnnuncio() {
     telefono_utente: telefono_utente.value
   };
 
- const res = await fetch("https://antispreco-app-2.onrender.com/api/annunci", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(nuovoAnnuncio)
-});
+  const res = await fetch("https://antispreco-app-2.onrender.com/api/annunci", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(nuovoAnnuncio)
+  });
 
-const data = await res.json();
-console.log("Dati inviati:", nuovoAnnuncio);
-console.log("Risposta backend:", data);
-
+  const data = await res.json();
+  console.log("Dati inviati:", nuovoAnnuncio);
+  console.log("Risposta backend:", data);
 
   if (res.ok) {
     alert("Annuncio pubblicato!");
-    // reset campi
     titolo.value = "";
     descrizione.value = "";
     categoria.value = "";
@@ -61,20 +59,32 @@ console.log("Risposta backend:", data);
     <h2>Pubblica un nuovo annuncio</h2>
 
     <form @submit.prevent="inviaAnnuncio">
+
+      <!-- CATEGORIA (aggiunto e corretto) -->
+      <label>Categoria</label>
+      <select v-model="categoria" required>
+        <option value="">Seleziona categoria</option>
+        <option value="pane">Pane</option>
+        <option value="dolci">Dolci</option>
+        <option value="frutta">Frutta</option>
+        <option value="verdura">Verdura</option>
+        <option value="pasti_pronti">Pasti pronti</option>
+        <option value="bevande">Bevande</option>
+        <option value="altro">Altro</option>
+      </select>
+
+      <!-- Gli altri campi del form (già presenti nel tuo file) -->
       <label>Titolo</label>
-      <input v-model="titolo" required />
+      <input v-model="titolo" type="text" required />
 
       <label>Descrizione</label>
       <textarea v-model="descrizione" required></textarea>
 
-      <label>Categoria</label>
-      <input v-model="categoria" required />
-
       <label>Quantità</label>
-      <input v-model="quantita" type="number" required />
+      <input v-model="quantita" type="text" required />
 
       <label>Zona</label>
-      <input v-model="zona" required />
+      <input v-model="zona" type="text" required />
 
       <label>Data di scadenza</label>
       <input v-model="data_scadenza" type="date" required />
@@ -86,15 +96,16 @@ console.log("Risposta backend:", data);
       <input v-model="orario_ritiro_fine" type="time" required />
 
       <label>Nome utente</label>
-      <input v-model="nome_utente" required />
+      <input v-model="nome_utente" type="text" required />
 
-      <label>Telefono</label>
-      <input v-model="telefono_utente" />
+      <label>Telefono utente</label>
+      <input v-model="telefono_utente" type="text" />
 
       <button type="submit">Pubblica annuncio</button>
     </form>
   </div>
 </template>
+
 
 <style>
 .form-container {
