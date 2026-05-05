@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
+import bcryptjs from "bcryptjs"; // CORRETTO: importiamo bcryptjs con il nome giusto
 
 const utenteSchema = new mongoose.Schema(
   {
@@ -63,7 +63,7 @@ const utenteSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // Aggiunge createdAt e updatedAt
+    timestamps: true,
   }
 );
 

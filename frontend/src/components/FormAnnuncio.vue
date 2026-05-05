@@ -1,6 +1,10 @@
 <script setup>
 import { ref } from "vue";
 
+// Recupero token
+const token = localStorage.getItem("token");
+
+// Campi del form
 const titolo = ref("");
 const descrizione = ref("");
 const categoria = ref("");
@@ -9,10 +13,13 @@ const zona = ref("");
 const data_scadenza = ref("");
 const orario_ritiro_inizio = ref("");
 const orario_ritiro_fine = ref("");
-const nome_utente = ref("");
-const telefono_utente = ref("");
 
 async function inviaAnnuncio() {
+  if (!token) {
+    alert("Devi essere loggato per pubblicare un annuncio.");
+    return;
+  }
+
   const nuovoAnnuncio = {
     titolo: titolo.value,
     descrizione: descrizione.value,
@@ -21,14 +28,15 @@ async function inviaAnnuncio() {
     zona: zona.value,
     data_scadenza: data_scadenza.value,
     orario_ritiro_inizio: orario_ritiro_inizio.value,
-    orario_ritiro_fine: orario_ritiro_fine.value,
-    nome_utente: nome_utente.value,
-    telefono_utente: telefono_utente.value
+    orario_ritiro_fine: orario_ritiro_fine.value
   };
 
   const res = await fetch("https://antispreco-app-2.onrender.com/api/annunci", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
     body: JSON.stringify(nuovoAnnuncio)
   });
 
@@ -46,10 +54,8 @@ async function inviaAnnuncio() {
     data_scadenza.value = "";
     orario_ritiro_inizio.value = "";
     orario_ritiro_fine.value = "";
-    nome_utente.value = "";
-    telefono_utente.value = "";
   } else {
-    alert("Errore durante la pubblicazione");
+    alert("Errore durante la pubblicazione: " + (data.error || "Errore sconosciuto"));
   }
 }
 </script>
@@ -58,9 +64,15 @@ async function inviaAnnuncio() {
   <div class="form-container">
     <h2>Pubblica un nuovo annuncio</h2>
 
-    <form @submit.prevent="inviaAnnuncio">
+    <!-- BLOCCO SE NON LOGGATO -->
+    <div v-if="!token">
+      <p>Devi essere registrato per pubblicare un annuncio.</p>
+      <router-link to="/login">Vai al login</router-link>
+    </div>
 
-      <!-- CATEGORIA (aggiunto e corretto) -->
+    <!-- FORM SOLO SE LOGGATO -->
+    <form v-else @submit.prevent="inviaAnnuncio">
+
       <label>Categoria</label>
       <select v-model="categoria" required>
         <option value="">Seleziona categoria</option>
@@ -73,7 +85,6 @@ async function inviaAnnuncio() {
         <option value="altro">Altro</option>
       </select>
 
-      <!-- Gli altri campi del form (già presenti nel tuo file) -->
       <label>Titolo</label>
       <input v-model="titolo" type="text" required />
 
@@ -95,17 +106,10 @@ async function inviaAnnuncio() {
       <label>Orario ritiro (fine)</label>
       <input v-model="orario_ritiro_fine" type="time" required />
 
-      <label>Nome utente</label>
-      <input v-model="nome_utente" type="text" required />
-
-      <label>Telefono utente</label>
-      <input v-model="telefono_utente" type="text" />
-
       <button type="submit">Pubblica annuncio</button>
     </form>
   </div>
 </template>
-
 
 <style>
 .form-container {
@@ -123,7 +127,8 @@ form label {
 }
 
 form input,
-form textarea {
+form textarea,
+form select {
   width: 100%;
   padding: 8px;
   margin-top: 4px;
