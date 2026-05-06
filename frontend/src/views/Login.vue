@@ -15,7 +15,7 @@
         v-model="password"
         placeholder="Password"
         required
-      />5
+      />
 
       <button>Accedi</button>
     </form>
