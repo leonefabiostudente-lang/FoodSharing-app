@@ -4,10 +4,16 @@ import Annuncio from "../models/annunci.js";
 
 const router = express.Router();
 
-// GET tutti gli annunci
+// GET /api/annunci + filtro zona
 router.get("/", async (req, res) => {
   try {
-    const annunci = await Annuncio.find();
+    const filtro = {};
+
+    if (req.query.zona) {
+      filtro.zona = { $regex: req.query.zona, $options: "i" };
+    }
+
+    const annunci = await Annuncio.find(filtro);
     res.json(annunci);
   } catch (err) {
     res.status(500).json({ error: "Errore nel recupero degli annunci" });
@@ -19,8 +25,8 @@ router.post("/", auth, async (req, res) => {
   try {
     const nuovoAnnuncio = new Annuncio({
       ...req.body,
-      utente_id: req.utente.id,     // preso dal token
-      nome_utente: req.utente.nome  // preso dal token
+      utente_id: req.utente.id,
+      nome_utente: req.utente.nome
     });
 
     await nuovoAnnuncio.save();

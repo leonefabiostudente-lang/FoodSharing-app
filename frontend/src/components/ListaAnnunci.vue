@@ -1,13 +1,21 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 const annunci = ref([]);
 const loading = ref(true);
 const errore = ref(null);
+const filtroZona = ref("");
 
+// Funzione che chiama il backend con filtro
 async function caricaAnnunci() {
+  loading.value = true;
+
   try {
-    const res = await fetch("https://antispreco-app-2.onrender.com/api/annunci");
+    const url = filtroZona.value
+      ? `https://antispreco-app-2.onrender.com/api/annunci?zona=${encodeURIComponent(filtroZona.value)}`
+      : `https://antispreco-app-2.onrender.com/api/annunci`;
+
+    const res = await fetch(url);
     if (!res.ok) throw new Error("Errore nel caricamento degli annunci");
 
     annunci.value = await res.json();
@@ -18,12 +26,23 @@ async function caricaAnnunci() {
   }
 }
 
-onMounted(() => {
+onMounted(caricaAnnunci);
+
+// Ricarica gli annunci quando cambia il filtro
+watch(filtroZona, () => {
   caricaAnnunci();
 });
 </script>
 
+
 <template>
+  <input 
+  v-model="filtroZona"
+  type="text"
+  placeholder="Cerca per zona (es. Sarnico, Predore...)"
+  class="search-input"
+/>
+
   <div>
     <h2>Annunci disponibili</h2>
 
@@ -79,5 +98,14 @@ onMounted(() => {
   margin-bottom: 15px;
   border-radius: 6px;
 }
+.search-input {
+  width: 100%;
+  padding: 10px;
+  margin: 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
 </style>
 

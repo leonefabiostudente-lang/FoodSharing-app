@@ -41,7 +41,7 @@ function toggleDarkMode() {
 
 <style>
 :root {
-  --primary: #2ecc71;
+  --primary: #cca22e;
   --primary-dark: #27ae60;
   --bg: #f5f5f5;
   --text: #333;
@@ -56,7 +56,7 @@ body {
 }
 
 body.dark-mode {
-  background: #1e1e1e;
+  background: #514040;
   color: #eee;
 }
 
