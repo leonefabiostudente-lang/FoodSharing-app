@@ -9,17 +9,21 @@
 
           <div class="mb-3">
             <label class="form-label">Email</label>
-            <input v-model="email" type="email" class="form-control">
+            <input v-model.trim="email" type="email" class="form-control">
           </div>
 
           <div class="mb-3">
             <label class="form-label">Password</label>
-            <input v-model="password" type="password" class="form-control">
+            <input v-model.trim="password" type="password" class="form-control">
           </div>
 
           <button @click="login" class="btn btn-primary w-100">
             Accedi
           </button>
+
+          <div v-if="errore" class="alert alert-danger mt-3">
+            {{ errore }}
+          </div>
 
         </div>
 
@@ -35,27 +39,33 @@ import { loginUser } from "../services/authService";
 
 const email = ref("");
 const password = ref("");
+const errore = ref("");
+
 const router = useRouter();
 
 async function login() {
+  errore.value = "";
+
   try {
     const res = await loginUser(email.value, password.value);
 
+    console.log("RISPOSTA LOGIN:", res.data); // 🔍 debug
+
     localStorage.setItem("token", res.data.token);
+
     router.push("/annunci");
 
   } catch (err) {
-    console.error(err);
-    alert("Credenziali non valide");
+    console.error("ERRORE COMPLETO:", err);
+
+    if (err.response?.data?.error) {
+      errore.value = err.response.data.error;
+    } else {
+      errore.value = "Errore di connessione al server";
+    }
   }
 }
 </script>
 
-
-
-
 <style scoped>
-/* Lo stile principale è già in App.vue */
-/* Qui aggiungo solo eventuali personalizzazioni */
-
 </style>
