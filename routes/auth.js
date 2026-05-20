@@ -11,7 +11,7 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
   try {
     const {
-      tipo,                // privato | associazione | commerciante
+      tipo,
       nome,
       cognome,
       nome_associazione,
@@ -29,27 +29,36 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // Controlli specifici per tipo utente
+    // Controlli specifici
     if (tipo === "privato" && (!nome || !cognome)) {
-      return res.status(400).json({ error: "Nome e cognome obbligatori per i privati!" });
+      return res.status(400).json({
+        error: "Nome e cognome obbligatori per i privati!"
+      });
     }
 
     if (tipo === "associazione" && (!nome_associazione || !partita_iva)) {
-      return res.status(400).json({ error: "Nome associazione e partita IVA obbligatori!" });
+      return res.status(400).json({
+        error: "Nome associazione e partita IVA obbligatori!"
+      });
     }
 
     if (tipo === "commerciante" && (!nome_attivita || !partita_iva)) {
-      return res.status(400).json({ error: "Nome attività e partita IVA obbligatori!" });
+      return res.status(400).json({
+        error: "Nome attività e partita IVA obbligatori!"
+      });
     }
 
     // Controllo email duplicata
     const utenteEsistente = await Utente.findOne({ email });
     if (utenteEsistente) {
-      return res.status(400).json({ error: 'Email già registrata!' });
+      return res.status(400).json({
+        error: 'Email già registrata!'
+      });
     }
 
     // Hash password
-    const hash = await bcryptjs.hash(password, 10);
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(password, salt);
 
     // Creazione utente
     const nuovoUtente = new Utente({
@@ -61,15 +70,20 @@ router.post('/register', async (req, res) => {
       partita_iva,
       categoria_attivita,
       email,
-      password: hash
+      password: hashedPassword
     });
 
     await nuovoUtente.save();
 
-    res.status(201).json({ message: 'Registrazione avvenuta con successo!' });
+    res.status(201).json({
+      message: 'Registrazione avvenuta con successo!'
+    });
 
   } catch (error) {
-    res.status(500).json({ error: 'Errore server: ' + error.message });
+    console.error("ERRORE REGISTER:", error);
+    res.status(500).json({
+      error: 'Errore server: ' + error.message
+    });
   }
 });
 
@@ -81,22 +95,34 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ error: 'Email e password obbligatorie!' });
+      return res.status(400).json({
+        error: 'Email e password obbligatorie!'
+      });
     }
 
-    // Recupero utente con password
+    // Trova utente (inclusa password)
     const utente = await Utente.findOne({ email }).select('+password');
+
+    
+
     if (!utente) {
-      return res.status(400).json({ error: 'Credenziali non valide!' });
+      return res.status(400).json({
+        error: 'Credenziali non valide!'
+      });
     }
 
+    
     // Confronto password
     const isMatch = await bcryptjs.compare(password, utente.password);
+
+    
     if (!isMatch) {
-      return res.status(400).json({ error: 'Credenziali non valide!' });
+      return res.status(400).json({
+        error: 'Credenziali non valide!'
+      });
     }
 
-    // Generazione token
+    // Token JWT
     const token = jwt.sign(
       {
         id: utente._id,
@@ -119,7 +145,10 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({ error: 'Errore server: ' + error.message });
+    console.error("ERRORE LOGIN:", error);
+    res.status(500).json({
+      error: 'Errore server: ' + error.message
+    });
   }
 });
 
