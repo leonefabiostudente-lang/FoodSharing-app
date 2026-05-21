@@ -1,10 +1,37 @@
 import auth from "../middleware/auth.js";
 import express from "express";
 import Annuncio from "../models/annunci.js";
+import fetch from "node-fetch";
 
 const router = express.Router();
 
-// GET /api/annunci + filtro zona
+/* ---------------------------------------------
+   FUNZIONE DI GEOCODING (OpenStreetMap)
+--------------------------------------------- */
+async function geocode(zona) {
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+    zona + ", Italia"
+  )}`;
+
+  const res = await fetch(url, {
+    headers: { "User-Agent": "antispreco-app" }
+  });
+
+  const data = await res.json();
+
+  if (!data || data.length === 0) {
+    return { lat: null, lon: null };
+  }
+
+  return {
+    lat: parseFloat(data[0].lat),
+    lon: parseFloat(data[0].lon)
+  };
+}
+
+/* ---------------------------------------------
+   GET /api/annunci + filtro zona
+--------------------------------------------- */
 router.get("/", async (req, res) => {
   try {
     const filtro = {};
@@ -20,17 +47,29 @@ router.get("/", async (req, res) => {
   }
 });
 
-// POST crea un nuovo annuncio (PROTETTO)
+/* ---------------------------------------------
+   POST /api/annunci (PROTETTO)
+   + geocoding automatico
+--------------------------------------------- */
 router.post("/", auth, async (req, res) => {
   try {
+    const { zona } = req.body;
+
+    // 1️⃣ Ottieni latitudine/longitudine dalla zona
+    const coords = await geocode(zona);
+
+    // 2️⃣ Crea annuncio con coordinate
     const nuovoAnnuncio = new Annuncio({
       ...req.body,
       utente_id: req.utente.id,
-      nome_utente: req.utente.nome
+      nome_utente: req.utente.nome,
+      latitudine: coords.lat,
+      longitudine: coords.lon
     });
 
     await nuovoAnnuncio.save();
     res.status(201).json(nuovoAnnuncio);
+
   } catch (err) {
     res.status(400).json({
       error: "Errore nella creazione dell'annuncio",
