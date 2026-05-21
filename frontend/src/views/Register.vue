@@ -42,11 +42,8 @@ async function registra() {
 
   console.log("Payload inviato:", payload);
 
-  try {
-  const res = await axios.post(
-    "http://localhost:5000/api/register",
-    payload
-  );
+try {
+  const res = await api.post("/register", payload);
   successo.value = "Registrazione completata!";
 } catch (err) {
   console.error(err);
