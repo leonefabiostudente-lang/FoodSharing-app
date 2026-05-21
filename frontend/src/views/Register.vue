@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import axios from "axios";  // usa axios centralizzato
+import api from "@/api/axios";  // <-- IMPORT CORRETTO
 
 const tipo = ref("");
 const nome = ref("");
@@ -42,19 +42,20 @@ async function registra() {
 
   console.log("Payload inviato:", payload);
 
-try {
-  const res = await api.post("/register", payload);
-  successo.value = "Registrazione completata!";
-} catch (err) {
-  console.error(err);
-  if (err.response && err.response.data && err.response.data.error) {
-    errore.value = err.response.data.error;
-  } else {
-    errore.value = "Errore di connessione al server";
+  try {
+    const res = await api.post("/register", payload);
+    successo.value = "Registrazione completata!";
+  } catch (err) {
+    console.error(err);
+    if (err.response?.data?.error) {
+      errore.value = err.response.data.error;
+    } else {
+      errore.value = "Errore di connessione al server";
+    }
   }
 }
-}
 </script>
+
 
 <template>
   <div class="container mt-5">
