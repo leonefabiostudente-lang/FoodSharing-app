@@ -12,7 +12,28 @@ let map;
 let markers = [];
 let userPos = ref(null);
 
-// 📌 Calcolo distanza (Haversine)
+// 📌 Icone per categoria
+const icons = {
+  pane: "https://cdn-icons-png.flaticon.com/512/1046/1046769.png",
+  dolci: "https://cdn-icons-png.flaticon.com/512/2203/2203189.png",
+  frutta: "https://cdn-icons-png.flaticon.com/512/415/415733.png",
+  verdura: "https://cdn-icons-png.flaticon.com/512/766/766149.png",
+  pasti_pronti: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
+  bevande: "https://cdn-icons-png.flaticon.com/512/1046/1046786.png",
+  altro: "https://cdn-icons-png.flaticon.com/512/565/565547.png"
+};
+
+// 🔧 Funzione per ottenere l’icona giusta
+function getIcon(categoria) {
+  return L.icon({
+    iconUrl: icons[categoria] || icons.altro,
+    iconSize: [38, 38],
+    iconAnchor: [19, 38],
+    popupAnchor: [0, -38]
+  });
+}
+
+// 📏 Calcolo distanza (Haversine)
 function distanzaKm(lat1, lon1, lat2, lon2) {
   const R = 6371;
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -27,7 +48,7 @@ function distanzaKm(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-// 📍 Ottieni posizione utente
+// 📍 Posizione utente
 function getUserLocation() {
   if (!navigator.geolocation) return;
 
@@ -66,7 +87,7 @@ async function caricaAnnunci() {
 
     let data = await res.json();
 
-    // ➕ Calcola distanza per ogni annuncio
+    // ➕ Calcola distanza
     if (userPos.value) {
       data = data.map(a => {
         if (a.latitudine && a.longitudine) {
@@ -114,7 +135,10 @@ watch(annunci, () => {
 
   annunci.value.forEach(a => {
     if (a.latitudine && a.longitudine) {
-      const marker = L.marker([a.latitudine, a.longitudine]).addTo(map);
+      const marker = L.marker(
+        [a.latitudine, a.longitudine],
+        { icon: getIcon(a.categoria) }
+      ).addTo(map);
 
       marker.bindPopup(`
         <b>${a.titolo}</b><br>
