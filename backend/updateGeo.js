@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 import fetch from "node-fetch";
 import Annuncio from "./models/annunci.js";
 
-// 🔧 STRINGA MONGO (presa dal tuo .env)
-const MONGO_URL = "mongodb+srv://leonefabiostudente_db_user:Amedeo13Azzurra28Nadia06@cluster0.mkig3m1.mongodb.net/antispreco_db?retryWrites=true&w=majority&appName=Cluster0";
+// 🔧 STRINGA MONGO (SRV) — FUNZIONA SU WINDOWS CON TLS ATTIVO
+const MONGO_URL = "mongodb+srv://leonefabiostudente_db_user:LA_TUA_PASSWORD@cluster0.mkig3m1.mongodb.net/antispreco_db?retryWrites=true&w=majority&appName=Cluster0";
 
 // 🌍 Funzione geocoding
 async function geocode(zona) {
@@ -32,11 +32,21 @@ async function geocode(zona) {
 async function aggiornaAnnunci() {
   try {
     console.log("⏳ Connessione al database...");
-    await mongoose.connect(MONGO_URL);
+
+    // ⭐ FIX PER WINDOWS: TLS + timeout
+    await mongoose.connect(MONGO_URL, {
+      tls: true,
+      serverSelectionTimeoutMS: 8000
+    });
 
     console.log("📥 Recupero annunci senza coordinate...");
     const annunci = await Annuncio.find({
-      $or: [{ latitudine: null }, { longitudine: null }]
+      $or: [
+        { latitudine: null },
+        { longitudine: null },
+        { latitudine: { $exists: false } },
+        { longitudine: { $exists: false } }
+      ]
     });
 
     console.log(`🔍 Trovati ${annunci.length} annunci da aggiornare`);
