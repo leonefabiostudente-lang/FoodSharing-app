@@ -1,10 +1,13 @@
 // updateGeo.js
+import dotenv from "dotenv";
+dotenv.config();
+
 import mongoose from "mongoose";
 import fetch from "node-fetch";
 import Annuncio from "./models/annunci.js";
 
 // 🔧 STRINGA MONGO (SRV) — FUNZIONA SU WINDOWS CON TLS ATTIVO
-const MONGO_URL = "mongodb+srv://leonefabiostudente_db_user:LA_TUA_PASSWORD@cluster0.mkig3m1.mongodb.net/antispreco_db?retryWrites=true&w=majority&appName=Cluster0";
+const MONGO_URL = process.env.MONGO_URL;
 
 // 🌍 Funzione geocoding
 async function geocode(zona) {
@@ -13,13 +16,12 @@ async function geocode(zona) {
   )}`;
 
   const res = await fetch(url, {
-    //headers: { "User-Agent": "antispreco-app" }
-    headers: {
-  "User-Agent": "antispreco-app/1.0 (leonefabiostudente-lang@gmail.com)",
-  "Accept-Language": "it"
-}
+  headers: {
+    "User-Agent": "antispreco-app/1.0 (leonefabiostudente-lang@gmail.com)",
+    "Accept-Language": "it"
+  }
+});
 
-  });
 
   const data = await res.json();
 
