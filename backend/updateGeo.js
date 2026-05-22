@@ -13,7 +13,12 @@ async function geocode(zona) {
   )}`;
 
   const res = await fetch(url, {
-    headers: { "User-Agent": "antispreco-app" }
+    //headers: { "User-Agent": "antispreco-app" }
+    headers: {
+  "User-Agent": "antispreco-app/1.0 (leonefabiostudente-lang@gmail.com)",
+  "Accept-Language": "it"
+}
+
   });
 
   const data = await res.json();
