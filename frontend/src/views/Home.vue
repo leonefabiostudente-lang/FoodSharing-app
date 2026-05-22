@@ -23,32 +23,31 @@
 
       <div class="hero-right" aria-hidden="false">
         <div class="img-grid" role="list">
-          <!-- Immagini tematiche via Unsplash (query-driven, si aggiornano automaticamente) -->
-          <img
-            role="listitem"
-            src="https://source.unsplash.com/featured/?food-bank"
-            alt="Volontari che servono cibo in un centro di distribuzione"
-            loading="lazy"
-          />
-          <img
-            role="listitem"
-            src="https://source.unsplash.com/featured/?food-donation"
-            alt="Scatola per donazioni alimentari con generi di prima necessità"
-            loading="lazy"
-          />
-          <img
-            role="listitem"
-            src="https://source.unsplash.com/featured/?soup-kitchen"
-            alt="Volontari che smistano donazioni alimentari in una mensa"
-            loading="lazy"
-          />
-          <img
-            role="listitem"
-            src="https://source.unsplash.com/featured/?community-food"
-            alt="Persone che ricevono cibo in una distribuzione comunitaria"
-            loading="lazy"
-          />
-        </div>
+  <img
+    role="listitem"
+    src="https://images.pexels.com/photos/6646910/pexels-photo-6646910.jpeg?auto=compress&cs=tinysrgb&w=600"
+    alt="Volontari che servono cibo in un centro di distribuzione"
+    loading="lazy"
+  />
+  <img
+    role="listitem"
+    src="https://images.pexels.com/photos/6995240/pexels-photo-6995240.jpeg?auto=compress&cs=tinysrgb&w=600"
+    alt="Scatola per donazioni alimentari con generi di prima necessità"
+    loading="lazy"
+  />
+  <img
+    role="listitem"
+    src="https://images.pexels.com/photos/6646912/pexels-photo-6646912.jpeg?auto=compress&cs=tinysrgb&w=600"
+    alt="Volontari che smistano donazioni alimentari in una mensa"
+    loading="lazy"
+  />
+  <img
+    role="listitem"
+    src="https://images.pexels.com/photos/6646905/pexels-photo-6646905.jpeg?auto=compress&cs=tinysrgb&w=600"
+    alt="Persone che ricevono cibo in una distribuzione comunitaria"
+    loading="lazy"
+  />
+</div>
       </div>
     </section>
   </div>
