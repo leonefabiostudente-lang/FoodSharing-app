@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# build
+.vite/
+
+# environment
+.env
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+
+# logs and lockfiles
+npm-debug.log
+yarn-error.log
+package-lock.json
+pnpm-lock.yaml
