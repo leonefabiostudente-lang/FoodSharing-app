@@ -215,14 +215,26 @@ body.dark-mode {
 
 /* MOBILE FIX */
 @media (max-width: 820px) {
+  .navbar {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 16px;
+  }
+
+  .brand-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
   .mobile-toggle {
     display: inline-flex;
   }
 
   .nav-links {
-    position: absolute;
-    top: var(--nav-height);
-    right: 12px;
+    width: 100%;
+    margin-top: 10px;
     background: white;
     border-radius: 12px;
     padding: 16px;
@@ -230,12 +242,19 @@ body.dark-mode {
     flex-direction: column;
     gap: 12px;
 
-    /* FIX: menu non sparisce più */
+    /* Nasconde il menu */
     display: none;
   }
 
   .nav-links.open {
     display: flex;
   }
+
+  .nav-links a {
+    width: 100%;
+    text-align: left;
+    padding: 10px 0;
+  }
 }
+
 </style>

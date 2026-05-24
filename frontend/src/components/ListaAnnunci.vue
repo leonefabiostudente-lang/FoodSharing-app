@@ -14,13 +14,13 @@ let userPos = ref(null);
 
 // 📌 Icone per categoria
 const icons = {
-  pane: "https://cdn-icons-png.flaticon.com/512/2738/2738730.png",          // pane / bakery
-  dolci: "https://cdn-icons-png.flaticon.com/512/2203/2203189.png",         // dolci
-  frutta: "https://cdn-icons-png.flaticon.com/512/415/415733.png",          // frutta
-  verdura: "https://cdn-icons-png.flaticon.com/512/766/766149.png",         // verdura
-  pasti_pronti: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",  // pasti pronti
-  bevande: "https://cdn-icons-png.flaticon.com/512/1046/1046786.png",       // bevande (bicchiere)
-  altro: "https://cdn-icons-png.flaticon.com/512/565/565547.png"            // altro
+  pane: "https://cdn-icons-png.flaticon.com/512/2738/2738730.png",
+  dolci: "https://cdn-icons-png.flaticon.com/512/2203/2203189.png",
+  frutta: "https://cdn-icons-png.flaticon.com/512/415/415733.png",
+  verdura: "https://cdn-icons-png.flaticon.com/512/766/766149.png",
+  pasti_pronti: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
+  bevande: "https://cdn-icons-png.flaticon.com/512/1046/1046786.png",
+  altro: "https://cdn-icons-png.flaticon.com/512/565/565547.png"
 };
 
 // 🔧 Funzione per ottenere l’icona giusta
@@ -59,7 +59,6 @@ function getUserLocation() {
         lon: pos.coords.longitude
       };
 
-      // Marker utente
       L.marker([userPos.value.lat, userPos.value.lon], {
         icon: L.icon({
           iconUrl: "https://cdn-icons-png.flaticon.com/512/64/64113.png",
@@ -87,7 +86,6 @@ async function caricaAnnunci() {
 
     let data = await res.json();
 
-    // ➕ Calcola distanza
     if (userPos.value) {
       data = data.map(a => {
         if (a.latitudine && a.longitudine) {
@@ -103,7 +101,6 @@ async function caricaAnnunci() {
         return a;
       });
 
-      // Ordina per distanza
       data.sort((a, b) => (a.distanza ?? 9999) - (b.distanza ?? 9999));
     }
 
@@ -177,38 +174,44 @@ watch(filtroZona, () => {
     Nessun annuncio presente.
   </div>
 
+  <!-- ⭐ NUOVA GRIGLIA MODERNA -->
   <div class="annunci-grid">
     <div v-for="a in annunci" :key="a._id" class="annuncio-card">
-      <h3>{{ a.titolo }}</h3>
-      <p>{{ a.descrizione }}</p>
+      
+      <div class="card-icon">
+        <img :src="icons[a.categoria] || icons.altro" alt="categoria" />
+      </div>
 
-      <p><strong>Categoria:</strong> {{ a.categoria }}</p>
-      <p><strong>Quantità:</strong> {{ a.quantita }}</p>
-      <p><strong>Zona:</strong> {{ a.zona }}</p>
+      <h3 class="card-title">{{ a.titolo }}</h3>
 
-      <p v-if="a.distanza">
-        <strong>Distanza:</strong> {{ a.distanza.toFixed(1) }} km
-      </p>
+      <p class="card-desc">{{ a.descrizione }}</p>
 
-      <p>
-        <strong>Disponibile fino al:</strong>
-        {{ new Date(a.data_scadenza).toLocaleDateString() }}
-      </p>
+      <span class="badge">{{ a.categoria }}</span>
 
-      <p>
-        <strong>Ritiro:</strong>
-        {{ a.orario_ritiro_inizio }} - {{ a.orario_ritiro_fine }}
-      </p>
+      <div class="card-info">
+        <p><strong>Zona:</strong> {{ a.zona }}</p>
+        <p><strong>Quantità:</strong> {{ a.quantita }}</p>
 
-      <p>
-        <strong>Pubblicato da:</strong>
-        {{ a.nome_utente || "Utente sconosciuto" }}
-      </p>
+        <p v-if="a.distanza">
+          <strong>Distanza:</strong> {{ a.distanza.toFixed(1) }} km
+        </p>
 
-      <p>
-        <strong>Telefono:</strong>
-        {{ a.telefono_utente || "Non disponibile" }}
-      </p>
+        <p>
+          <strong>Disponibile fino al:</strong>
+          {{ new Date(a.data_scadenza).toLocaleDateString() }}
+        </p>
+
+        <p>
+          <strong>Ritiro:</strong>
+          {{ a.orario_ritiro_inizio }} - {{ a.orario_ritiro_fine }}
+        </p>
+      </div>
+
+      <div class="card-footer">
+        <div class="utente">👤 {{ a.nome_utente || "Utente sconosciuto" }}</div>
+        <div class="telefono">📞 {{ a.telefono_utente || "N/D" }}</div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -217,5 +220,72 @@ watch(filtroZona, () => {
 #map {
   border-radius: 12px;
   overflow: hidden;
+}
+
+/* ⭐ NUOVO STILE CARD MODERNO */
+.annunci-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+  margin-top: 20px;
+}
+
+.annuncio-card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.annuncio-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.08);
+}
+
+.card-icon img {
+  width: 48px;
+  height: 48px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.card-desc {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.badge {
+  display: inline-block;
+  background: #eef2ff;
+  color: #4f46e5;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.card-info p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.card-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #444;
 }
 </style>
