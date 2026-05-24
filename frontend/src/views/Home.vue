@@ -27,28 +27,28 @@
         <div class="img-grid" role="list">
 <img
   role="listitem"
-  src="@/assets/images/pomodorini.jpg"
+  src="@/assets/images/pomodorini.webp"
   alt="Volontario che tiene una scatola di donazioni"
   loading="lazy"
 />
 
 <img
   role="listitem"
-  src="@/assets/images/buste_cibo.jpg"
+  src="@/assets/images/buste_cibo.webp"
   alt="Scatola di donazioni alimentari per ridurre lo spreco"
   loading="lazy"
 />
 
 <img
   role="listitem"
-  src="@/assets/images/donazione.jpg"
+  src="@/assets/images/donazione.webp"
   alt="Mele e banane in scatola di cartone"
   loading="lazy"
 />
 
 <img
   role="listitem"
-  src="@/assets/images/unione.jpg"
+  src="@/assets/images/unione.webp"
   alt="Gruppo di volontari che lavorano nel centro di donazione"
   loading="lazy"
 />
