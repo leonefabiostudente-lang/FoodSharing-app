@@ -27,7 +27,6 @@
     role="listitem"
   src="https://images.unsplash.com/photo-1683110207034-0e3b82466e0e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=640" 
   alt="Volontario che tiene una scatola di donazioni"
-
     loading="lazy"
   />
 
@@ -40,15 +39,16 @@
 
   <img
     role="listitem"
-    src="https://images.pexels.com/photos/6646912/pexels-photo-6646912.jpeg?auto=compress&cs=tinysrgb&w=400&h=300"
-    alt="Volontari che selezionano cibo da redistribuire"
+     src="https://images.unsplash.com/photo-1588952964696-17b7c1e3b6ae?auto=format&fit=crop&w=400&q=60" 
+     alt="Mele e banane in scatola di cartone"
     loading="lazy"
   />
 
   <img
     role="listitem"
-    src="https://images.pexels.com/photos/6646905/pexels-photo-6646905.jpeg?auto=compress&cs=tinysrgb&w=400&h=300"
-    alt="Distribuzione di alimenti recuperati alla comunità"
+     src="https://images.unsplash.com/photo-1661780209073-0e3b82466e0e?auto=format&fit=crop&w=400&q=60"
+     alt="Gruppo di volontari che lavorano nel centro di donazione"
+
     loading="lazy"
   />
 </div>
