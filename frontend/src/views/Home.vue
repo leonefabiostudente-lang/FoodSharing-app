@@ -25,8 +25,9 @@
         <div class="img-grid" role="list">
   <img
     role="listitem"
-    src="https://images.pexels.com/photos/6646910/pexels-photo-6646910.jpeg?auto=compress&cs=tinysrgb&w=400&h=300"
-    alt="Volontari che distribuiscono cibo recuperato"
+  src="https://images.unsplash.com/photo-1683110207034-0e3b82466e0e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=640" 
+  alt="Volontario che tiene una scatola di donazioni"
+
     loading="lazy"
   />
 
