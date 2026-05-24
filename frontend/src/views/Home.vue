@@ -32,7 +32,7 @@
 
   <img
     role="listitem"
-    src="https://images.pexels.com/photos/6995240/pexels-photo-6995240.jpeg?auto=compress&cs=tinysrgb&w=400&h=300"
+    src="https://unsplash.com/it/foto/ciotola-di-pomodori-servita-a-mano-di-persona-qgHGDbbSNm8"
     alt="Scatola di donazioni alimentari per ridurre lo spreco"
     loading="lazy"
   />
