@@ -11,7 +11,7 @@ const filtroZona = ref("");
 let map;
 let markers = [];
 let userPos = ref(null);
-https://cdn-icons-png.flaticon.com/512/766/766149.png
+
 // 📌 Icone per categoria
 const icons = {
   pane: "https://cdn-icons-png.flaticon.com/512/1046/1046786.png",
