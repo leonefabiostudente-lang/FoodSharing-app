@@ -6,6 +6,27 @@ import fetch from "node-fetch";
 const router = express.Router();
 
 /* ---------------------------------------------
+   NORMALIZZAZIONE CATEGORIA (aggiunto)
+--------------------------------------------- */
+function normalizeCategoria(cat) {
+  if (!cat) return "altro";
+
+  const c = cat.toLowerCase().trim().replace(/\s+/g, "_");
+
+  const valid = [
+    "pane",
+    "dolci",
+    "frutta",
+    "verdura",
+    "pasti_pronti",
+    "bevande",
+    "altro"
+  ];
+
+  return valid.includes(c) ? c : "altro";
+}
+
+/* ---------------------------------------------
    FUNZIONE DI GEOCODING (OpenStreetMap)
 --------------------------------------------- */
 async function geocode(zona) {
@@ -50,6 +71,7 @@ router.get("/", async (req, res) => {
 /* ---------------------------------------------
    POST /api/annunci (PROTETTO)
    + geocoding automatico
+   + normalizzazione categoria (aggiunto)
 --------------------------------------------- */
 router.post("/", auth, async (req, res) => {
   try {
@@ -58,8 +80,7 @@ router.post("/", auth, async (req, res) => {
     // 1️⃣ Ottieni latitudine/longitudine dalla zona
     const coords = await geocode(zona);
 
-    // 2️⃣ CONTROLLO AGGIUNTO (Soluzione A)
-    //    Se il geocoding fallisce → blocca la creazione
+    // 2️⃣ Se il geocoding fallisce → blocca la creazione
     if (!coords.lat || !coords.lon) {
       return res.status(400).json({
         error: "Errore nella creazione dell'annuncio",
@@ -67,21 +88,14 @@ router.post("/", auth, async (req, res) => {
       });
     }
 
-    // 3️⃣ Crea annuncio con coordinate
+    // 3️⃣ Crea annuncio con categoria normalizzata
     const nuovoAnnuncio = new Annuncio({
       ...req.body,
+      categoria: normalizeCategoria(req.body.categoria), // ⭐ AGGIUNTO
       utente_id: req.utente.id,
       nome_utente: req.utente.nome,
-
-      // 🔵 Coordinate salvate correttamente
       latitudine: coords.lat,
       longitudine: coords.lon
-
-      /*
-      ❗ PRIMA QUI NON C'ERA CONTROLLO
-      e MongoDB tentava di creare un indice geospaziale
-      su valori nulli → errore "must be an array or object"
-      */
     });
 
     await nuovoAnnuncio.save();

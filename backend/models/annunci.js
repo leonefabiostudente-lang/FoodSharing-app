@@ -12,11 +12,22 @@ const annunciSchema = new mongoose.Schema(
       required: [true, 'La descrizione è obbligatoria'],
       maxlength: 1000,
     },
+
+    // ⭐ CATEGORIA — aggiornata per combaciare con normalizeCategoria()
     categoria: {
       type: String,
-      enum: ['pane', 'dolci', 'frutta', 'verdura', 'pasti_pronti', 'bevande', 'altro'],
+      enum: [
+        'pane',
+        'dolci',
+        'frutta',
+        'verdura',
+        'pasti_pronti',
+        'bevande',
+        'altro'
+      ],
       default: 'altro',
     },
+
     quantita: {
       type: String,
       required: true,
@@ -42,7 +53,7 @@ const annunciSchema = new mongoose.Schema(
       example: 'Bergamo Centro, Via Roma 10',
     },
 
-    // 🔵 LATITUDINE E LONGITUDINE (manteniamo il tuo approccio)
+    // 🔵 Coordinate
     latitudine: {
       type: Number,
       default: null,
@@ -53,7 +64,7 @@ const annunciSchema = new mongoose.Schema(
     },
 
     foto: {
-      type: [String], // Array di URL immagini
+      type: [String],
       default: [],
     },
     utente_id: {
@@ -98,15 +109,10 @@ const annunciSchema = new mongoose.Schema(
   }
 );
 
-// 🔍 Indice per ricerca testuale (OK)
+// 🔍 Indice testuale
 annunciSchema.index({ zona: 'text', titolo: 'text', descrizione: 'text' });
 
-/*
-❌ INDICE GEO ERRATO (lo commento)
-MongoDB NON accetta 2dsphere su due campi separati.
-Serve un campo GeoJSON unico, ma tu NON vuoi cambiare lo schema.
-Quindi lo disattiviamo.
-*/
+// ❌ Indice geospaziale disattivato (giusto così)
 // annunciSchema.index({ latitudine: '2dsphere', longitudine: '2dsphere' });
 
 const annunci = mongoose.model('annunci', annunciSchema);
