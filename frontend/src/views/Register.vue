@@ -144,3 +144,22 @@ async function registra() {
     </div>
   </div>
 </template>
+<style scoped>
+.form-control,
+.form-select {
+  padding: 12px 16px;
+  font-size: 1.1rem;
+}
+
+form {
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+label {
+  font-weight: 600;
+}
+</style>
+
