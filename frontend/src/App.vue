@@ -115,6 +115,10 @@ body.dark-mode {
   background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border-bottom: 1px solid rgba(255,255,255,0.03);
 }
+.mobile-toggle span {
+  color: #0f172a; /* colore scuro, super visibile */
+  font-size: 28px; /* più grande e leggibile */
+}
 
 /* Brand */
 .brand-wrap {

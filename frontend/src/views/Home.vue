@@ -13,8 +13,22 @@
   <router-link class="btn-primary" to="/annunci">Vai agli annunci</router-link>
   <router-link class="btn-primary" to="/nuovo-annuncio">Pubblica un annuncio</router-link>
 
-  <router-link class="btn-outline" to="/login">Login</router-link>
-  <router-link class="btn-outline" to="/register">Registrati</router-link>
+  <router-link
+  v-if="!isLogged"
+  class="btn-outline"
+  to="/login"
+>
+  Login
+</router-link>
+
+<router-link
+  v-if="!isLogged"
+  class="btn-outline"
+  to="/register"
+>
+  Registrati
+</router-link>
+
 </nav>
 
 
