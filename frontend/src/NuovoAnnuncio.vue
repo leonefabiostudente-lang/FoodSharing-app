@@ -26,6 +26,14 @@
         <option>Altro</option>
       </select>
 
+      <!-- ⭐ CAMPO TELEFONO -->
+      <input
+        type="tel"
+        v-model="telefono"
+        placeholder="Numero di telefono"
+        required
+      />
+
       <button>Pubblica</button>
     </form>
   </div>
@@ -39,6 +47,7 @@ import { useRouter } from "vue-router";
 const titolo = ref("");
 const descrizione = ref("");
 const categoria = ref("");
+const telefono = ref(""); // ⭐ nuovo campo
 
 const router = useRouter();
 
@@ -50,6 +59,7 @@ async function creaAnnuncio() {
         titolo: titolo.value,
         descrizione: descrizione.value,
         categoria: categoria.value,
+        telefono_utente: telefono.value // ⭐ NOME CORRETTO PER IL BACKEND
       }
     );
 
@@ -63,5 +73,4 @@ async function creaAnnuncio() {
 
 <style scoped>
 /* Lo stile principale è già in App.vue */
-/* Qui puoi aggiungere personalizzazioni se vuoi */
 </style>

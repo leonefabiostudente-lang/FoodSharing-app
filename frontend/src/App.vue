@@ -119,6 +119,9 @@ body.dark-mode {
   color: #0f172a; /* colore scuro, super visibile */
   font-size: 28px; /* più grande e leggibile */
 }
+.dark-mode .mobile-toggle span {
+  color: #f1f5f9; /* chiaro, perfetto su sfondo scuro */
+}
 
 /* Brand */
 .brand-wrap {
