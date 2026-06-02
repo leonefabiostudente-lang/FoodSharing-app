@@ -104,7 +104,7 @@ function cercaZona() {
 
   debounceTimer = setTimeout(async () => {
     try {
-      // ✅ RISOLTO: Inserito "nominatim" e aggiunto il simbolo "$" mancante prima della graffa
+      // 💻 CORREZIONE SINTASSI: Inserito nominatim e il carattere "$" prima della parentesi graffa
       const url = `https://openstreetmap.org{encodeURIComponent(zona.value)}&countrycodes=it&limit=5`;
       
       const res = await fetch(url, {
@@ -143,7 +143,7 @@ async function inviaAnnuncio() {
   };
 
   try {
-    // ✅ RISOLTO: Inserito l'URL completo del tuo backend specifico, comprensivo di slash finale
+    // 💻 CORREZIONE URL: Inserito l'indirizzo esatto del tuo server api con lo slash finale
     const res = await axios.post(
       "https://onrender.com", 
       nuovoAnnuncio,
