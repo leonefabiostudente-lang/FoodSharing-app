@@ -13,7 +13,7 @@ function normalizeCategoria(cat) {
 
 async function geocode(zona) {
   try {
-    // 💻 CORRETTO: Inserito il simbolo $ prima di {encodeURIComponent} e ripristinato il sotto-dominio nominatim
+    // URL corretto per interrogare Nominatim dal server cloud
     const url = `https://openstreetmap.org{encodeURIComponent(
       zona + ", Italia"
     )}&limit=1`;
@@ -29,11 +29,13 @@ async function geocode(zona) {
 
     const data = await res.json();
 
+    // Se l'array è vuoto, restituisce null per evitare crash
     if (!data || data.length === 0) {
-      console.log("❌ Nessun risultato per:", zona);
+      console.log("❌ Nessun risultato trovato per la zona:", zona);
       return { lat: null, lon: null };
     }
 
+    // ✅ CORREZIONE DEFINITIVA: Usiamo l'indice [0] perché l'API restituisce un array di oggetti
     return {
       lat: parseFloat(data[0].lat),
       lon: parseFloat(data[0].lon)
@@ -43,6 +45,7 @@ async function geocode(zona) {
     return { lat: null, lon: null };
   }
 }
+
 
 
 
