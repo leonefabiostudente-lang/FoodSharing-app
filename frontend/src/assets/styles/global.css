@@ -284,49 +284,62 @@ textarea {
 }
 
 /* =======================================================
-   12) MAPPA – FIX GRIGIO (Leaflet)
+   12) MAPPA – FIX GRIGIO DEFINITIVO (SOLO CSS)
 ======================================================= */
 #map {
-  height: 260px;
+  display: block !important; /* Evita conflitti con flexbox dei genitori */
+  width: 100% !important;   /* Costringe la mappa ad occupare tutto lo spazio */
+  height: 260px !important;  /* Altezza fissa e stabile */
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 20px;
-  background: #e2e8f0; /* fallback */
+  background: #e2e8f0;       /* Colore di sfondo prima del caricamento delle tile */
   
-  /* FIX MAPPA GRIGIA: Forza il ridisegno corretto delle tile */
+  /* Garantisce che i layer interni mantengano la posizione corretta */
+  position: relative !important; 
   z-index: 1;
 }
 
-/* Impedisce ai reset globali di rompere le immagini di Leaflet */
+/* Evita che il reset globale (*) deformi o scali male i quadranti (tile) di Leaflet */
 .leaflet-container img.leaflet-tile {
   max-width: none !important;
   max-height: none !important;
+  width: 256px !important;  /* Dimensione standard nativa delle tile di OpenStreetMap */
+  height: 256px !important;
 }
 
-/* =======================================================
-   13) MENU HAMBURGER – SPAZIATURA BOTTONI
-======================================================= */
-/* Sostituisci o integra con la classe reale del tuo menu */
+/* Corregge il posizionamento dei controlli della mappa (+ / - e crediti) */
+.leaflet-control-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.leaflet-control {
+  pointer-events: auto;
+}
+
+
+/* -------------------------------------------------------
+   13) MENU HAMBURGER – FIX SPAZIATURA GENERICA
+------------------------------------------------------- */
+/* Applica la spaziatura a qualsiasi elemento figlio dentro i contenitori dei menu */
 .menu-hamburger, 
-.hamburger-menu-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px; /* Spazia i bottoni verticalmente */
+.hamburger-menu,
+.nav-menu,
+.mobile-menu {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important; /* Forza lo spazio verticale tra i tasti */
   padding: 16px;
 }
 
-/* Se i bottoni sono dentro una lista (ul/li) */
-.menu-hamburger li {
-  list-style: none;
-  margin-bottom: 12px; /* Alternativa al gap per vecchi browser */
-}
-
-.menu-hamburger li:last-child {
-  margin-bottom: 0;
-}
-
-/* Se i bottoni sono dentro un div (div/a) */
-.menu-hamburger a {
-  text-decoration: none;
-  color: var(--text);
+/* Se i tuoi tasti sono dentro una lista (ul -> li) o link slegati */
+.menu-hamburger *, 
+.hamburger-menu *,
+.nav-menu *,
+.mobile-menu * {
+  margin-bottom: 4px; /* Sicurezza per elementi inline */
 }
