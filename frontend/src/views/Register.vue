@@ -54,118 +54,165 @@ async function registra() {
 </script>
 
 <template>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <!-- COLONNA RESPONSIVE MIGLIORATA -->
-      <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+  <div class="register-wrapper">
+    <div class="register-card">
 
-        <h2 class="mb-4 text-center">Registrazione</h2>
+      <h2 class="title">Registrazione</h2>
 
-        <!-- Messaggi -->
-        <div v-if="errore" class="alert alert-danger">{{ errore }}</div>
-        <div v-if="successo" class="alert alert-success">{{ successo }}</div>
+      <!-- Messaggi -->
+      <div v-if="errore" class="alert alert-danger">{{ errore }}</div>
+      <div v-if="successo" class="alert alert-success">{{ successo }}</div>
 
-        <form @submit.prevent="registra" class="p-4 shadow rounded bg-white">
+      <form @submit.prevent="registra" class="register-form">
 
-          <!-- Tipo utente -->
-          <div class="mb-4">
-            <label class="form-label fw-bold">Tipo utente</label>
-            <select v-model="tipo" class="form-select form-select-lg">
-              <option value="">Seleziona...</option>
-              <option value="privato">Privato</option>
-              <option value="associazione">Associazione</option>
-              <option value="commerciante">Commerciante</option>
-            </select>
+        <!-- Tipo utente -->
+        <div class="form-group">
+          <label>Tipo utente</label>
+          <select v-model="tipo" class="form-input">
+            <option value="">Seleziona...</option>
+            <option value="privato">Privato</option>
+            <option value="associazione">Associazione</option>
+            <option value="commerciante">Commerciante</option>
+          </select>
+        </div>
+
+        <!-- PRIVATO -->
+        <div v-if="tipo === 'privato'">
+          <div class="form-group">
+            <label>Nome</label>
+            <input v-model="nome" type="text" class="form-input" />
           </div>
 
-          <!-- PRIVATO -->
-          <div v-if="tipo === 'privato'">
-            <div class="mb-3">
-              <label class="form-label fw-bold">Nome</label>
-              <input v-model="nome" type="text" class="form-control form-control-lg">
-            </div>
+          <div class="form-group">
+            <label>Cognome</label>
+            <input v-model="cognome" type="text" class="form-input" />
+          </div>
+        </div>
 
-            <div class="mb-3">
-              <label class="form-label fw-bold">Cognome</label>
-              <input v-model="cognome" type="text" class="form-control form-control-lg">
-            </div>
+        <!-- ASSOCIAZIONE -->
+        <div v-if="tipo === 'associazione'">
+          <div class="form-group">
+            <label>Nome associazione</label>
+            <input v-model="nome_associazione" type="text" class="form-input" />
           </div>
 
-          <!-- ASSOCIAZIONE -->
-          <div v-if="tipo === 'associazione'">
-            <div class="mb-3">
-              <label class="form-label fw-bold">Nome associazione</label>
-              <input v-model="nome_associazione" type="text" class="form-control form-control-lg">
-            </div>
+          <div class="form-group">
+            <label>Partita IVA</label>
+            <input v-model="partita_iva" type="text" class="form-input" />
+          </div>
+        </div>
 
-            <div class="mb-3">
-              <label class="form-label fw-bold">Partita IVA</label>
-              <input v-model="partita_iva" type="text" class="form-control form-control-lg">
-            </div>
+        <!-- COMMERCIANTE -->
+        <div v-if="tipo === 'commerciante'">
+          <div class="form-group">
+            <label>Nome attività</label>
+            <input v-model="nome_attivita" type="text" class="form-input" />
           </div>
 
-          <!-- COMMERCIANTE -->
-          <div v-if="tipo === 'commerciante'">
-            <div class="mb-3">
-              <label class="form-label fw-bold">Nome attività</label>
-              <input v-model="nome_attivita" type="text" class="form-control form-control-lg">
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-bold">Partita IVA</label>
-              <input v-model="partita_iva" type="text" class="form-control form-control-lg">
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-bold">Categoria attività</label>
-              <input v-model="categoria_attivita" type="text" class="form-control form-control-lg">
-            </div>
+          <div class="form-group">
+            <label>Partita IVA</label>
+            <input v-model="partita_iva" type="text" class="form-input" />
           </div>
 
-          <!-- Email -->
-          <div class="mb-3">
-            <label class="form-label fw-bold">Email</label>
-            <input v-model="email" type="email" class="form-control form-control-lg">
+          <div class="form-group">
+            <label>Categoria attività</label>
+            <input v-model="categoria_attivita" type="text" class="form-input" />
           </div>
+        </div>
 
-          <!-- Password -->
-          <div class="mb-4">
-            <label class="form-label fw-bold">Password</label>
-            <input v-model="password" type="password" class="form-control form-control-lg">
-          </div>
+        <!-- Email -->
+        <div class="form-group">
+          <label>Email</label>
+          <input v-model="email" type="email" class="form-input" />
+        </div>
 
-          <!-- Bottone -->
-          <button type="submit" class="btn btn-primary btn-lg w-100">
-            Registrati
-          </button>
+        <!-- Password -->
+        <div class="form-group">
+          <label>Password</label>
+          <input v-model="password" type="password" class="form-input" />
+        </div>
 
-        </form>
+        <!-- Bottone -->
+        <button type="submit" class="submit-btn">
+          Registrati
+        </button>
 
-      </div>
+      </form>
+
     </div>
   </div>
 </template>
 
 <style scoped>
-/* Input più grandi e fluidi */
-.form-control,
-.form-select {
+/* Contenitore generale */
+.register-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* Card centrale */
+.register-card {
   width: 100%;
-  padding: 14px 18px;
+  max-width: 760px; /* più largo */
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* Titolo */
+.title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Gruppi */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label */
+label {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+/* Input */
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
   font-size: 1.1rem;
 }
 
-/* Form moderno e leggibile */
-form {
+/* Bottone */
+.submit-btn {
+  padding: 14px;
+  background: linear-gradient(90deg, #4f46e5, #2f855a);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
   width: 100%;
-  background: #fff;
-  border-radius: 12px;
-  padding: 25px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: 0.2s;
 }
 
-/* Etichette più leggibili */
-label {
-  font-weight: 600;
+.submit-btn:hover {
+  opacity: 0.9;
 }
 </style>
