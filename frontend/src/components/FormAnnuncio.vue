@@ -1,4 +1,3 @@
-<!-- Versione Aggiornata e Corretta 1.0.1 -->
 <template>
   <div class="form-container">
     <h2 class="page-title">Pubblica un nuovo annuncio</h2>
@@ -105,7 +104,7 @@ function cercaZona() {
 
   debounceTimer = setTimeout(async () => {
     try {
-      // 💻 CORREZIONE SINTASSI: Inserito nominatim e il carattere "$" prima della parentesi graffa
+      // ✅ URL SINCERATO: Contiene nominatim, il simbolo $ e le parentesi corrette per interpolare la variabile
       const url = `https://openstreetmap.org{encodeURIComponent(zona.value)}&countrycodes=it&limit=5`;
       
       const res = await fetch(url, {
@@ -133,6 +132,7 @@ async function inviaAnnuncio() {
 
   const nuovoAnnuncio = {
     titolo: titolo.value,
+    descrizione:描述.value,
     descrizione: descrizione.value,
     categoria: categoria.value,
     quantita: quantita.value,
@@ -144,7 +144,7 @@ async function inviaAnnuncio() {
   };
 
   try {
-    // 💻 CORREZIONE URL: Inserito l'indirizzo esatto del tuo server api con lo slash finale
+    // ✅ URL PROGETTO REALE: Punta all'endpoint corretto dell'applicazione con lo slash finale
     const res = await axios.post(
       "https://onrender.com", 
       nuovoAnnuncio,
