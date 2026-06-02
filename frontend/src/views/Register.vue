@@ -154,11 +154,12 @@ async function registra() {
 /* Card centrale */
 .register-card {
   width: 100%;
-  max-width: 760px; /* più largo */
+  max-width: 760px;
   background: #ffffff;
   padding: 32px;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  color: #0f172a; /* testo scuro e leggibile */
 }
 
 /* Titolo */
@@ -167,6 +168,7 @@ async function registra() {
   font-size: 28px;
   font-weight: 800;
   margin-bottom: 20px;
+  color: #0f172a;
 }
 
 /* Form */
@@ -186,16 +188,30 @@ async function registra() {
 label {
   font-weight: 700;
   margin-bottom: 6px;
+  color: #0f172a;
 }
 
-/* Input */
+/* Input e Select */
 .form-input {
   width: 100%;
   padding: 14px 16px;
   border-radius: 10px;
-  border: 1px solid #cbd5e1;
-  background: #f8fafc;
+  border: 1px solid #94a3b8;
+  background: #ffffff;
   font-size: 1.1rem;
+  color: #0f172a; /* testo scuro */
+}
+
+/* Placeholder leggibile */
+.form-input::placeholder {
+  color: #475569; /* più scuro */
+  opacity: 1;
+}
+
+/* Select fix */
+.form-input option {
+  color: #0f172a;
+  background: #ffffff;
 }
 
 /* Bottone */
@@ -215,4 +231,25 @@ label {
 .submit-btn:hover {
   opacity: 0.9;
 }
+
+/* DARK MODE FIX */
+.app-container.dark-mode .register-card {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.app-container.dark-mode .form-input {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+.app-container.dark-mode .form-input::placeholder {
+  color: #cbd5e1;
+}
+
+.app-container.dark-mode label {
+  color: #f1f5f9;
+}
+
 </style>
