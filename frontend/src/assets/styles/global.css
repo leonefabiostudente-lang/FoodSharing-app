@@ -9,9 +9,8 @@
   --text-muted: #475569;
   --text-darkmode: #e2e8f0;
 
-  --accent: #2f855a;        /* verde */
-  --accent-2: #4f46e5;      /* indaco */
-  --accent-red: #dc2626;
+  --accent: #2f855a;
+  --accent-2: #4f46e5;
 
   --card: #ffffff;
   --card-dark: #111827;
@@ -34,7 +33,6 @@ body {
   font-family: Inter, system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
-  -webkit-font-smoothing: antialiased;
 }
 
 body.dark-mode,
@@ -80,19 +78,6 @@ body.dark-mode,
 .app-container.dark-mode .navbar {
   background: rgba(255,255,255,0.05);
   border-bottom: 1px solid rgba(255,255,255,0.08);
-  box-shadow: var(--shadow-dark);
-}
-
-.nav-links a {
-  color: var(--text);
-  text-decoration: none;
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-weight: 600;
-}
-
-.app-container.dark-mode .nav-links a {
-  color: var(--text-darkmode);
 }
 
 /* -------------------------------------------------------
@@ -143,21 +128,12 @@ textarea {
   color: var(--text);
 }
 
-input::placeholder,
-textarea::placeholder {
-  color: #64748b;
-}
-
 .app-container.dark-mode input,
 .app-container.dark-mode select,
 .app-container.dark-mode textarea {
   background: #1e293b;
   border-color: #334155;
   color: var(--text-darkmode);
-}
-
-.app-container.dark-mode input::placeholder {
-  color: #cbd5e1;
 }
 
 /* -------------------------------------------------------
@@ -176,7 +152,7 @@ textarea::placeholder {
 }
 
 /* -------------------------------------------------------
-   8) HOME (HERO)
+   8) HOME – HERO + FOTO DINAMICHE
 ------------------------------------------------------- */
 .hero-card {
   display: grid;
@@ -186,83 +162,16 @@ textarea::placeholder {
   border-radius: var(--radius);
   background: white;
   box-shadow: var(--shadow);
+  align-items: flex-start;
 }
 
 .app-container.dark-mode .hero-card {
   background: #111827;
-  box-shadow: var(--shadow-dark);
-}
-
-.hero-desc {
-  color: var(--text-muted);
-}
-
-.app-container.dark-mode .hero-desc {
-  color: var(--text-darkmode);
-}
-/* -------------------------------------------------------
-   FIX ANNUNCI – icone troppo grandi
-------------------------------------------------------- */
-.card-info {
-  font-size: 14px;
-  line-height: 1.4;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.card-info p {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-}
-
-.card-info p::before {
-  font-size: 16px;
-}
-
-/* -------------------------------------------------------
-   FIX MAPPA – troppo grigia
-------------------------------------------------------- */
-#map {
-  height: 260px;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-
-/* -------------------------------------------------------
-   FIX HOME – testo troppo centrale + foto dinamiche
-------------------------------------------------------- */
-.hero-card {
-  align-items: flex-start;
 }
 
 .hero-left {
   padding-top: 10px;
 }
-
-.hero-right {
-  margin-top: 10px;
-}
-
-.img-grid img {
-  height: 120px;
-  object-fit: cover;
-  border-radius: 10px;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-  opacity: 0.95;
-}
-
-.img-grid img:hover {
-  transform: scale(1.06) rotate(0.5deg);
-  opacity: 1;
-}
-
-/* -------------------------------------------------------
-   HOME – immagini e bottoni
-------------------------------------------------------- */
 
 .hero-links {
   display: flex;
@@ -272,6 +181,7 @@ textarea::placeholder {
   margin-bottom: 12px;
 }
 
+/* FOTO HOME – dinamiche */
 .img-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -284,11 +194,13 @@ textarea::placeholder {
   height: 130px;
   object-fit: cover;
   border-radius: 10px;
-  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  opacity: 0.95;
 }
 
 .img-grid img:hover {
-  transform: scale(1.03);
+  transform: scale(1.06) rotate(0.5deg);
+  opacity: 1;
 }
 
 /* -------------------------------------------------------
@@ -305,7 +217,6 @@ textarea::placeholder {
 
 .app-container.dark-mode .login-wrapper {
   background: var(--card-dark);
-  box-shadow: var(--shadow-dark);
 }
 
 /* -------------------------------------------------------
@@ -322,11 +233,10 @@ textarea::placeholder {
 
 .app-container.dark-mode .register-card {
   background: var(--card-dark);
-  box-shadow: var(--shadow-dark);
 }
 
 /* -------------------------------------------------------
-   11) ANNUNCI (LISTA + FORM)
+   11) ANNUNCI – LISTA + FORM
 ------------------------------------------------------- */
 .annunci-grid {
   display: grid;
@@ -337,7 +247,7 @@ textarea::placeholder {
 .annuncio-card {
   background: var(--card);
   border-radius: var(--radius);
-  padding: 20px;
+  padding: 18px;
   box-shadow: var(--shadow);
   transition: 0.2s;
 }
@@ -348,19 +258,38 @@ textarea::placeholder {
 
 .app-container.dark-mode .annuncio-card {
   background: var(--card-dark);
-  box-shadow: var(--shadow-dark);
 }
 
-.form-container {
-  max-width: 500px;
-  margin: 30px auto;
+/* ICONA CATEGORIA (patatine, hamburger, dolci ecc.) */
+.card-icon img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+/* INFO ANNUNCIO */
+.card-info {
+  font-size: 14px;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-info p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
 }
 
 /* -------------------------------------------------------
-   12) DARK MODE — GLOBALE
+   12) MAPPA – FIX GRIGIO
 ------------------------------------------------------- */
-body.dark-mode,
-.app-container.dark-mode {
-  background: var(--bg-dark);
-  color: var(--text-darkmode);
+#map {
+  height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: #e2e8f0; /* fallback */
 }
