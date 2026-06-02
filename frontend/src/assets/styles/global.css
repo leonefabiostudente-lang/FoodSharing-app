@@ -283,13 +283,50 @@ textarea {
   font-size: 14px;
 }
 
-/* -------------------------------------------------------
-   12) MAPPA – FIX GRIGIO
-------------------------------------------------------- */
+/* =======================================================
+   12) MAPPA – FIX GRIGIO (Leaflet)
+======================================================= */
 #map {
   height: 260px;
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 20px;
   background: #e2e8f0; /* fallback */
+  
+  /* FIX MAPPA GRIGIA: Forza il ridisegno corretto delle tile */
+  z-index: 1;
+}
+
+/* Impedisce ai reset globali di rompere le immagini di Leaflet */
+.leaflet-container img.leaflet-tile {
+  max-width: none !important;
+  max-height: none !important;
+}
+
+/* =======================================================
+   13) MENU HAMBURGER – SPAZIATURA BOTTONI
+======================================================= */
+/* Sostituisci o integra con la classe reale del tuo menu */
+.menu-hamburger, 
+.hamburger-menu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Spazia i bottoni verticalmente */
+  padding: 16px;
+}
+
+/* Se i bottoni sono dentro una lista (ul/li) */
+.menu-hamburger li {
+  list-style: none;
+  margin-bottom: 12px; /* Alternativa al gap per vecchi browser */
+}
+
+.menu-hamburger li:last-child {
+  margin-bottom: 0;
+}
+
+/* Se i bottoni sono dentro un div (div/a) */
+.menu-hamburger a {
+  text-decoration: none;
+  color: var(--text);
 }
