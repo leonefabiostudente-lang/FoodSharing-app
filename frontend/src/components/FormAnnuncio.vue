@@ -129,9 +129,6 @@ function selezionaSuggerimento(item) {
   lng.value = item.lon;
   suggerimenti.value = [];
 }
-const lat = ref("");
-const lng = ref("");
-
 
 async function inviaAnnuncio() {
   // 1️⃣ Controllo preventivo del token
