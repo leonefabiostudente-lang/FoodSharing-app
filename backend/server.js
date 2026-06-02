@@ -1,6 +1,4 @@
 // server.js
-// Avvia il server solo dopo che la connessione a MongoDB è stata stabilita
-
 import dns from "dns";
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
@@ -11,11 +9,8 @@ import mongoose from "mongoose";
 import authRoutes from './routes/auth.js';
 import annunciRouter from "./routes/annunci.js";
 
-
-// ...dopo il middleware
-
-
 const app = express();
+
 app.use(cors({
   origin: [
     "http://localhost:5173",
@@ -24,7 +19,9 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json());66
+// Rimosso il refuso "66" che causava crash sintattici
+app.use(express.json());
+
 app.use('/api', authRoutes);
 app.use('/api/annunci', annunciRouter);
 
@@ -44,21 +41,17 @@ async function start() {
   }
 
   try {
-    // Connessione a MongoDB
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    // Connessione a MongoDB (rimosse opzioni deprecate useNewUrlParser e useUnifiedTopology)
+    await mongoose.connect(uri);
     console.log("✅ MongoDB connesso");
 
     // Avvia il server solo dopo la connessione DB
     app.listen(PORT, () => {
-  console.log(`Server in esecuzione su http://localhost:${PORT}`);
-  console.log(`PORT env: ${process.env.PORT || 'non impostata, usando fallback'}`);
-});
+      console.log(`Server in esecuzione su http://localhost:${PORT}`);
+      console.log(`PORT env: ${process.env.PORT || 'non impostata, usando fallback'}`);
+    });
   } catch (error) {
     console.error("❌ Errore connessione MongoDB:", error);
-    // Non terminare il processo: lascia nodemon riavviare dopo correzione
   }
 }
 
