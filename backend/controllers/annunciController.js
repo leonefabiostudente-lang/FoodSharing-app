@@ -2,7 +2,7 @@ import Annuncio from "../models/annunci.js";
 import fetch from "node-fetch";
 
 /* ---------------------------------------------
-   FUNZIONI DI UTILITÀ INTERNE
+   NORMALIZZAZIONE CATEGORIA
 --------------------------------------------- */
 function normalizeCategoria(cat) {
   if (!cat) return "altro";
@@ -11,6 +11,9 @@ function normalizeCategoria(cat) {
   return valid.includes(c) ? c : "altro";
 }
 
+/* ---------------------------------------------
+   GEOCODING (solo se necessario)
+--------------------------------------------- */
 async function geocode(zona) {
   try {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
@@ -38,20 +41,14 @@ async function geocode(zona) {
       lon: parseFloat(data[0].lon)
     };
   } catch (error) {
-    console.error("Errore interno durante il geocoding nel backend:", error.message);
+    console.error("Errore interno durante il geocoding:", error.message);
     return { lat: null, lon: null };
   }
 }
 
-
-
-
-
 /* ---------------------------------------------
-   LOGICA DEI CONTROLLER ESPORTATA
+   GET /api/annunci
 --------------------------------------------- */
-
-// Gestisce GET /api/annunci
 export const getAnnunci = async (req, res) => {
   try {
     const filtro = {};
@@ -65,10 +62,12 @@ export const getAnnunci = async (req, res) => {
   }
 };
 
-// Gestisce POST /api/annunci
+/* ---------------------------------------------
+   POST /api/annunci
+--------------------------------------------- */
 export const creaAnnuncio = async (req, res) => {
   try {
-    const { zona } = req.body;
+    const { zona, lat, lng } = req.body;
 
     if (!zona || !zona.trim()) {
       return res.status(400).json({
@@ -77,13 +76,22 @@ export const creaAnnuncio = async (req, res) => {
       });
     }
 
-    const coords = await geocode(zona);
+    let latitudine = lat;
+    let longitudine = lng;
 
-    if (!coords.lat || !coords.lon) {
-      return res.status(400).json({
-        error: "Errore nella creazione dell'annuncio",
-        dettagli: "Geocoding fallito: coordinate non trovate per la zona indicata."
-      });
+    // Se il frontend NON ha inviato lat/lng → geocoding
+    if (!latitudine || !longitudine) {
+      const coords = await geocode(zona);
+
+      if (!coords.lat || !coords.lon) {
+        return res.status(400).json({
+          error: "Errore nella creazione dell'annuncio",
+          dettagli: "Geocoding fallito: coordinate non trovate per la zona indicata."
+        });
+      }
+
+      latitudine = coords.lat;
+      longitudine = coords.lon;
     }
 
     const nuovoAnnuncio = new Annuncio({
@@ -91,12 +99,13 @@ export const creaAnnuncio = async (req, res) => {
       categoria: normalizeCategoria(req.body.categoria),
       utente_id: req.utente.id,
       nome_utente: req.utente.nome,
-      latitudine: coords.lat,
-      longitudine: coords.lon
+      latitudine,
+      longitudine
     });
 
     await nuovoAnnuncio.save();
     res.status(201).json(nuovoAnnuncio);
+
   } catch (err) {
     res.status(400).json({
       error: "Errore nella creazione dell'annuncio",

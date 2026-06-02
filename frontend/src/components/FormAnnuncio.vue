@@ -90,9 +90,10 @@ const zona = ref("");
 const data_scadenza = ref("");
 const orario_ritiro_inizio = ref("");
 const orario_ritiro_fine = ref("");
+
+// Coordinate (UNA SOLA dichiarazione!)
 const lat = ref("");
 const lng = ref("");
-
 
 // Autocompletamento OpenStreetMap
 const suggerimenti = ref([]);
@@ -107,13 +108,12 @@ function cercaZona() {
 
   debounceTimer = setTimeout(async () => {
     try {
-      
-const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(zona.value)}&countrycodes=it&limit=5`;
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(zona.value)}&countrycodes=it&limit=5`;
 
-      
       const res = await fetch(url, {
         headers: { 'User-Agent': 'antispreco-app-frontend (contatto-sviluppo@esempio.com)' }
       });
+
       if (res.ok) {
         suggerimenti.value = await res.json();
       }
@@ -131,58 +131,54 @@ function selezionaSuggerimento(item) {
 }
 
 async function inviaAnnuncio() {
-  // 1️⃣ Controllo preventivo del token
   if (!token) {
     alert("Devi essere loggato per pubblicare un annuncio.");
     return;
   }
 
-  // 2️⃣ Costruzione dell'oggetto con tutti i campi del form
-const nuovoAnnuncio = {
-  titolo: titolo.value,
-  descrizione: descrizione.value,
-  categoria: categoria.value,
-  quantita: quantita.value,
-  telefono_utente: telefono.value,
-  zona: zona.value,
-  lat: lat.value,
-  lng: lng.value,
-  data_scadenza: data_scadenza.value,
-  orario_ritiro_inizio: orario_ritiro_inizio.value,
-  orario_ritiro_fine: orario_ritiro_fine.value
-};
+  // Controllo fondamentale: l'utente deve selezionare un suggerimento
+  if (!lat.value || !lng.value) {
+    alert("Seleziona una zona dai suggerimenti per ottenere la posizione esatta.");
+    return;
+  }
 
+  const nuovoAnnuncio = {
+    titolo: titolo.value,
+    descrizione: descrizione.value,
+    categoria: categoria.value,
+    quantita: quantita.value,
+    telefono_utente: telefono.value,
+    zona: zona.value,
+    lat: lat.value,
+    lng: lng.value,
+    data_scadenza: data_scadenza.value,
+    orario_ritiro_inizio: orario_ritiro_inizio.value,
+    orario_ritiro_fine: orario_ritiro_fine.value
+  };
 
   try {
-    // 3️⃣ Chiamata Axios verso l'URL funzionante del tuo backend su Render (con lo slash finale)
-    // ✅ RISOLTO: Usa la variabile d'ambiente dinamica racchiusa nei backtick `
-const res = await axios.post(
-  `${import.meta.env.VITE_API_URL}/annunci/`, 
-  nuovoAnnuncio,
-  {
-    headers: { 
-      "Authorization": "Bearer " + token
-    }
-  }
-);
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/annunci/`,
+      nuovoAnnuncio,
+      {
+        headers: { "Authorization": "Bearer " + token }
+      }
+    );
 
-
-    // 4️⃣ Gestione del successo
     if (res.status === 201 || res.status === 200) {
       alert("Annuncio pubblicato con successo!");
-      router.push("/annunci"); // Ti sposta sulla lista annunci
+      router.push("/annunci");
     }
   } catch (err) {
     console.error("Errore invio:", err.response?.data);
-    // Mostra l'errore specifico del server (es: geocoding fallito) se presente
     const messaggio = err.response?.data?.dettagli 
       ? `${err.response.data.error}: ${err.response.data.dettagli}` 
       : (err.response?.data?.error || "Errore di connessione al server");
     alert("Impossibile pubblicare: " + messaggio);
   }
 }
-
 </script>
+
 
 <style scoped>
 .form-container {
