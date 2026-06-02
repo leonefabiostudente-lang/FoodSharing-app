@@ -1,3 +1,4 @@
+<!-- Versione Aggiornata e Corretta 1.0.1 -->
 <template>
   <div class="form-container">
     <h2 class="page-title">Pubblica un nuovo annuncio</h2>
