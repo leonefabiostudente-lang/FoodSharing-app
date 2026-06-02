@@ -1,6 +1,6 @@
 <template>
   <div class="form-container">
-    <h2 class="page-title">Pubblica un nuovo annuncio</h2>
+    <h2 class="page-title">Pubblica un nuovo annuncio!</h2>
 
     <!-- BLOCCO SE NON LOGGATO -->
     <div v-if="!token" class="auth-alert">
