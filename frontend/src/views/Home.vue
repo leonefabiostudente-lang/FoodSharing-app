@@ -76,8 +76,11 @@
 </template>
 
 <script setup>
-// nessuna logica per ora
+import { ref } from "vue";
+
+const isLogged = ref(!!localStorage.getItem("token"));
 </script>
+
 
 <style scoped>
 .home-root {
