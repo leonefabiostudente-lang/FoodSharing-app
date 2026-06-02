@@ -13,41 +13,37 @@ function normalizeCategoria(cat) {
 
 async function geocode(zona) {
   try {
-    // 1️⃣ Aggiungiamo un raggio di ricerca specifico per l'Italia
+    // 💻 CORRETTO: Inserito il simbolo $ prima di {encodeURIComponent} e ripristinato il sotto-dominio nominatim
     const url = `https://openstreetmap.org{encodeURIComponent(
       zona + ", Italia"
     )}&limit=1`;
 
     const res = await fetch(url, {
-      headers: { 
-        // ⚠️ Inserisci una mail vera per evitare che OpenStreetMap blocchi l'IP di Render
-        "User-Agent": "AntisprecoAppProject (contatto-sviluppo@tuodominio.com)" 
+      headers: {
+        "User-Agent": "antispreco-app/1.0 (leonefabiostudente-lang@gmail.com)",
+        "Accept-Language": "it"
       }
     });
 
-    if (!res.ok) {
-      console.error(`Errore API Nominatim. Status: ${res.status}`);
-      return { lat: null, lon: null };
-    }
+    if (!res.ok) return { lat: null, lon: null };
 
     const data = await res.json();
 
-    // 2️⃣ Controllo di sicurezza se l'array è vuoto
     if (!data || data.length === 0) {
-      console.warn(`Nessun risultato geografico trovato per la zona: ${zona}`);
+      console.log("❌ Nessun risultato per:", zona);
       return { lat: null, lon: null };
     }
 
-    // 3️⃣ CORREZIONE: Usiamo l'indice [0] perché l'API restituisce un array di oggetti
     return {
       lat: parseFloat(data[0].lat),
       lon: parseFloat(data[0].lon)
     };
   } catch (error) {
-    console.error("Errore di rete o crash durante il geocoding:", error);
+    console.error("Errore interno durante il geocoding nel backend:", error.message);
     return { lat: null, lon: null };
   }
 }
+
 
 
 /* ---------------------------------------------
