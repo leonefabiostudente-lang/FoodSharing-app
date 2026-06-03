@@ -346,26 +346,3 @@ textarea {
 .leaflet-control {
   pointer-events: auto;
 }
-
-
-/* -------------------------------------------------------
-   13) MENU HAMBURGER – FIX SPAZIATURA GENERICA
-------------------------------------------------------- */
-/* Applica la spaziatura a qualsiasi elemento figlio dentro i contenitori dei menu */
-.menu-hamburger, 
-.hamburger-menu,
-.nav-menu,
-.mobile-menu {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 12px !important; /* Forza lo spazio verticale tra i tasti */
-  padding: 16px;
-}
-
-/* Se i tuoi tasti sono dentro una lista (ul -> li) o link slegati */
-.menu-hamburger *, 
-.hamburger-menu *,
-.nav-menu *,
-.mobile-menu * {
-  margin-bottom: 4px; /* Sicurezza per elementi inline */
-}
