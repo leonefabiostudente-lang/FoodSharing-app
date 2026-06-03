@@ -86,6 +86,11 @@ async function caricaAnnunci() {
 
     let data = await res.json();
 
+    // 1️⃣ ORDINAMENTO BASE: Dal più recente al meno recente (usando l'_id di MongoDB)
+    // Questo si applica SEMPRE, sia su mobile che desktop, con o senza posizione attiva.
+    data.sort((a, b) => b._id.localeCompare(a._id));
+
+    // Se l'utente ha la geolocalizzazione attiva, calcoliamo le distanze
     if (userPos.value) {
       data = data.map(a => {
         if (a.latitudine && a.longitudine) {
@@ -101,7 +106,18 @@ async function caricaAnnunci() {
         return a;
       });
 
-      data.sort((a, b) => (a.distanza ?? 9999) - (b.distanza ?? 9999));
+      // 2️⃣ SECONDO ORDINAMENTO: Se c'è la posizione, ordina per distanza.
+      // Se due annunci hanno la stessa distanza (o non ce l'hanno), mantengono l'ordine del più recente fatto sopra.
+      data.sort((a, b) => {
+        const distA = a.distanza ?? 9999;
+        const distB = b.distanza ?? 9999;
+        
+        if (distA !== distB) {
+          return distA - distB; // Più vicino in alto
+        }
+        // Se la distanza è uguale, il più recente va comunque prima
+        return b._id.localeCompare(a._id);
+      });
     }
 
     annunci.value = data;
