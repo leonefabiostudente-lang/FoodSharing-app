@@ -385,18 +385,75 @@ input, select, textarea {
   }
 }
 /* -------------------------------------------------------
-   9) LOGIN, 10) REGISTER, 11) ANNUNCI
+   9) LOGIN, 10) REGISTER, 11) ANNUNCI (Ottimizzato Foto/Emoji)
 ------------------------------------------------------- */
 .login-wrapper { max-width: 420px; margin: 80px auto; padding: 32px; }
 .register-card { max-width: 760px; margin: 0 auto; padding: 32px; }
+
+/* Griglia e Struttura Base Card */
 .annunci-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
 .annuncio-card { background: var(--card); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); transition: 0.2s; }
 .annuncio-card:hover { transform: translateY(-4px); }
 .app-container.dark-mode .annuncio-card { background: var(--card-dark); }
-.card-icon img { width: 38px; height: 38px; object-fit: contain; }
+
+/* CONTENITORE MEDIA (Ospita la foto o l'emoji di ripiego) */
+.card-media-wrapper {
+  width: 100%;
+  height: 160px; /* Altezza fissa e bilanciata per la card */
+  overflow: hidden;
+  border-radius: calc(var(--radius) - 4px); /* Segue il raggio della tua card */
+  margin-bottom: 14px;
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.app-container.dark-mode .card-media-wrapper {
+  background-color: #1e293b;
+}
+
+/* 1. Stile se c'è la foto reale del prodotto */
+.prodotto-real-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  transition: transform 0.3s ease;
+}
+.annuncio-card:hover .prodotto-real-img {
+  transform: scale(1.04); 
+}
+
+/* 2. Stile se Manca la foto (Placeholder con Gradient + Emoji) */
+.card-emoji-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px; /* Dimensione perfetta dell'emoji al centro */
+}
+
+/* Sfondi pastello armoniosi per la Light Mode */
+.card-emoji-fallback.pane { background: linear-gradient(135deg, #ffedd5, #fed7aa); }
+.card-emoji-fallback.dolci { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+.card-emoji-fallback.frutta { background: linear-gradient(135deg, #fee2e2, #fecaca); }
+.card-emoji-fallback.verdura { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
+.card-emoji-fallback.pasti_pronti { background: linear-gradient(135deg, #e0f2fe, #bae6fd); }
+.card-emoji-fallback.bevande { background: linear-gradient(135deg, #e0e7ff, #c7d2fe); }
+.card-emoji-fallback.altro { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); }
+
+/* Sfondi più scuri e soffusi per la Dark Mode (Evita l'effetto flash di notte) */
+.app-container.dark-mode .card-emoji-fallback.pane { background: linear-gradient(135deg, #431407, #63200e); }
+.app-container.dark-mode .card-emoji-fallback.dolci { background: linear-gradient(135deg, #4a044e, #581c5c); }
+.app-container.dark-mode .card-emoji-fallback.frutta { background: linear-gradient(135deg, #450a0a, #631111); }
+.app-container.dark-mode .card-emoji-fallback.verdura { background: linear-gradient(135deg, #064e3b, #0f5c47); }
+.app-container.dark-mode .card-emoji-fallback.pasti_pronti { background: linear-gradient(135deg, #0c4a6e, #115780); }
+.app-container.dark-mode .card-emoji-fallback.bevande { background: linear-gradient(135deg, #1e1b4b, #282566); }
+.app-container.dark-mode .card-emoji-fallback.altro { background: linear-gradient(135deg, #1e293b, #293548); }
+
+/* Informazioni interne della card */
 .card-info { font-size: 14px; line-height: 1.4; display: flex; flex-direction: column; gap: 4px; }
 .card-info p { display: flex; align-items: center; gap: 6px; }
-
 /* -------------------------------------------------------
    12) MAPPA – LEAFLET FIX
 ------------------------------------------------------- */

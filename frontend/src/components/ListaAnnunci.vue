@@ -12,15 +12,15 @@ let map;
 let markers = [];
 let userPos = ref(null);
 
-// 📌 Icone per categoria (usate come ripiego se manca la foto)
+// 📌 Nuove icone coordinate, moderne e minimali per categoria
 const icons = {
-  pane: "https://cdn-icons-png.flaticon.com/512/1046/1046786.png",
-  dolci: "https://cdn-icons-png.flaticon.com/512/2203/2203189.png",
-  frutta: "https://cdn-icons-png.flaticon.com/512/415/415733.png",
-  verdura: "https://cdn-icons-png.flaticon.com/512/766/766149.png",
-  pasti_pronti: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
-  bevande: "https://cdn-icons-png.flaticon.com/512/2738/2738730.png",
-  altro: "https://cdn-icons-png.flaticon.com/512/565/565547.png"
+  pane: "https://cdn-icons-png.flaticon.com/512/3081/3081918.png",         /* Pane moderno flat */
+  dolci: "https://cdn-icons-png.flaticon.com/512/2682/2682448.png",        /* Cupcake/Dolce coordinato */
+  frutta: "https://cdn-icons-png.flaticon.com/512/3194/3194766.png",       /* Mela/Frutta minimal */
+  verdura: "https://cdn-icons-png.flaticon.com/512/2324/2324343.png",      /* Carota/Verdura minimal */
+  pasti_pronti: "https://cdn-icons-png.flaticon.com/512/3448/3448601.png", /* Piatto pronto/Cloche */
+  bevande: "https://cdn-icons-png.flaticon.com/512/3050/3050130.png",      /* Bottiglia/Bicchiere flat */
+  altro: "https://cdn-icons-png.flaticon.com/512/11512/11512411.png"       /* Box spesa generico moderno */
 };
 
 // 🔧 Funzione per ottenere l’icona giusta sulla mappa
@@ -230,43 +230,3 @@ watch(filtroZona, () => {
     </div>
   </div>
 </template>
-
-<style scoped>
-/* ⭐ REGOLE DI STILE PER LE IMMAGINI DELLE CARD 
-   Inseriscile nel tag style di questa pagina o nel tuo global.css */
-.card-media-wrapper {
-  width: 100%;
-  height: 180px; /* Altezza fissa uniforme per tutta la griglia */
-  overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 14px;
-  background-color: #f8fafc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.app-container.dark-mode .card-media-wrapper {
-  background-color: #1e293b;
-}
-
-/* Stile foto reale */
-.prodotto-real-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ritaglia l'immagine senza deformarla */
-  transition: transform 0.3s ease;
-}
-
-.annuncio-card:hover .prodotto-real-img {
-  transform: scale(1.04); /* Piccolo effetto dinamico all'hover sulla card */
-}
-
-/* Stile per l'icona di ripiego (se manca la foto) */
-.card-icon-fallback img {
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
-  opacity: 0.8;
-}
-</style>

@@ -71,16 +71,18 @@
           @change="gestisciCaricamentoFoto" 
         />
         
-        <div v-if="anteprimaFoto" class="foto-anteprima-container" style="margin-top: 15px; text-align: center;">
-          <img 
-            :src="anteprimaFoto" 
-            alt="Anteprima" 
-            style="max-width: 100%; max-height: 180px; border-radius: 8px; border: 2px dashed var(--accent);" 
-          />
+        <div v-if="anteprimaFoto" class="foto-anteprima-container">
+          <div class="card-media-wrapper">
+            <img 
+              :src="anteprimaFoto" 
+              alt="Anteprima" 
+              class="prodotto-real-img" 
+            />
+          </div>
           <button 
             type="button" 
             @click="rimuoviFoto" 
-            style="display: block; margin: 10px auto 0 auto; background: #dc3545; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px;"
+            class="btn-rimuovi-foto"
           >
             Rimuovi foto
           </button>
