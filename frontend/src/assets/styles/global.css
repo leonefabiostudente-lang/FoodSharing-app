@@ -83,13 +83,21 @@ body.dark-mode,
    MENU HAMBURGER – FIX REALE
 ------------------------------------------------------- */
 @media (max-width: 820px) {
-  .nav-links a {
-    display: block;        /* ogni voce su una riga */
-    padding: 12px 0;       /* spazio verticale */
-    margin: 4px 0;         /* separazione tra le voci */
-  }
-}
 
+  .nav-links {
+    position: fixed;
+    top: 72px;
+    right: -100%;
+    width: 200px;
+    background: var(--card);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: right 0.3s ease;
+    z-index: 15;
+  }
 
   .app-container.dark-mode .nav-links {
     background: #111827;
