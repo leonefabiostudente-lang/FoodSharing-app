@@ -32,6 +32,13 @@ function getIcon(categoria) {
     popupAnchor: [0, -38]
   });
 }
+// ⭐ AGGIUNGI QUESTA FUNZIONE
+function getFallbackIcon(categoria) {
+  if (!categoria) return icons.altro;
+  // Normalizza per evitare errori di case-sensitivity
+  const catKey = categoria.toLowerCase().trim();
+  return icons[catKey] || icons.altro;
+}
 
 // 📏 Calcolo distanza (Haversine)
 function distanzaKm(lat1, lon1, lat2, lon2) {
@@ -149,9 +156,9 @@ watch(annunci, () => {
   annunci.value.forEach(a => {
     if (a.latitudine && a.longitudine) {
       const marker = L.marker(
-        [a.latitudine, a.longitudine],
-        { icon: getIcon(a.categoria) }
-      ).addTo(map);
+  [a.latitudine, a.longitudine],
+  { icon: getIcon(a.categoria?.toLowerCase().trim()) } // Aggiunto .toLowerCase().trim()
+).addTo(map);
 
       // ⭐ Aggiunta foto anche nel mini popup della mappa se disponibile!
       const popupPhotoHtml = a.foto && a.foto.length > 0 && a.foto[0]
@@ -217,7 +224,7 @@ watch(filtroZona, () => {
 
       <p class="card-desc">{{ a.descrizione }}</p>
 
-      <span class="badge">{{ a.categoria }}</span>
+      <<span class="badge">{{ a.categoria ? a.categoria.charAt(0).toUpperCase() + a.categoria.slice(1) : 'Altro' }}</span>
 
       <div class="card-info">
         <p><strong>Zona:</strong> {{ a.zona }}</p>
