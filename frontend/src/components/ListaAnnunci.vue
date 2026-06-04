@@ -3,6 +3,8 @@ import { ref, onMounted, watch } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+// importa l'SVG dal folder src/assets (il bundler restituirà l'URL)
+import pastiProntiUrl from '@/assets/images/spaghetti.svg';
 const annunci = ref([]);
 const loading = ref(true);
 const errore = ref(null);
@@ -15,10 +17,10 @@ let userPos = ref(null);
 // 📌 Nuove icone coordinate, moderne e minimali per categoria
 const icons = {
   pane: "https://cdn-icons-png.flaticon.com/512/3081/3081918.png",         /* Pane moderno flat */
-  dolci: "https://cdn-icons-png.flaticon.com/512/3063/3063177.png",        /* Cupcake/Dolce coordinato */
+  dolci: "https://img.icons8.com/fluency/96/cupcake.png",                  /* Cupcake/Dolce coordinato */
   frutta: "https://cdn-icons-png.flaticon.com/512/3194/3194766.png",       /* Mela/Frutta minimal */
   verdura: "https://cdn-icons-png.flaticon.com/512/2324/2324343.png",      /* Carota/Verdura minimal */
-  pasti_pronti: "https://cdn-icons-png.flaticon.com/512/3448/3448601.png", /* Piatto pronto/Cloche */
+  pasti_pronti: pastiProntiUrl,                                          /* Piatto pronto/Cloche */
   bevande: "https://cdn-icons-png.flaticon.com/512/3050/3050130.png",      /* Bottiglia/Bicchiere flat */
   altro: "https://cdn-icons-png.flaticon.com/512/11512/11512411.png"       /* Box spesa generico moderno */
 };
@@ -38,6 +40,7 @@ function getFallbackIcon(categoria) {
   
   // Debug: controlla cosa sta cercando
   console.log("Cerco icona per categoria:", catKey, "Risultato:", icons[catKey]);
+  
   
   return icons[catKey] || icons.altro;
 }
@@ -219,6 +222,7 @@ watch(filtroZona, () => {
         />
         <div v-else class="card-icon-fallback">
           <img :src="getFallbackIcon(a.categoria)" alt="categoria" />
+          
         </div>
       </div>
 

@@ -298,6 +298,32 @@ input, select, textarea {
   box-shadow: var(--shadow-dark);
 }
 
+
+.card-icon-fallback {
+    width: 100%;            /* o es. 48px, 12%, ecc. */
+  max-width: 96px;        /* limite massimo */
+  min-width: 32px;        /* limite minimo */
+  aspect-ratio: 1 / 1;    /* mantiene box quadrato */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #fff;       /* opzionale */
+  border-radius: 6px;     /* opzionale */
+  padding: 4px;           /* opzionale: spazio interno */
+}
+
+.card-icon {
+width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;    /* mantiene tutta l'immagine senza ritagli */
+  display: block;
+}
+
+
+
 /* -------------------------------------------------------
    8) HOME HERO – SLIDER A CAROSELLO (Centrato e Bilanciato)
 ------------------------------------------------------- */
@@ -503,4 +529,52 @@ input, select, textarea {
 .app-container.dark-mode .footer {
   color: #64748b;
   border-top: 1px solid rgba(255,255,255,0.05);
+}
+/* contenitore media già presente */
+.card-media-wrapper {
+  width: 100%;
+  height: 160px;        /* mantiene l'altezza che hai scelto */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: calc(var(--radius) - 4px);
+  background-color: #f8fafc;
+}
+
+/* regole generali per tutte le immagini dentro il contenitore */
+.card-media-wrapper img,
+.card-media-wrapper svg {
+  /* lascia che l'immagine si riduca automaticamente */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;        /* mantiene proporzioni e non ritaglia */
+  margin: 0 auto;             /* centra orizzontalmente */
+}
+
+/* se vuoi che l'immagine occupi tutto il box ma senza ritagli (con spazi vuoti) */
+.card-media-wrapper .fit-full {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* sovrascrive eventuali attributi inline width/height (debug) */
+.card-media-wrapper img[width],
+.card-media-wrapper img[height] {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+}
+
+/* alternativa: usare background-image per riempire il box senza markup img */
+.card-media-wrapper.bg-fit {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;   /* contain per vedere tutta l'immagine; cover per riempire ritagliando */
 }
