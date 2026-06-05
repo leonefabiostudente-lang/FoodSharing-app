@@ -4,7 +4,7 @@
       <div class="brand-wrap">
         <h1 class="logo">
           <span class="leaf">🍃</span>
-          <span class="brand">Antispreco</span>
+          <span class="brand">Food Sharing</span>
         </h1>
 
         <button class="mobile-toggle" @click="open = !open">
