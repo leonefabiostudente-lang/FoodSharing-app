@@ -3,9 +3,10 @@
     
     <section class="card hero-card" aria-labelledby="hero-title">
       <div class="hero-left">
-        <h3 id="hero-title">Cos'è <span class="brand-text">Antispreco</span>?</h3>
+        <h3 id="hero-title">Cos'è <span class="brand-text">Food Sharing
+        </span>?</h3>
         <p class="hero-desc">
-          Antispreco è una piattaforma per condividere prodotti alimentari in scadenza e ridurre gli sprechi.
+          Food Sharing è una piattaforma per condividere prodotti alimentari in scadenza e ridurre gli sprechi.
           Metti in condivisione ciò che non useresti, ritira ciò che ti serve: semplice, sicuro e gratuito.
         </p>
 

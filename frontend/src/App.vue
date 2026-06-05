@@ -32,7 +32,7 @@
     </main>
 
     <footer class="footer">
-      © 2026 Antispreco – Progetto scolastico
+      © 2026 Food Sharing– Progetto scolastico
     </footer>
   </div>
 </template>
