@@ -14,7 +14,8 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://antispreco-app.vercel.app"
+  "https://antispreco-app.vercel.app",
+  "https://foodsharing-app.vercel.app"
   ],
   credentials: true
 }));
