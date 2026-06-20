@@ -4,7 +4,7 @@ Questo file spiega come configurare e avviare il backend, con focus sulla conval
 
 ## Passaggi rapidi
 
-1. Copia l'esempio `.env.example` in `.env` e inserisci le tue credenziali:
+1. Copia l'esempio `.env.example` in `.env` e inserisci le tue credenziali private. Non salvare credenziali reali in `backend/.env.example`, perché questo file è tracciato nel repository.
 
 ```env
 # SMTP (usato per inviare email di verifica)
@@ -12,7 +12,7 @@ SMTP_HOST=smtp.example.com
 SMTP_PORT=587
 SMTP_USER=your_smtp_user
 SMTP_PASS=your_smtp_password
-SMTP_FROM="Antispreco <no-reply@antispreco.example.com>"
+SMTP_FROM="Antispreco <no-reply@example.com>"
 
 # URL frontend (link di verifica)
 FRONTEND_URL=http://localhost:5173
