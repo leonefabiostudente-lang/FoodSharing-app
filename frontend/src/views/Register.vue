@@ -13,10 +13,12 @@ const email = ref("");
 const password = ref("");
 const errore = ref("");
 const successo = ref("");
+const verificaLink = ref("");
 
 async function registra() {
   errore.value = "";
   successo.value = "";
+  verificaLink.value = "";
 
   let payload = {
     tipo: tipo.value,
@@ -43,6 +45,9 @@ async function registra() {
   try {
     const res = await api.post("/register", payload);
     successo.value = res.data?.message || "Registrazione completata!";
+    if (res.data?.verificationLink) {
+      verificaLink.value = res.data.verificationLink;
+    }
   } catch (err) {
     if (err.response?.data?.error) {
       errore.value = err.response.data.error;
@@ -61,7 +66,11 @@ async function registra() {
 
       <!-- Messaggi -->
       <div v-if="errore" class="alert alert-danger">{{ errore }}</div>
-      <div v-if="successo" class="alert alert-success">{{ successo }}</div>
+      <div v-if="successo" class="alert alert-success" style="white-space: pre-line;">{{ successo }}</div>
+      <div v-if="verificaLink" class="alert alert-info">
+        Link di verifica (sviluppo):
+        <a :href="verificaLink" target="_blank" rel="noopener">{{ verificaLink }}</a>
+      </div>
 
       <form @submit.prevent="registra" class="register-form">
 

@@ -82,15 +82,18 @@ export const register = async (req, res) => {
     await nuovoUtente.save();
 
     // Invia email di verifica (se configurata)
-    try {
-      await sendVerificationEmail(email, verificationToken);
-    } catch (mailErr) {
-      console.error('Errore invio email verifica:', mailErr);
+    const emailResult = await sendVerificationEmail(email, verificationToken);
+
+    const responsePayload = {
+      message: 'Registrazione avvenuta con successo! Controlla la tua email per convalidare l\'indirizzo.'
+    };
+
+    if (emailResult?.verificationLink) {
+      responsePayload.message = 'Registrazione avvenuta con successo! Usa il link di verifica per completare la registrazione.';
+      responsePayload.verificationLink = emailResult.verificationLink;
     }
 
-    res.status(201).json({
-      message: 'Registrazione avvenuta con successo! Controlla la tua email per convalidare l\'indirizzo.'
-    });
+    res.status(201).json(responsePayload);
 
   } catch (error) {
     console.error("ERRORE REGISTER:", error);
@@ -177,7 +180,7 @@ async function sendVerificationEmail(email, token) {
 
   if (!smtpHost || !smtpPort || !smtpUser || !smtpPass) {
     console.log('SMTP non configurato. Link verifica:', verificationLink);
-    return;
+    return { verificationLink };
   }
 
   const transporter = nodemailer.createTransport({
