@@ -1,6 +1,8 @@
 import Utente from '../models/Utente.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+import nodemailer from 'nodemailer';
 
 /* ============================
    REGISTRAZIONE
@@ -57,6 +59,10 @@ export const register = async (req, res) => {
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
+    // Genera token di verifica
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const verificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24h
+
     // Creazione utente
     const nuovoUtente = new Utente({
       tipo,
@@ -67,13 +73,23 @@ export const register = async (req, res) => {
       partita_iva,
       categoria_attivita,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      isVerified: false,
+      verificationToken,
+      verificationTokenExpires
     });
 
     await nuovoUtente.save();
 
+    // Invia email di verifica (se configurata)
+    try {
+      await sendVerificationEmail(email, verificationToken);
+    } catch (mailErr) {
+      console.error('Errore invio email verifica:', mailErr);
+    }
+
     res.status(201).json({
-      message: 'Registrazione avvenuta con successo!'
+      message: 'Registrazione avvenuta con successo! Controlla la tua email per convalidare l\'indirizzo.'
     });
 
   } catch (error) {
@@ -104,6 +120,10 @@ export const login = async (req, res) => {
       return res.status(400).json({
         error: 'Credenziali non valide!'
       });
+    }
+
+    if (!utente.isVerified) {
+      return res.status(401).json({ error: 'Email non verificata. Controlla la tua casella di posta.' });
     }
 
     // Confronto password
@@ -142,5 +162,71 @@ export const login = async (req, res) => {
     res.status(500).json({
       error: 'Errore server: ' + error.message
     });
+  }
+};
+
+// Invio email di verifica
+async function sendVerificationEmail(email, token) {
+  const smtpHost = process.env.SMTP_HOST;
+  const smtpPort = process.env.SMTP_PORT;
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
+
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  const verificationLink = `${frontendUrl}/verify?token=${token}`;
+
+  if (!smtpHost || !smtpPort || !smtpUser || !smtpPass) {
+    console.log('SMTP non configurato. Link verifica:', verificationLink);
+    return;
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: smtpHost,
+    port: Number(smtpPort),
+    secure: Number(smtpPort) === 465, // true for 465, false for other ports
+    auth: {
+      user: smtpUser,
+      pass: smtpPass
+    }
+  });
+
+  const info = await transporter.sendMail({
+    from: process.env.SMTP_FROM || smtpUser,
+    to: email,
+    subject: 'Conferma la tua email - Antispreco',
+    text: `Segui il link per confermare la tua email: ${verificationLink}`,
+    html: `<p>Per confermare la tua email clicca il link seguente:</p><p><a href="${verificationLink}">${verificationLink}</a></p>`
+  });
+
+  console.log('Email verifica inviata:', info.messageId);
+}
+
+export const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    if (!token) {
+      return res.status(400).json({ error: 'Token mancante' });
+    }
+
+    const utente = await Utente.findOne({
+      verificationToken: token,
+      verificationTokenExpires: { $gt: Date.now() }
+    });
+
+    if (!utente) {
+      return res.status(400).json({ error: 'Token non valido o scaduto' });
+    }
+
+    utente.isVerified = true;
+    utente.verificationToken = undefined;
+    utente.verificationTokenExpires = undefined;
+
+    await utente.save();
+
+    res.json({ message: 'Email verificata con successo!' });
+  } catch (error) {
+    console.error('ERRORE verifyEmail:', error);
+    res.status(500).json({ error: 'Errore server: ' + error.message });
   }
 };

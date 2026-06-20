@@ -42,7 +42,7 @@ async function registra() {
 
   try {
     const res = await api.post("/register", payload);
-    successo.value = "Registrazione completata!";
+    successo.value = res.data?.message || "Registrazione completata!";
   } catch (err) {
     if (err.response?.data?.error) {
       errore.value = err.response.data.error;

@@ -7,3 +7,6 @@ export const loginUser = (email, password) =>
 export const registerUser = (data) =>
   api.post("/register", data);
 
+export const verifyEmail = (token) =>
+  api.get(`/verify/${token}`);
+

@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
+import Verify from "../views/Verify.vue";
 // Importi le viste (pagine) e non i singoli componenti strutturali
 import AnnunciView from "../views/AnnunciView.vue";
 import NuovoAnnuncioView from "../views/NuovoAnnuncioView.vue";
@@ -13,6 +14,7 @@ const routes = [
   { path: "/nuovo-annuncio", component: NuovoAnnuncioView },
   { path: "/login", component: Login },
   { path: "/register", component: Register },
+  { path: "/verify", component: Verify },
   { path: "/:pathMatch(.*)*", redirect: "/" }
 ];
 
