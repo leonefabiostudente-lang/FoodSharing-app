@@ -193,15 +193,21 @@ async function sendVerificationEmail(email, token) {
     }
   });
 
-  const info = await transporter.sendMail({
-    from: process.env.SMTP_FROM || smtpUser,
-    to: email,
-    subject: 'Conferma la tua email - Antispreco',
-    text: `Segui il link per confermare la tua email: ${verificationLink}`,
-    html: `<p>Per confermare la tua email clicca il link seguente:</p><p><a href="${verificationLink}">${verificationLink}</a></p>`
-  });
+  try {
+    const info = await transporter.sendMail({
+      from: process.env.SMTP_FROM || smtpUser,
+      to: email,
+      subject: 'Conferma la tua email - Antispreco',
+      text: `Segui il link per confermare la tua email: ${verificationLink}`,
+      html: `<p>Per confermare la tua email clicca il link seguente:</p><p><a href="${verificationLink}">${verificationLink}</a></p>`
+    });
 
-  console.log('Email verifica inviata:', info.messageId);
+    console.log('Email verifica inviata:', info.messageId);
+    return { verificationLink };
+  } catch (sendError) {
+    console.error('Errore invio email verifica:', sendError);
+    return { verificationLink };
+  }
 }
 
 export const verifyEmail = async (req, res) => {
