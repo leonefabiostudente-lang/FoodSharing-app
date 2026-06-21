@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import api from "@/api/axios";  // <-- IMPORT CORRETTO
+import api from "@/api/axios";
 
 const tipo = ref("");
 const nome = ref("");
@@ -13,10 +13,12 @@ const email = ref("");
 const password = ref("");
 const errore = ref("");
 const successo = ref("");
+const verificaLink = ref("");
 
 async function registra() {
   errore.value = "";
   successo.value = "";
+  verificaLink.value = "";
 
   let payload = {
     tipo: tipo.value,
@@ -40,13 +42,13 @@ async function registra() {
     payload.partita_iva = partita_iva.value;
   }
 
-  console.log("Payload inviato:", payload);
-
   try {
     const res = await api.post("/register", payload);
-    successo.value = "Registrazione completata!";
+    successo.value = res.data?.message || "Registrazione completata!";
+    if (res.data?.verificationLink) {
+      verificaLink.value = res.data.verificationLink;
+    }
   } catch (err) {
-    console.error(err);
     if (err.response?.data?.error) {
       errore.value = err.response.data.error;
     } else {
@@ -56,96 +58,96 @@ async function registra() {
 }
 </script>
 
-
 <template>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
+  <div class="register-wrapper">
+    <div class="register-card">
 
-        <h2 class="mb-4 text-center">Registrazione</h2>
+      <h2 class="title">Registrazione</h2>
 
-        <!-- Messaggi -->
-        <div v-if="errore" class="alert alert-danger">{{ errore }}</div>
-        <div v-if="successo" class="alert alert-success">{{ successo }}</div>
-
-        <!-- ✅ FORM CORRETTO -->
-        <form @submit.prevent="registra">
-
-          <!-- Tipo utente -->
-          <div class="mb-3">
-            <label class="form-label">Tipo utente</label>
-            <select v-model="tipo" class="form-select">
-              <option value="">Seleziona...</option>
-              <option value="privato">Privato</option>
-              <option value="associazione">Associazione</option>
-              <option value="commerciante">Commerciante</option>
-            </select>
-          </div>
-
-          <!-- PRIVATO -->
-          <div v-if="tipo === 'privato'">
-            <div class="mb-3">
-              <label class="form-label">Nome</label>
-              <input v-model="nome" type="text" class="form-control">
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Cognome</label>
-              <input v-model="cognome" type="text" class="form-control">
-            </div>
-          </div>
-
-          <!-- ASSOCIAZIONE -->
-          <div v-if="tipo === 'associazione'">
-            <div class="mb-3">
-              <label class="form-label">Nome associazione</label>
-              <input v-model="nome_associazione" type="text" class="form-control">
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Partita IVA</label>
-              <input v-model="partita_iva" type="text" class="form-control">
-            </div>
-          </div>
-
-          <!-- COMMERCIANTE -->
-          <div v-if="tipo === 'commerciante'">
-            <div class="mb-3">
-              <label class="form-label">Nome attività</label>
-              <input v-model="nome_attivita" type="text" class="form-control">
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Partita IVA</label>
-              <input v-model="partita_iva" type="text" class="form-control">
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Categoria attività</label>
-              <input v-model="categoria_attivita" type="text" class="form-control">
-            </div>
-          </div>
-
-          <!-- Email -->
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input v-model="email" type="email" class="form-control">
-          </div>
-
-          <!-- Password -->
-          <div class="mb-3">
-            <label class="form-label">Password</label>
-            <input v-model="password" type="password" class="form-control">
-          </div>
-
-          <!-- ✅ BOTTONE CORRETTO -->
-          <button type="submit" class="btn btn-primary w-100">
-            Registrati
-          </button>
-
-        </form>
-
+      <!-- Messaggi -->
+      <div v-if="errore" class="alert alert-danger">{{ errore }}</div>
+      <div v-if="successo" class="alert alert-success" style="white-space: pre-line;">{{ successo }}</div>
+      <div v-if="verificaLink" class="alert alert-info">
+        Link di verifica (sviluppo):
+        <a :href="verificaLink" target="_blank" rel="noopener">{{ verificaLink }}</a>
       </div>
+
+      <form @submit.prevent="registra" class="register-form">
+
+        <!-- Tipo utente -->
+        <div class="form-group">
+          <label>Tipo utente</label>
+          <select v-model="tipo" class="form-input">
+            <option value="">Seleziona...</option>
+            <option value="privato">Privato</option>
+            <option value="associazione">Associazione</option>
+            <option value="commerciante">Commerciante</option>
+          </select>
+        </div>
+
+        <!-- PRIVATO -->
+        <div v-if="tipo === 'privato'">
+          <div class="form-group">
+            <label>Nome</label>
+            <input v-model="nome" type="text" class="form-input" />
+          </div>
+
+          <div class="form-group">
+            <label>Cognome</label>
+            <input v-model="cognome" type="text" class="form-input" />
+          </div>
+        </div>
+
+        <!-- ASSOCIAZIONE -->
+        <div v-if="tipo === 'associazione'">
+          <div class="form-group">
+            <label>Nome associazione</label>
+            <input v-model="nome_associazione" type="text" class="form-input" />
+          </div>
+
+          <div class="form-group">
+            <label>Partita IVA</label>
+            <input v-model="partita_iva" type="text" class="form-input" />
+          </div>
+        </div>
+
+        <!-- COMMERCIANTE -->
+        <div v-if="tipo === 'commerciante'">
+          <div class="form-group">
+            <label>Nome attività</label>
+            <input v-model="nome_attivita" type="text" class="form-input" />
+          </div>
+
+          <div class="form-group">
+            <label>Partita IVA</label>
+            <input v-model="partita_iva" type="text" class="form-input" />
+          </div>
+
+          <div class="form-group">
+            <label>Categoria attività</label>
+            <input v-model="categoria_attivita" type="text" class="form-input" />
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label>Email</label>
+          <input v-model="email" type="email" class="form-input" />
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label>Password</label>
+          <input v-model="password" type="password" class="form-input" />
+        </div>
+
+        <!-- Bottone -->
+        <button type="submit" class="submit-btn">
+          Registrati
+        </button>
+
+      </form>
+
     </div>
   </div>
 </template>

@@ -1,0 +1,580 @@
+/* -------------------------------------------------------
+   1) VARIABILI GLOBALI
+------------------------------------------------------- */
+:root {
+  --bg: #f8fafc;
+  --bg-dark: #0b1020;
+
+  --text: #0f172a;
+  --text-muted: #475569;
+  --text-darkmode: #e2e8f0;
+
+  --accent: #2f855a;   /* Verde Antispreco */
+  --accent-2: #4f46e5; /* Indaco Premium */
+
+  --card: #ffffff;
+  --card-dark: #111827;
+
+  --radius: 12px;
+  --shadow: 0 6px 20px rgba(0,0,0,0.06);
+  --shadow-dark: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+/* -------------------------------------------------------
+   2) RESET + BASE
+------------------------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Inter, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode,
+.app-container.dark-mode {
+  background: var(--bg-dark);
+  color: var(--text-darkmode);
+}
+
+/* -------------------------------------------------------
+   3) LAYOUT GENERALE
+------------------------------------------------------- */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  padding: 36px 20px;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* -------------------------------------------------------
+   4) NAVBAR & LOGO (Adattato ad App.vue)
+------------------------------------------------------- */
+.navbar {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 22px;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.app-container.dark-mode .navbar {
+  background: rgba(17, 24, 39, 0.75);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.brand {
+  color: var(--accent);
+}
+
+.leaf {
+  font-size: 24px;
+}
+
+/* Link Navigazione */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px; 
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 15px;
+  transition: color 0.2s;
+}
+
+.app-container.dark-mode .nav-links a {
+  color: #94a3b8;
+}
+
+.nav-links a:hover {
+  color: var(--accent-2);
+}
+
+.app-container.dark-mode .nav-links a:hover {
+  color: #ffffff;
+}
+
+/* Pulsante Cambio Tema (Luna/Sole) */
+.dark-toggle {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s;
+}
+.dark-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* Hamburger Menu Mobile */
+.mobile-toggle {
+  display: none;
+  background: transparent;
+  font-size: 26px;
+  padding: 4px 8px;
+  border: none;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.app-container.dark-mode .mobile-toggle {
+  color: var(--text-darkmode);
+}
+
+/* Responsive Menu (Max 820px) */
+@media (max-width: 820px) {
+  .brand-wrap {
+    width: 100%;
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none; 
+    position: absolute;
+    top: 72px;
+    right: 20px;
+    width: 250px; 
+    flex-direction: column;
+    gap: 12px;
+    background: white;
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .app-container.dark-mode .nav-links {
+    background: var(--card-dark);
+    box-shadow: var(--shadow-dark);
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 10px 14px;
+    width: 100%;
+    border-radius: 8px;
+  }
+  
+  .nav-links a:hover {
+    background: #f1f5f9;
+  }
+  
+  .app-container.dark-mode .nav-links a:hover {
+    background: #1e293b;
+  }
+  
+  .dark-toggle {
+    margin-top: 5px;
+    padding: 10px;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* -------------------------------------------------------
+   5) BOTTONI
+------------------------------------------------------- */
+.btn-primary,
+.btn-outline {
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+.btn-primary:hover {
+  opacity: 0.95;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.1);
+  color: var(--text) !important;
+}
+
+.btn-outline:hover {
+  background: rgba(0, 0, 0, 0.02);
+  transform: translateY(-2px);
+}
+
+.app-container.dark-mode .btn-outline {
+  border-color: rgba(255,255,255,0.2);
+  color: var(--text-darkmode) !important;
+}
+
+/* -------------------------------------------------------
+   6) INPUT / SELECT / TEXTAREA
+------------------------------------------------------- */
+input, select, textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: var(--text);
+}
+
+.app-container.dark-mode input,
+.app-container.dark-mode select,
+.app-container.dark-mode textarea {
+  background: #1e293b;
+  border-color: #334155;
+  color: var(--text-darkmode);
+}
+
+/* -------------------------------------------------------
+   7) CARD GENERICHE
+------------------------------------------------------- */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.app-container.dark-mode .card {
+  background: var(--card-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+
+.card-icon-fallback {
+    width: 100%;            /* o es. 48px, 12%, ecc. */
+  max-width: 96px;        /* limite massimo */
+  min-width: 32px;        /* limite minimo */
+  aspect-ratio: 1 / 1;    /* mantiene box quadrato */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #fff;       /* opzionale */
+  border-radius: 6px;     /* opzionale */
+  padding: 4px;           /* opzionale: spazio interno */
+}
+
+.card-icon {
+width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;    /* mantiene tutta l'immagine senza ritagli */
+  display: block;
+}
+
+
+
+/* -------------------------------------------------------
+   8) HOME HERO – SLIDER A CAROSELLO (Centrato e Bilanciato)
+------------------------------------------------------- */
+.hero-card {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  gap: 40px;
+  padding: 40px;
+  width: 100%;
+}
+
+.hero-left {
+  flex: 1;
+  max-width: 500px; 
+}
+
+.hero-right {
+  width: 440px;
+  height: 240px; 
+  overflow: hidden;
+  position: relative;
+  border-radius: var(--radius);
+  flex-shrink: 0;
+  margin-left: 0; 
+  display: flex;
+  justify-content: center; 
+}
+
+.carousel-track-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 16px;
+  animation: scrollCarousel 15s linear infinite;
+}
+
+.carousel-slide {
+  width: 180px;
+  height: 240px;
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s;
+}
+
+.carousel-slide img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+}
+
+.carousel-track:hover { 
+  animation-play-state: paused; 
+}
+
+.carousel-slide:hover { 
+  transform: scale(1.05); 
+}
+
+@keyframes scrollCarousel {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-196px * 4)); } 
+}
+
+@media (max-width: 820px) {
+  .hero-card {
+    flex-direction: column;
+    padding: 24px;
+    text-align: center; 
+  }
+  .hero-links {
+    display: flex;
+    justify-content: center; 
+    gap: 12px;
+  }
+  .hero-right {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* -------------------------------------------------------
+   9) LOGIN, 10) REGISTER, 11) ANNUNCI
+------------------------------------------------------- */
+.login-wrapper { max-width: 420px; margin: 80px auto; padding: 32px; }
+.register-card { max-width: 760px; margin: 0 auto; padding: 32px; }
+
+/* Griglia e Struttura Card Annunci */
+.annunci-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }
+.annuncio-card { background: var(--card); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); transition: 0.2s; }
+.annuncio-card:hover { transform: translateY(-4px); }
+.app-container.dark-mode .annuncio-card { background: var(--card-dark); }
+
+/* CONTENITORE MEDIA UNIFICATO (Fissato a 160px per mantenere le proporzioni) */
+.card-media-wrapper {
+  width: 100%;
+  height: 160px; 
+  overflow: hidden;
+  border-radius: calc(var(--radius) - 4px); 
+  margin-bottom: 14px;
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.app-container.dark-mode .card-media-wrapper {
+  background-color: #1e293b;
+}
+
+.prodotto-real-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  transition: transform 0.3s ease;
+}
+.annuncio-card:hover .prodotto-real-img {
+  transform: scale(1.04); 
+}
+
+/* Placeholder con Gradient + Emoji */
+.card-emoji-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px; 
+}
+
+/* Sfondi Pastello Light Mode */
+.card-emoji-fallback.pane { background: linear-gradient(135deg, #ffedd5, #fed7aa); }
+.card-emoji-fallback.dolci { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+.card-emoji-fallback.frutta { background: linear-gradient(135deg, #fee2e2, #fecaca); }
+.card-emoji-fallback.verdura { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
+.card-emoji-fallback.pasti_pronti { background: linear-gradient(135deg, #e0f2fe, #bae6fd); }
+.card-emoji-fallback.bevande { background: linear-gradient(135deg, #e0e7ff, #c7d2fe); }
+.card-emoji-fallback.altro { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); }
+
+/* Sfondi Dark Mode per Placeholder */
+.app-container.dark-mode .card-emoji-fallback.pane { background: linear-gradient(135deg, #431407, #63200e); }
+.app-container.dark-mode .card-emoji-fallback.dolci { background: linear-gradient(135deg, #4a044e, #581c5c); }
+.app-container.dark-mode .card-emoji-fallback.frutta { background: linear-gradient(135deg, #450a0a, #631111); }
+.app-container.dark-mode .card-emoji-fallback.verdura { background: linear-gradient(135deg, #064e3b, #0f5c47); }
+.app-container.dark-mode .card-emoji-fallback.pasti_pronti { background: linear-gradient(135deg, #0c4a6e, #115780); }
+.app-container.dark-mode .card-emoji-fallback.bevande { background: linear-gradient(135deg, #1e1b4b, #282566); }
+.app-container.dark-mode .card-emoji-fallback.altro { background: linear-gradient(135deg, #1e293b, #293548); }
+
+.card-info { font-size: 14px; line-height: 1.4; display: flex; flex-direction: column; gap: 4px; }
+.card-info p { display: flex; align-items: center; gap: 6px; }
+
+/* -------------------------------------------------------
+   12) MAPPA – LEAFLET FIX
+------------------------------------------------------- */
+#map { display: block !important; width: 100% !important; height: 260px !important; border-radius: 12px; overflow: hidden; margin-bottom: 20px; background: #e2e8f0; position: relative !important; z-index: 1; }
+.leaflet-container img.leaflet-tile { max-width: none !important; max-height: none !important; width: 256px !important; height: 256px !important; }
+.leaflet-control-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.leaflet-control { pointer-events: auto; }
+
+/* -------------------------------------------------------
+   13) SEZIONI EXTRA HOME & FOOTER (Ottimizzato Mobile)
+------------------------------------------------------- */
+.home-section { margin-top: 50px; margin-bottom: 20px; width: 100%; }
+.section-title { text-align: center; font-size: 26px; font-weight: 800; margin-bottom: 28px; padding: 0 10px; }
+
+/* Griglia dei Passaggi (Pubblica, Accordati, Salva) */
+.steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; width: 100%; }
+.step-card { text-align: center; padding: 30px 20px; width: 100%; }
+.step-icon { font-size: 38px; margin-bottom: 14px; display: block; }
+.step-card h4 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--accent); }
+.step-card p { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+.app-container.dark-mode .step-card p { color: #94a3b8; }
+
+/* Sezione Impatto Collettivo / Statistiche */
+.stats-section { background: linear-gradient(135deg, rgba(79, 70, 229, 0.04), rgba(47, 133, 90, 0.04)); border: 1px solid rgba(47, 133, 90, 0.08); padding: 40px 20px; border-radius: var(--radius); width: 100%; }
+.stats-grid { display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 30px; }
+.stat-item { text-align: center; display: flex; flex-direction: column; gap: 4px; min-width: 150px; }
+.stat-number { font-size: 34px; font-weight: 800; color: var(--accent); }
+.stat-label { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+.app-container.dark-mode .stat-label { color: var(--text-darkmode); }
+
+/* Correzione Layout Verticale per Schermi Piccoli (Smartphone) */
+@media (max-width: 650px) { 
+  .stats-grid { flex-direction: column; gap: 35px; } 
+  .steps-grid { grid-template-columns: 1fr; gap: 16px; }
+  .content { padding: 20px 14px; }
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 24px 20px;
+  font-size: 14px;
+  color: var(--text-muted);
+  border-top: 1px solid rgba(0,0,0,0.05);
+  margin-top: 60px;
+}
+.app-container.dark-mode .footer {
+  color: #64748b;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+/* contenitore media già presente */
+.card-media-wrapper {
+  width: 100%;
+  height: 160px;        /* mantiene l'altezza che hai scelto */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: calc(var(--radius) - 4px);
+  background-color: #f8fafc;
+}
+
+/* regole generali per tutte le immagini dentro il contenitore */
+.card-media-wrapper img,
+.card-media-wrapper svg {
+  /* lascia che l'immagine si riduca automaticamente */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;        /* mantiene proporzioni e non ritaglia */
+  margin: 0 auto;             /* centra orizzontalmente */
+}
+
+/* se vuoi che l'immagine occupi tutto il box ma senza ritagli (con spazi vuoti) */
+.card-media-wrapper .fit-full {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* sovrascrive eventuali attributi inline width/height (debug) */
+.card-media-wrapper img[width],
+.card-media-wrapper img[height] {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+}
+
+/* alternativa: usare background-image per riempire il box senza markup img */
+.card-media-wrapper.bg-fit {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;   /* contain per vedere tutta l'immagine; cover per riempire ritagliando */
+}

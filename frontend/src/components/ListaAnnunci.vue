@@ -3,6 +3,8 @@ import { ref, onMounted, watch } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+// importa l'SVG dal folder src/assets (il bundler restituirà l'URL)
+import pastiProntiUrl from '@/assets/images/spaghetti.svg';
 const annunci = ref([]);
 const loading = ref(true);
 const errore = ref(null);
@@ -12,18 +14,18 @@ let map;
 let markers = [];
 let userPos = ref(null);
 
-// 📌 Icone per categoria
+// 📌 Nuove icone coordinate, moderne e minimali per categoria
 const icons = {
-  pane: "https://cdn-icons-png.flaticon.com/512/1046/1046769.png",
-  dolci: "https://cdn-icons-png.flaticon.com/512/2203/2203189.png",
-  frutta: "https://cdn-icons-png.flaticon.com/512/415/415733.png",
-  verdura: "https://cdn-icons-png.flaticon.com/512/766/766149.png",
-  pasti_pronti: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
-  bevande: "https://cdn-icons-png.flaticon.com/512/1046/1046786.png",
-  altro: "https://cdn-icons-png.flaticon.com/512/565/565547.png"
+  pane: "https://cdn-icons-png.flaticon.com/512/3081/3081918.png",         /* Pane moderno flat */
+  dolci: "https://img.icons8.com/fluency/96/cupcake.png",                  /* Cupcake/Dolce coordinato */
+  frutta: "https://cdn-icons-png.flaticon.com/512/3194/3194766.png",       /* Mela/Frutta minimal */
+  verdura: "https://cdn-icons-png.flaticon.com/512/2324/2324343.png",      /* Carota/Verdura minimal */
+  pasti_pronti: pastiProntiUrl,                                          /* Piatto pronto/Cloche */
+  bevande: "https://cdn-icons-png.flaticon.com/512/3050/3050130.png",      /* Bottiglia/Bicchiere flat */
+  altro: "https://cdn-icons-png.flaticon.com/512/11512/11512411.png"       /* Box spesa generico moderno */
 };
 
-// 🔧 Funzione per ottenere l’icona giusta
+// 🔧 Funzione per ottenere l’icona giusta sulla mappa
 function getIcon(categoria) {
   return L.icon({
     iconUrl: icons[categoria] || icons.altro,
@@ -31,6 +33,16 @@ function getIcon(categoria) {
     iconAnchor: [19, 38],
     popupAnchor: [0, -38]
   });
+}
+function getFallbackIcon(categoria) {
+  if (!categoria) return icons.altro;
+  const catKey = categoria.toLowerCase().trim();
+  
+  // Debug: controlla cosa sta cercando
+  console.log("Cerco icona per categoria:", catKey, "Risultato:", icons[catKey]);
+  
+  
+  return icons[catKey] || icons.altro;
 }
 
 // 📏 Calcolo distanza (Haversine)
@@ -59,7 +71,6 @@ function getUserLocation() {
         lon: pos.coords.longitude
       };
 
-      // Marker utente
       L.marker([userPos.value.lat, userPos.value.lon], {
         icon: L.icon({
           iconUrl: "https://cdn-icons-png.flaticon.com/512/64/64113.png",
@@ -87,7 +98,11 @@ async function caricaAnnunci() {
 
     let data = await res.json();
 
-    // ➕ Calcola distanza
+    // 1️⃣ ORDINAMENTO BASE: Dal più recente al meno recente (usando l'_id di MongoDB)
+    // Questo si applica SEMPRE, sia su mobile che desktop, con o senza posizione attiva.
+    data.sort((a, b) => b._id.localeCompare(a._id));
+
+    // Se l'utente ha la geolocalizzazione attiva, calcoliamo le distanze
     if (userPos.value) {
       data = data.map(a => {
         if (a.latitudine && a.longitudine) {
@@ -103,8 +118,18 @@ async function caricaAnnunci() {
         return a;
       });
 
-      // Ordina per distanza
-      data.sort((a, b) => (a.distanza ?? 9999) - (b.distanza ?? 9999));
+      // 2️⃣ SECONDO ORDINAMENTO: Se c'è la posizione, ordina per distanza.
+      // Se due annunci hanno la stessa distanza (o non ce l'hanno), mantengono l'ordine del più recente fatto sopra.
+      data.sort((a, b) => {
+        const distA = a.distanza ?? 9999;
+        const distB = b.distanza ?? 9999;
+        
+        if (distA !== distB) {
+          return distA - distB; // Più vicino in alto
+        }
+        // Se la distanza è uguale, il più recente va comunque prima
+        return b._id.localeCompare(a._id);
+      });
     }
 
     annunci.value = data;
@@ -128,7 +153,7 @@ onMounted(() => {
   caricaAnnunci();
 });
 
-// 🎯 Aggiorna marker
+// 🎯 Aggiorna marker sulla mappa
 watch(annunci, () => {
   markers.forEach(m => map.removeLayer(m));
   markers = [];
@@ -136,15 +161,23 @@ watch(annunci, () => {
   annunci.value.forEach(a => {
     if (a.latitudine && a.longitudine) {
       const marker = L.marker(
-        [a.latitudine, a.longitudine],
-        { icon: getIcon(a.categoria) }
-      ).addTo(map);
+  [a.latitudine, a.longitudine],
+  { icon: getIcon(a.categoria?.toLowerCase().trim()) } // Aggiunto .toLowerCase().trim()
+).addTo(map);
+
+      // ⭐ Aggiunta foto anche nel mini popup della mappa se disponibile!
+      const popupPhotoHtml = a.foto && a.foto.length > 0 && a.foto[0]
+        ? `<img src="${a.foto[0]}" style="width:100%; max-height:80px; object-fit:cover; border-radius:4px; margin-bottom:5px;" /><br>`
+        : "";
 
       marker.bindPopup(`
-        <b>${a.titolo}</b><br>
-        ${a.zona}<br>
-        <i>${a.categoria}</i><br>
-        ${a.distanza ? a.distanza.toFixed(1) + " km da te" : ""}
+        <div style="max-width: 160px;">
+          ${popupPhotoHtml}
+          <b>${a.titolo}</b><br>
+          ${a.zona}<br>
+          <i>${a.categoria}</i><br>
+          ${a.distanza ? a.distanza.toFixed(1) + " km da te" : ""}
+        </div>
       `);
 
       markers.push(marker);
@@ -179,43 +212,50 @@ watch(filtroZona, () => {
 
   <div class="annunci-grid">
     <div v-for="a in annunci" :key="a._id" class="annuncio-card">
-      <h3>{{ a.titolo }}</h3>
-      <p>{{ a.descrizione }}</p>
+      
+      <div class="card-media-wrapper">
+        <img 
+          v-if="a.foto && a.foto.length > 0 && a.foto[0]" 
+          :src="a.foto[0]" 
+          alt="Foto prodotto" 
+          class="prodotto-real-img"
+        />
+        <div v-else class="card-icon-fallback">
+          <img :src="getFallbackIcon(a.categoria)" alt="categoria" />
+          
+        </div>
+      </div>
 
-      <p><strong>Categoria:</strong> {{ a.categoria }}</p>
-      <p><strong>Quantità:</strong> {{ a.quantita }}</p>
-      <p><strong>Zona:</strong> {{ a.zona }}</p>
+      <h3 class="card-title">{{ a.titolo }}</h3>
 
-      <p v-if="a.distanza">
-        <strong>Distanza:</strong> {{ a.distanza.toFixed(1) }} km
-      </p>
+      <p class="card-desc">{{ a.descrizione }}</p>
 
-      <p>
-        <strong>Disponibile fino al:</strong>
-        {{ new Date(a.data_scadenza).toLocaleDateString() }}
-      </p>
+      <<span class="badge">{{ a.categoria ? a.categoria.charAt(0).toUpperCase() + a.categoria.slice(1) : 'Altro' }}</span>
 
-      <p>
-        <strong>Ritiro:</strong>
-        {{ a.orario_ritiro_inizio }} - {{ a.orario_ritiro_fine }}
-      </p>
+      <div class="card-info">
+        <p><strong>Zona:</strong> {{ a.zona }}</p>
+        <p><strong>Quantità:</strong> {{ a.quantita }}</p>
 
-      <p>
-        <strong>Pubblicato da:</strong>
-        {{ a.nome_utente || "Utente sconosciuto" }}
-      </p>
+        <p v-if="a.distanza">
+          <strong>Distanza:</strong> {{ a.distanza.toFixed(1) }} km
+        </p>
 
-      <p>
-        <strong>Telefono:</strong>
-        {{ a.telefono_utente || "Non disponibile" }}
-      </p>
+        <p>
+          <strong>Disponibile fino al:</strong>
+          {{ new Date(a.data_scadenza).toLocaleDateString() }}
+        </p>
+
+        <p>
+          <strong>Ritiro:</strong>
+          {{ a.orario_ritiro_inizio }} - {{ a.orario_ritiro_fine }}
+        </p>
+      </div>
+
+      <div class="card-footer">
+        <div class="utente">👤 {{ a.nome_utente || "Utente sconosciuto" }}</div>
+        <div class="telefono">📞 {{ a.telefono_utente || "N/D" }}</div>
+      </div>
+
     </div>
   </div>
 </template>
-
-<style>
-#map {
-  border-radius: 12px;
-  overflow: hidden;
-}
-</style>
