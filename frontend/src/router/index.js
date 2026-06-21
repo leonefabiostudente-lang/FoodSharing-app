@@ -1,18 +1,23 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "../views/Home.vue";
-import ListaAnnunci from "../components/ListaAnnunci.vue";
-import FormAnnuncio from "../components/FormAnnuncio.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
+import Verify from "../views/Verify.vue";
+import Presentation from "../views/Presentation.vue";
+// Importi le viste (pagine) e non i singoli componenti strutturali
+import AnnunciView from "../views/AnnunciView.vue";
+import NuovoAnnuncioView from "../views/NuovoAnnuncioView.vue";
 
 const routes = [
-  { path: "/", component: Home },                 // ora la Home è la root
-  { path: "/annunci", component: ListaAnnunci },
-  { path: "/nuovo-annuncio", component: FormAnnuncio },
+  { path: "/", component: Home },
+  { path: "/annunci", component: AnnunciView },
+  { path: "/nuovo-annuncio", component: NuovoAnnuncioView },
   { path: "/login", component: Login },
   { path: "/register", component: Register },
-  { path: "/:pathMatch(.*)*", redirect: "/" }     // fallback opzionale
+  { path: "/verify", component: Verify },
+  { path: "/presentation", component: Presentation },
+  { path: "/:pathMatch(.*)*", redirect: "/" }
 ];
 
 export default createRouter({
