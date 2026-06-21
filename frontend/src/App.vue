@@ -74,22 +74,24 @@ function changeLanguage(event) {
   background-color: #f5f5f5;
 }
 
-.navbar {
+ .navbar {
   background-color: #2c3e50;
   color: white;
-  padding: 1rem 2rem;
+  padding: 0.8rem 1rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  gap: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .brand-wrap {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
-  gap: 1rem;
+  gap: 0.75rem;
+  flex: none;
 }
 
 .logo {
@@ -111,8 +113,10 @@ function changeLanguage(event) {
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  gap: 0.65rem;
   align-items: center;
+  flex: 1;
+  justify-content: flex-end;
   flex-wrap: wrap;
 }
 
@@ -141,6 +145,15 @@ function changeLanguage(event) {
   cursor: pointer;
   font-weight: 500;
   transition: background-color 0.3s ease;
+}
+
+.language-select option {
+  color: #2c3e50;
+}
+
+.dark-mode .language-select {
+  background-color: #353a42;
+  color: #f5f5f5;
 }
 
 .language-select:hover {
@@ -206,7 +219,7 @@ function changeLanguage(event) {
 @media (max-width: 768px) {
   .navbar {
     flex-wrap: wrap;
-    padding: 1rem;
+    padding: 0.8rem 0.9rem;
   }
 
   .mobile-toggle {
@@ -214,7 +227,7 @@ function changeLanguage(event) {
   }
 
   .brand-wrap {
-    width: 100%;
+    width: auto;
   }
 
   .nav-links {
@@ -224,6 +237,7 @@ function changeLanguage(event) {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
+    padding-top: 0.5rem;
   }
 
   .nav-links.open {
