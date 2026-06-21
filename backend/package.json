@@ -14,8 +14,9 @@
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.2.0",
     "mongoose": "^7.0.0",
-    "node-fetch": "^3.3.2"
-    ,"nodemailer": "^6.9.3"
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^6.9.3",
+    "@sendgrid/mail": "^7.7.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

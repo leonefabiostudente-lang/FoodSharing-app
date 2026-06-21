@@ -2,7 +2,7 @@ import Utente from '../models/Utente.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import nodemailer from 'nodemailer';
+import sgMail from '@sendgrid/mail';
 
 /* ============================
    REGISTRAZIONE
@@ -168,44 +168,32 @@ export const login = async (req, res) => {
   }
 };
 
-// Invio email di verifica
-async function sendVerificationEmail(email, token) {
-  const smtpHost = process.env.SMTP_HOST;
-  const smtpPort = process.env.SMTP_PORT;
-  const smtpUser = process.env.SMTP_USER;
-  const smtpPass = process.env.SMTP_PASS;
+// Invio email di verifica using SendGrid API
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
+async function sendVerificationEmail(email, token) {
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
   const verificationLink = `${frontendUrl}/verify?token=${token}`;
 
-  if (!smtpHost || !smtpPort || !smtpUser || !smtpPass) {
-    console.log('SMTP non configurato. Link verifica:', verificationLink);
+  if (!process.env.SENDGRID_API_KEY || !process.env.SENDGRID_FROM) {
+    console.log('SendGrid non configurato. Link verifica:', verificationLink);
     return { verificationLink };
   }
 
-  const transporter = nodemailer.createTransport({
-    host: smtpHost,
-    port: Number(smtpPort),
-    secure: Number(smtpPort) === 465, // true for 465, false for other ports
-    auth: {
-      user: smtpUser,
-      pass: smtpPass
-    }
-  });
+  const msg = {
+    to: email,
+    from: process.env.SENDGRID_FROM,
+    subject: 'Conferma la tua email - Antispreco',
+    text: `Segui il link per confermare la tua email: ${verificationLink}`,
+    html: `<p>Per confermare la tua email clicca il link seguente:</p><p><a href="${verificationLink}">${verificationLink}</a></p>`
+  };
 
   try {
-    const info = await transporter.sendMail({
-      from: process.env.SMTP_FROM || smtpUser,
-      to: email,
-      subject: 'Conferma la tua email - Antispreco',
-      text: `Segui il link per confermare la tua email: ${verificationLink}`,
-      html: `<p>Per confermare la tua email clicca il link seguente:</p><p><a href="${verificationLink}">${verificationLink}</a></p>`
-    });
-
-    console.log('Email verifica inviata:', info.messageId);
+    await sgMail.send(msg);
+    console.log('Email verifica inviata via SendGrid');
     return { verificationLink };
-  } catch (sendError) {
-    console.error('Errore invio email verifica:', sendError);
+  } catch (err) {
+    console.error('Errore invio email verifica (SendGrid):', err);
     return { verificationLink };
   }
 }
