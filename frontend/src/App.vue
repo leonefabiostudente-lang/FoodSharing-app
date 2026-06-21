@@ -17,6 +17,7 @@
         <router-link to="/" @click="open = false">Home</router-link>
         <router-link to="/annunci" @click="open = false">Annunci</router-link>
         <router-link to="/nuovo-annuncio" @click="open = false">Nuovo annuncio</router-link>
+        <router-link to="/presentazione" @click="open = false">📊 Presentazione</router-link>
         <router-link to="/login" @click="open = false">Login</router-link>
         <router-link to="/register" @click="open = false">Registrati</router-link>
 

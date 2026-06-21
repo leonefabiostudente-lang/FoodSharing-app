@@ -9,11 +9,13 @@ import ResetPassword from "../views/ResetPassword.vue";
 // Importi le viste (pagine) e non i singoli componenti strutturali
 import AnnunciView from "../views/AnnunciView.vue";
 import NuovoAnnuncioView from "../views/NuovoAnnuncioView.vue";
+import PresentationView from "../views/PresentationView.vue";
 
 const routes = [
   { path: "/", component: Home },
   { path: "/annunci", component: AnnunciView },
   { path: "/nuovo-annuncio", component: NuovoAnnuncioView },
+  { path: "/presentazione", component: PresentationView },
   { path: "/login", component: Login },
   { path: "/register", component: Register },
   { path: "/verify", component: Verify },
