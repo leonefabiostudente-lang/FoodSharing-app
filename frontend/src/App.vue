@@ -21,10 +21,14 @@
         <router-link to="/login" @click="open = false">{{ $t('nav.login') }}</router-link>
         <router-link to="/register" @click="open = false">{{ $t('nav.register') }}</router-link>
 
-        <select class="language-select" @change="changeLanguage" :value="currentLanguage">
-          <option value="it">🇮🇹 Italiano</option>
-          <option value="en">🇬🇧 English</option>
-        </select>
+        <div class="language-switcher" aria-label="Language selector">
+          <button class="language-btn" :class="{ active: currentLanguage === 'it' }" @click="changeLanguage('it')" type="button">
+            🇮🇹 IT
+          </button>
+          <button class="language-btn" :class="{ active: currentLanguage === 'en' }" @click="changeLanguage('en')" type="button">
+            🇬🇧 EN
+          </button>
+        </div>
 
         <button class="dark-toggle" @click="toggleDarkMode">
           <span v-if="!dark">🌙</span>
@@ -58,8 +62,7 @@ function toggleDarkMode() {
   document.body.classList.toggle('dark-mode', dark.value);
 }
 
-function changeLanguage(event) {
-  const newLanguage = event.target.value;
+function changeLanguage(newLanguage) {
   currentLanguage.value = newLanguage;
   locale.value = newLanguage;
   localStorage.setItem('language', newLanguage);
@@ -74,17 +77,19 @@ function changeLanguage(event) {
   background-color: #f5f5f5;
 }
 
- .navbar {
+.navbar {
   background-color: #2c3e50;
   color: white;
-  padding: 0.8rem 1rem;
+  padding: 0.7rem 1rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: 0.85rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
   position: sticky;
   top: 0;
   z-index: 1000;
+  flex-wrap: nowrap;
 }
 
 .brand-wrap {
@@ -92,6 +97,7 @@ function changeLanguage(event) {
   align-items: center;
   gap: 0.75rem;
   flex: none;
+  white-space: nowrap;
 }
 
 .logo {
@@ -113,19 +119,22 @@ function changeLanguage(event) {
 
 .nav-links {
   display: flex;
-  gap: 0.65rem;
+  gap: 0.5rem;
   align-items: center;
   flex: 1;
   justify-content: flex-end;
   flex-wrap: wrap;
+  min-width: 0;
 }
 
 .nav-links a {
   color: white;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
   transition: background-color 0.3s ease;
+  white-space: nowrap;
+  font-weight: 600;
 }
 
 .nav-links a:hover {
@@ -134,30 +143,37 @@ function changeLanguage(event) {
 
 .nav-links a.router-link-active {
   background-color: #42b983;
+  color: #082414;
 }
 
-.language-select {
-  padding: 0.5rem 0.75rem;
-  border-radius: 4px;
-  border: none;
-  background-color: white;
-  color: #2c3e50;
+.language-switcher {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.language-btn {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
   cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
 }
 
-.language-select option {
-  color: #2c3e50;
+.language-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
 }
 
-.dark-mode .language-select {
-  background-color: #353a42;
-  color: #f5f5f5;
-}
-
-.language-select:hover {
-  background-color: #f0f0f0;
+.language-btn.active {
+  background: #42b983;
+  color: #072a18;
+  border-color: #42b983;
 }
 
 .dark-toggle {
@@ -219,7 +235,7 @@ function changeLanguage(event) {
 @media (max-width: 768px) {
   .navbar {
     flex-wrap: wrap;
-    padding: 0.8rem 0.9rem;
+    padding: 0.8rem 0.9rem 0.6rem;
   }
 
   .mobile-toggle {
@@ -227,7 +243,8 @@ function changeLanguage(event) {
   }
 
   .brand-wrap {
-    width: auto;
+    width: 100%;
+    justify-content: space-between;
   }
 
   .nav-links {
@@ -238,17 +255,33 @@ function changeLanguage(event) {
     overflow: hidden;
     transition: max-height 0.3s ease;
     padding-top: 0.5rem;
+    flex-basis: 100%;
+    justify-content: flex-start;
+    align-items: stretch;
+    background: #2c3e50;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .nav-links.open {
-    max-height: 500px;
+    max-height: 700px;
   }
 
   .nav-links a,
-  .language-select,
+  .language-switcher,
   .dark-toggle {
     width: 100%;
     text-align: center;
+  }
+
+  .language-switcher {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .language-btn {
+    flex: 1;
+    max-width: 140px;
   }
 
   .content {
