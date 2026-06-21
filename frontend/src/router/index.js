@@ -4,7 +4,6 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Verify from "../views/Verify.vue";
-import Presentation from "../views/Presentation.vue";
 import ForgotPassword from "../views/ForgotPassword.vue";
 import ResetPassword from "../views/ResetPassword.vue";
 // Importi le viste (pagine) e non i singoli componenti strutturali
@@ -20,7 +19,6 @@ const routes = [
   { path: "/verify", component: Verify },
   { path: "/forgot-password", component: ForgotPassword },
   { path: "/reset-password", component: ResetPassword },
-  { path: "/presentation", component: Presentation },
   { path: "/:pathMatch(.*)*", redirect: "/" }
 ];
 
