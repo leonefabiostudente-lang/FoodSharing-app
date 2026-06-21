@@ -7,6 +7,8 @@
     "login": "Accedi",
     "register": "Registrati",
     "logout": "Esci",
+    "switchAccount": "Cambia account",
+    "authenticated": "Sei connesso",
     "language": "Lingua"
   },
   "footer": {

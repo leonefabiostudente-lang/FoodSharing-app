@@ -18,8 +18,16 @@
         <router-link to="/presentazione" @click="open = false">{{ $t('nav.presentation') }}</router-link>
         <router-link to="/annunci" @click="open = false">{{ $t('nav.announcements') }}</router-link>
         <router-link to="/nuovo-annuncio" @click="open = false">{{ $t('nav.newAnnouncement') }}</router-link>
-        <router-link to="/login" @click="open = false">{{ $t('nav.login') }}</router-link>
-        <router-link to="/register" @click="open = false">{{ $t('nav.register') }}</router-link>
+
+        <template v-if="isLoggedIn">
+          <button class="auth-action-btn auth-switch-btn" type="button" @click="switchAccount">{{ $t('nav.switchAccount') }}</button>
+          <button class="auth-action-btn auth-logout-btn" type="button" @click="logout">{{ $t('nav.logout') }}</button>
+        </template>
+
+        <template v-else>
+          <router-link to="/login" @click="open = false">{{ $t('nav.login') }}</router-link>
+          <router-link to="/register" @click="open = false">{{ $t('nav.register') }}</router-link>
+        </template>
 
         <div class="language-switcher" aria-label="Language selector">
           <button class="language-btn" :class="{ active: currentLanguage === 'it' }" @click="changeLanguage('it')" type="button">
@@ -48,14 +56,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 const { locale } = useI18n();
+const router = useRouter();
 
 const dark = ref(false);
 const open = ref(false);
 const currentLanguage = ref(localStorage.getItem('language') || 'it');
+const isLoggedIn = ref(Boolean(localStorage.getItem('token')));
+
+function syncAuthState() {
+  isLoggedIn.value = Boolean(localStorage.getItem('token'));
+}
 
 function toggleDarkMode() {
   dark.value = !dark.value;
@@ -67,6 +82,42 @@ function changeLanguage(newLanguage) {
   locale.value = newLanguage;
   localStorage.setItem('language', newLanguage);
 }
+
+function logout() {
+  localStorage.removeItem('token');
+  syncAuthState();
+  open.value = false;
+  window.dispatchEvent(new Event('auth-change'));
+  router.push('/');
+}
+
+function switchAccount() {
+  localStorage.removeItem('token');
+  syncAuthState();
+  open.value = false;
+  window.dispatchEvent(new Event('auth-change'));
+  router.push('/login');
+}
+
+function handleStorageChange(event) {
+  if (event.key === 'token') {
+    syncAuthState();
+  }
+}
+
+function handleAuthChange() {
+  syncAuthState();
+}
+
+onMounted(() => {
+  window.addEventListener('storage', handleStorageChange);
+  window.addEventListener('auth-change', handleAuthChange);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('storage', handleStorageChange);
+  window.removeEventListener('auth-change', handleAuthChange);
+});
 </script>
 
 <style scoped>
@@ -144,6 +195,31 @@ function changeLanguage(newLanguage) {
 .nav-links a.router-link-active {
   background-color: #42b983;
   color: #082414;
+}
+
+.auth-action-btn {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.auth-action-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.auth-switch-btn {
+  background: rgba(66, 185, 131, 0.2);
+}
+
+.auth-logout-btn {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .language-switcher {
@@ -284,6 +360,7 @@ function changeLanguage(newLanguage) {
   }
 
   .nav-links a,
+  .auth-action-btn,
   .language-switcher,
   .dark-toggle {
     width: 100%;
@@ -296,10 +373,19 @@ function changeLanguage(newLanguage) {
     background: rgba(255, 255, 255, 0.04);
   }
 
+  .auth-action-btn {
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
   .nav-links a:hover,
   .nav-links a.router-link-active {
     background-color: rgba(66, 185, 131, 0.2);
     color: #ffffff;
+  }
+
+  .auth-action-btn:hover {
+    background: rgba(66, 185, 131, 0.22);
   }
 
   .dark-toggle {

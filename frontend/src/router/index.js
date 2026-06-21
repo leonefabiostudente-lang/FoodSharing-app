@@ -24,7 +24,20 @@ const routes = [
   { path: "/:pathMatch(.*)*", redirect: "/" }
 ];
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
 });
+
+router.beforeEach((to) => {
+  const token = localStorage.getItem("token");
+  const authPages = ["/login", "/register"];
+
+  if (token && authPages.includes(to.path)) {
+    return "/annunci";
+  }
+
+  return true;
+});
+
+export default router;

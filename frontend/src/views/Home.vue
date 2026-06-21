@@ -13,6 +13,7 @@
           <router-link class="btn-primary" to="/nuovo-annuncio">{{ $t('nav.newAnnouncement') }}</router-link>
           <router-link v-if="!isLogged" class="btn-outline" to="/login">{{ $t('nav.login') }}</router-link>
           <router-link v-if="!isLogged" class="btn-outline" to="/register">{{ $t('nav.register') }}</router-link>
+          <span v-else class="hero-auth-state">{{ $t('nav.authenticated') }}</span>
         </nav>
 
         <p class="hero-note">
@@ -79,6 +80,31 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-const isLogged = ref(!!localStorage.getItem("token"));
+import { onMounted, onBeforeUnmount, ref } from "vue";
+
+const isLogged = ref(Boolean(localStorage.getItem("token")));
+
+function syncAuthState() {
+  isLogged.value = Boolean(localStorage.getItem("token"));
+}
+
+function handleStorageChange(event) {
+  if (event.key === "token") {
+    syncAuthState();
+  }
+}
+
+function handleAuthChange() {
+  syncAuthState();
+}
+
+onMounted(() => {
+  window.addEventListener("storage", handleStorageChange);
+  window.addEventListener("auth-change", handleAuthChange);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("storage", handleStorageChange);
+  window.removeEventListener("auth-change", handleAuthChange);
+});
 </script>
