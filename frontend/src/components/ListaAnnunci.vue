@@ -149,65 +149,65 @@ onMounted(() => {
     maxZoom: 19,
   }).addTo(map);
 
-  getUserLocation();
-  caricaAnnunci();
-});
+      getUserLocation();
+      caricaAnnunci();
+    });
 
-// 🎯 Aggiorna marker sulla mappa
-watch(annunci, () => {
-  markers.forEach(m => map.removeLayer(m));
-  markers = [];
+    // 🎯 Aggiorna marker sulla mappa
+    watch(annunci, () => {
+      markers.forEach(m => map.removeLayer(m));
+      markers = [];
 
-  annunci.value.forEach(a => {
-    if (a.latitudine && a.longitudine) {
-      const marker = L.marker(
-  [a.latitudine, a.longitudine],
-  { icon: getIcon(a.categoria?.toLowerCase().trim()) } // Aggiunto .toLowerCase().trim()
-).addTo(map);
+      annunci.value.forEach(a => {
+        if (a.latitudine && a.longitudine) {
+          const marker = L.marker(
+      [a.latitudine, a.longitudine],
+      { icon: getIcon(a.categoria?.toLowerCase().trim()) } // Aggiunto .toLowerCase().trim()
+    ).addTo(map);
 
-      // ⭐ Aggiunta foto anche nel mini popup della mappa se disponibile!
-      const popupPhotoHtml = a.foto && a.foto.length > 0 && a.foto[0]
-        ? `<img src="${a.foto[0]}" style="width:100%; max-height:80px; object-fit:cover; border-radius:4px; margin-bottom:5px;" /><br>`
-        : "";
+          // ⭐ Aggiunta foto anche nel mini popup della mappa se disponibile!
+          const popupPhotoHtml = a.foto && a.foto.length > 0 && a.foto[0]
+            ? `<img src="${a.foto[0]}" style="width:100%; max-height:80px; object-fit:cover; border-radius:4px; margin-bottom:5px;" /><br>`
+            : "";
 
-      marker.bindPopup(`
-        <div style="max-width: 160px;">
-          ${popupPhotoHtml}
-          <b>${a.titolo}</b><br>
-          ${a.zona}<br>
-          <i>${a.categoria}</i><br>
-          ${a.distanza ? a.distanza.toFixed(1) + " km da te" : ""}
-        </div>
-      `);
+          marker.bindPopup(`
+            <div style="max-width: 160px;">
+              ${popupPhotoHtml}
+              <b>${a.titolo}</b><br>
+              ${a.zona}<br>
+              <i>${a.categoria}</i><br>
+              ${a.distanza ? a.distanza.toFixed(1) + " km away" : ""}
+            </div>
+          `);
 
-      markers.push(marker);
-    }
-  });
-});
+          markers.push(marker);
+        }
+      });
+    });
 
-// 🔄 Ricarica quando cambia il filtro
-watch(filtroZona, () => {
-  caricaAnnunci();
-});
+    // 🔄 Ricarica quando cambia il filtro
+    watch(filtroZona, () => {
+      caricaAnnunci();
+    });
 </script>
 
 <template>
   <input 
     v-model="filtroZona"
     type="text"
-    placeholder="Cerca per zona (es. Sarnico, Predore...)"
+    :placeholder="$t('announcements.title')"
     class="search-input"
   />
 
-  <h2>Annunci disponibili</h2>
+  <h2>{{ $t('announcements.title') }}</h2>
 
   <div id="map" style="height: 400px; width: 100%; margin: 20px 0;"></div>
 
-  <div v-if="loading">Caricamento in corso...</div>
+  <div v-if="loading">Loading...</div>
   <div v-if="errore">{{ errore }}</div>
 
   <div v-if="!loading && annunci.length === 0">
-    Nessun annuncio presente.
+    {{ $t('announcements.noAnnouncements') }}
   </div>
 
   <div class="annunci-grid">
@@ -217,11 +217,11 @@ watch(filtroZona, () => {
         <img 
           v-if="a.foto && a.foto.length > 0 && a.foto[0]" 
           :src="a.foto[0]" 
-          alt="Foto prodotto" 
+          alt="Product photo" 
           class="prodotto-real-img"
         />
         <div v-else class="card-icon-fallback">
-          <img :src="getFallbackIcon(a.categoria)" alt="categoria" />
+          <img :src="getFallbackIcon(a.categoria)" alt="category" />
           
         </div>
       </div>
@@ -230,30 +230,30 @@ watch(filtroZona, () => {
 
       <p class="card-desc">{{ a.descrizione }}</p>
 
-      <<span class="badge">{{ a.categoria ? a.categoria.charAt(0).toUpperCase() + a.categoria.slice(1) : 'Altro' }}</span>
+      <span class="badge">{{ a.categoria ? a.categoria.charAt(0).toUpperCase() + a.categoria.slice(1) : 'Other' }}</span>
 
       <div class="card-info">
-        <p><strong>Zona:</strong> {{ a.zona }}</p>
-        <p><strong>Quantità:</strong> {{ a.quantita }}</p>
+        <p><strong>Location:</strong> {{ a.zona }}</p>
+        <p><strong>Quantity:</strong> {{ a.quantita }}</p>
 
         <p v-if="a.distanza">
-          <strong>Distanza:</strong> {{ a.distanza.toFixed(1) }} km
+          <strong>Distance:</strong> {{ a.distanza.toFixed(1) }} km
         </p>
 
         <p>
-          <strong>Disponibile fino al:</strong>
+          <strong>Available until:</strong>
           {{ new Date(a.data_scadenza).toLocaleDateString() }}
         </p>
 
         <p>
-          <strong>Ritiro:</strong>
+          <strong>Pickup:</strong>
           {{ a.orario_ritiro_inizio }} - {{ a.orario_ritiro_fine }}
         </p>
       </div>
 
       <div class="card-footer">
-        <div class="utente">👤 {{ a.nome_utente || "Utente sconosciuto" }}</div>
-        <div class="telefono">📞 {{ a.telefono_utente || "N/D" }}</div>
+        <div class="utente">👤 {{ a.nome_utente || "Unknown user" }}</div>
+        <div class="telefono">📞 {{ a.telefono_utente || "N/A" }}</div>
       </div>
 
     </div>

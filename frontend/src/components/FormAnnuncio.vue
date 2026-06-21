@@ -1,39 +1,39 @@
 <template>
   <div class="form-container">
-    <h2 class="page-title">Pubblica un nuovo annuncio!</h2>
+    <h2 class="page-title">{{ $t('newAnnouncement.title') }}</h2>
 
     <div v-if="!token" class="auth-alert">
-      <p>Devi essere registrato per pubblicare un annuncio.</p>
-      <router-link to="/login" class="login-link">Vai al login</router-link>
+      <p>You must be registered to publish an announcement.</p>
+      <router-link to="/login" class="login-link">Go to login</router-link>
     </div>
 
     <form v-else class="form-box" @submit.prevent="inviaAnnuncio">
       
       <select v-model="categoria" required>
-        <option disabled value="">Seleziona categoria</option>
-        <option value="pane">Pane</option>
-        <option value="dolci">Dolci</option>
-        <option value="frutta">Frutta</option>
-        <option value="verdura">Verdura</option>
-        <option value="pasti_pronti">Pasti pronti</option>
-        <option value="bevande">Bevande</option>
-        <option value="altro">Altro</option>
+        <option disabled value="">Select category</option>
+        <option value="pane">Bread</option>
+        <option value="dolci">Sweets</option>
+        <option value="frutta">Fruits</option>
+        <option value="verdura">Vegetables</option>
+        <option value="pasti_pronti">Ready meals</option>
+        <option value="bevande">Beverages</option>
+        <option value="altro">Other</option>
       </select>
 
-      <input v-model="titolo" type="text" placeholder="Titolo" required />
+      <input v-model="titolo" type="text" :placeholder="$t('newAnnouncement.food')" required />
 
-      <textarea v-model="descrizione" placeholder="Descrizione" rows="4" required></textarea>
+      <textarea v-model="descrizione" :placeholder="$t('newAnnouncement.description')" rows="4" required></textarea>
 
-      <input v-model="quantita" type="text" placeholder="Quantità (es: 1 teglia, 2 kg)" required />
+      <input v-model="quantita" type="text" :placeholder="$t('newAnnouncement.quantity')" required />
 
-      <input v-model="telefono" type="tel" placeholder="Numero di telefono" required />
+      <input v-model="telefono" type="tel" placeholder="Phone number" required />
 
       <div class="autocomplete-container">
         <input 
           v-model="zona" 
           type="text" 
           @input="cercaZona" 
-          placeholder="Zona (Città, Via o Provincia)" 
+          :placeholder="$t('newAnnouncement.location')" 
           autocomplete="off" 
           required 
         />
@@ -50,21 +50,21 @@
       </div>
 
       <div class="datetime-group">
-        <label>Data di scadenza prodotto:</label>
+        <label>{{ $t('newAnnouncement.expiry') }}:</label>
         <input v-model="data_scadenza" type="date" required />
       </div>
 
       <div class="datetime-group">
-        <label>Orario ritiro disponibilità:</label>
+        <label>Pickup availability:</label>
         <div class="time-range">
           <input v-model="orario_ritiro_inizio" type="time" required />
-          <span>fino a</span>
+          <span>to</span>
           <input v-model="orario_ritiro_fine" type="time" required />
         </div>
       </div>
 
       <div class="datetime-group">
-        <label>Foto del prodotto (Opzionale):</label>
+        <label>Product photo (Optional):</label>
         <input 
           type="file" 
           accept="image/*" 
@@ -75,7 +75,7 @@
           <div class="card-media-wrapper">
             <img 
               :src="anteprimaFoto" 
-              alt="Anteprima" 
+              alt="Preview" 
               class="prodotto-real-img" 
             />
           </div>
@@ -84,12 +84,12 @@
             @click="rimuoviFoto" 
             class="btn-rimuovi-foto"
           >
-            Rimuovi foto
+            Remove photo
           </button>
         </div>
       </div>
 
-      <button type="submit">Pubblica</button>
+      <button type="submit">{{ $t('newAnnouncement.create') }}</button>
     </form>
   </div>
 </template>

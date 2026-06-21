@@ -1,21 +1,21 @@
 <template>
   <div class="login-wrapper">
-    <h2>Accedi</h2>
+    <h2>{{ $t('nav.login') }}</h2>
 
     <div class="form-group">
-      <label>Email</label>
+      <label>{{ $t('auth.email') }}</label>
       <input v-model.trim="email" type="email" />
     </div>
 
     <div class="form-group">
-      <label>Password</label>
+      <label>{{ $t('auth.password') }}</label>
       <input v-model.trim="password" type="password" />
     </div>
 
-    <button class="login-btn" @click="login">Accedi</button>
+    <button class="login-btn" @click="login">{{ $t('auth.signIn') }}</button>
 
     <div class="forgot-link">
-      <router-link to="/forgot-password">Password dimenticata?</router-link>
+      <router-link to="/forgot-password">{{ $t('auth.forgotPassword') }}</router-link>
     </div>
 
     <div v-if="errore" class="error-box">
@@ -47,7 +47,7 @@ async function login() {
     if (err.response?.data?.error) {
       errore.value = err.response.data.error;
     } else {
-      errore.value = "Errore di connessione al server";
+      errore.value = "Connection error";
     }
   }
 }

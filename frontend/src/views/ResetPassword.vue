@@ -1,11 +1,11 @@
 <template>
   <div class="reset-password-wrapper">
-    <h2>Reimposta password</h2>
+    <h2>{{ $t('auth.resetPassword') }}</h2>
 
     <div v-if="successo" class="alert alert-success">
       {{ successo }}
       <div class="success-action">
-        <router-link to="/login">Torna al login</router-link>
+        <router-link to="/login">Back to login</router-link>
       </div>
     </div>
 
@@ -13,11 +13,11 @@
 
     <div v-if="!successo">
       <div class="form-group">
-        <label>Nuova password</label>
+        <label>{{ $t('auth.password') }}</label>
         <input v-model.trim="password" type="password" />
       </div>
 
-      <button class="submit-btn" @click="inviaReset">Reimposta password</button>
+      <button class="submit-btn" @click="inviaReset">{{ $t('auth.resetPassword') }}</button>
     </div>
   </div>
 </template>
@@ -36,7 +36,7 @@ const token = ref('');
 onMounted(() => {
   token.value = route.query.token || '';
   if (!token.value) {
-    errore.value = 'Token mancante nella URL.';
+    errore.value = 'Missing token in URL.';
   }
 });
 
@@ -45,18 +45,18 @@ async function inviaReset() {
   successo.value = '';
 
   if (!token.value) {
-    errore.value = 'Token mancante.';
+    errore.value = 'Missing token.';
     return;
   }
 
   if (!password.value) {
-    errore.value = 'Inserisci la nuova password.';
+    errore.value = 'Please enter a new password.';
     return;
   }
 
   try {
     const res = await resetPasswordUser(token.value, password.value);
-    successo.value = res.data?.message || 'Password reimpostata con successo!';
+    successo.value = res.data?.message || 'Password reset successfully!';
   } catch (err) {
     errore.value = err.response?.data?.error || 'Errore di connessione al server';
   }

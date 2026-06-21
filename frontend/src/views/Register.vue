@@ -62,13 +62,13 @@ async function registra() {
   <div class="register-wrapper">
     <div class="register-card">
 
-      <h2 class="title">Registrazione</h2>
+      <h2 class="title">{{ $t('auth.signUp') }}</h2>
 
       <!-- Messaggi -->
       <div v-if="errore" class="alert alert-danger">{{ errore }}</div>
       <div v-if="successo" class="alert alert-success" style="white-space: pre-line;">{{ successo }}</div>
       <div v-if="verificaLink" class="alert alert-info">
-        Link di verifica (sviluppo):
+        Verification link (development):
         <a :href="verificaLink" target="_blank" rel="noopener">{{ verificaLink }}</a>
       </div>
 
@@ -76,24 +76,24 @@ async function registra() {
 
         <!-- Tipo utente -->
         <div class="form-group">
-          <label>Tipo utente</label>
+          <label>User type</label>
           <select v-model="tipo" class="form-input">
-            <option value="">Seleziona...</option>
-            <option value="privato">Privato</option>
-            <option value="associazione">Associazione</option>
-            <option value="commerciante">Commerciante</option>
+            <option value="">Select...</option>
+            <option value="privato">Individual</option>
+            <option value="associazione">Association</option>
+            <option value="commerciante">Business</option>
           </select>
         </div>
 
         <!-- PRIVATO -->
         <div v-if="tipo === 'privato'">
           <div class="form-group">
-            <label>Nome</label>
+            <label>{{ $t('auth.name') }}</label>
             <input v-model="nome" type="text" class="form-input" />
           </div>
 
           <div class="form-group">
-            <label>Cognome</label>
+            <label>Last Name</label>
             <input v-model="cognome" type="text" class="form-input" />
           </div>
         </div>
@@ -101,12 +101,12 @@ async function registra() {
         <!-- ASSOCIAZIONE -->
         <div v-if="tipo === 'associazione'">
           <div class="form-group">
-            <label>Nome associazione</label>
+            <label>Association Name</label>
             <input v-model="nome_associazione" type="text" class="form-input" />
           </div>
 
           <div class="form-group">
-            <label>Partita IVA</label>
+            <label>VAT Number</label>
             <input v-model="partita_iva" type="text" class="form-input" />
           </div>
         </div>
@@ -114,36 +114,36 @@ async function registra() {
         <!-- COMMERCIANTE -->
         <div v-if="tipo === 'commerciante'">
           <div class="form-group">
-            <label>Nome attività</label>
+            <label>Business Name</label>
             <input v-model="nome_attivita" type="text" class="form-input" />
           </div>
 
           <div class="form-group">
-            <label>Partita IVA</label>
+            <label>VAT Number</label>
             <input v-model="partita_iva" type="text" class="form-input" />
           </div>
 
           <div class="form-group">
-            <label>Categoria attività</label>
+            <label>Business Category</label>
             <input v-model="categoria_attivita" type="text" class="form-input" />
           </div>
         </div>
 
         <!-- Email -->
         <div class="form-group">
-          <label>Email</label>
+          <label>{{ $t('auth.email') }}</label>
           <input v-model="email" type="email" class="form-input" />
         </div>
 
         <!-- Password -->
         <div class="form-group">
-          <label>Password</label>
+          <label>{{ $t('auth.password') }}</label>
           <input v-model="password" type="password" class="form-input" />
         </div>
 
         <!-- Bottone -->
         <button type="submit" class="submit-btn">
-          Registrati
+          {{ $t('auth.signUp') }}
         </button>
 
       </form>

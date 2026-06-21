@@ -1,7 +1,7 @@
 <template>
   <div class="presentation-container">
-    <h1>Presentazione Antispreco App</h1>
-    <p class="presentation-subtitle">Scopri l'impatto sociale del nostro progetto</p>
+    <h1>{{ $t('presentation.title') }}</h1>
+    <p class="presentation-subtitle">{{ $t('presentation.subtitle') }}</p>
     
     <div class="presentation-wrapper">
       <iframe 
@@ -19,7 +19,7 @@
         target="_blank" 
         rel="noopener"
         class="external-link">
-        🔗 Apri presentazione completa
+        {{ $t('presentation.openFull') }}
       </a>
     </div>
   </div>

@@ -3,64 +3,62 @@
     
     <section class="card hero-card" aria-labelledby="hero-title">
       <div class="hero-left">
-        <h3 id="hero-title">Cos'è <span class="brand-text">Food Sharing
-        </span>?</h3>
+        <h3 id="hero-title">{{ $t('home.title') }}</h3>
         <p class="hero-desc">
-          Food Sharing è una piattaforma per condividere prodotti alimentari in scadenza e ridurre gli sprechi.
-          Metti in condivisione ciò che non useresti, ritira ciò che ti serve: semplice, sicuro e gratuito.
+          {{ $t('home.description') }}
         </p>
 
         <nav class="hero-links" aria-label="Azioni principali">
-          <router-link class="btn-primary" to="/annunci">Vai agli annunci</router-link>
-          <router-link class="btn-primary" to="/nuovo-annuncio">Pubblica un annuncio</router-link>
-          <router-link v-if="!isLogged" class="btn-outline" to="/login">Login</router-link>
-          <router-link v-if="!isLogged" class="btn-outline" to="/register">Registrati</router-link>
+          <router-link class="btn-primary" to="/annunci">{{ $t('nav.announcements') }}</router-link>
+          <router-link class="btn-primary" to="/nuovo-annuncio">{{ $t('nav.newAnnouncement') }}</router-link>
+          <router-link v-if="!isLogged" class="btn-outline" to="/login">{{ $t('nav.login') }}</router-link>
+          <router-link v-if="!isLogged" class="btn-outline" to="/register">{{ $t('nav.register') }}</router-link>
         </nav>
 
         <p class="hero-note">
-          Aiuta la tua comunità: ritira o dona cibo vicino a te. Nessun costo, solo solidarietà.
+          {{ $t('home.subtitle') }}
         </p>
       </div>
 
       <div class="hero-right">
         <div class="carousel-track-container">
           <div class="carousel-track">
-            <div class="carousel-slide"><img src="@/assets/images/pomodorini.webp" alt="Pomodorini" /></div>
-            <div class="carousel-slide"><img src="@/assets/images/buste_cibo.webp" alt="Buste cibo" /></div>
-            <div class="carousel-slide"><img src="@/assets/images/donazione.webp" alt="Donazione" /></div>
-            <div class="carousel-slide"><img src="@/assets/images/unione.webp" alt="Unione" /></div>
-            <div class="carousel-slide"><img src="@/assets/images/pomodorini.webp" alt="Pomodorini" /></div>
-            <div class="carousel-slide"><img src="@/assets/images/buste_cibo.webp" alt="Buste cibo" /></div>
-            <div class="carousel-slide"><img src="@/assets/images/donazione.webp" alt="Donazione" /></div>
-            <div class="carousel-slide"><img src="@/assets/images/unione.webp" alt="Unione" /></div>
+            <div class="carousel-slide"><img src="@/assets/images/pomodorini.webp" alt="Food" /></div>
+            <div class="carousel-slide"><img src="@/assets/images/buste_cibo.webp" alt="Food packages" /></div>
+            <div class="carousel-slide"><img src="@/assets/images/donazione.webp" alt="Donation" /></div>
+            <div class="carousel-slide"><img src="@/assets/images/unione.webp" alt="Community" /></div>
+            <div class="carousel-slide"><img src="@/assets/images/pomodorini.webp" alt="Food" /></div>
+            <div class="carousel-slide"><img src="@/assets/images/buste_cibo.webp" alt="Food packages" /></div>
+            <div class="carousel-slide"><img src="@/assets/images/donazione.webp" alt="Donation" /></div>
+            <div class="carousel-slide"><img src="@/assets/images/unione.webp" alt="Community" /></div>
           </div>
         </div>
       </div> 
     </section>
 
     <section class="home-section steps-section">
-      <h2 class="section-title">Come funziona? In soli 3 passi 🍃</h2>
+      <h2 class="section-title">{{ $t('home.features.title') }} 🍃</h2>
       <div class="steps-grid">
         <div class="step-card card">
           <div class="step-icon">✍️</div>
-          <h4>1. Pubblica</h4>
-          <p>Scatta una foto al cibo in eccesso o in scadenza che non riuscirai a consumare e inserisci un annuncio.</p>
+          <h4>{{ $t('home.features.feature1') }}</h4>
+          <p>{{ $t('home.features.feature1Desc') }}</p>
         </div>
         <div class="step-card card">
           <div class="step-icon">💬</div>
-          <h4>2. Accordati</h4>
-          <p>Gli utenti vicini a te visualizzeranno l'annuncio sulla mappa e ti contatteranno per il ritiro gratuito.</p>
+          <h4>{{ $t('home.features.feature2') }}</h4>
+          <p>{{ $t('home.features.feature2Desc') }}</p>
         </div>
         <div class="step-card card">
           <div class="step-icon">🤝</div>
-          <h4>3. Salva il cibo</h4>
-          <p>Incontratevi in sicurezza per lo scambio. Zero sprechi, più solidarietà e una comunità più unita.</p>
+          <h4>{{ $t('home.features.feature3') }}</h4>
+          <p>{{ $t('home.features.feature3Desc') }}</p>
         </div>
       </div>
     </section>
 
     <section class="home-section stats-section">
-      <h2 class="section-title">Il nostro impatto collettivo 🌍</h2>
+      <h2 class="section-title">{{ $t('home.subtitle') }} 🌍</h2>
       <div class="stats-grid">
         <div class="stat-item">
           <span class="stat-number">1.250+</span>
@@ -68,11 +66,11 @@
         </div>
         <div class="stat-item">
           <span class="stat-number">450+</span>
-          <span class="stat-label">Annunci Pubblicati</span>
+          <span class="stat-label">{{ $t('announcements.title') }}</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">85%</span>
-          <span class="stat-label">Scambi Riusciti</span>
+          <span class="stat-label">Exchanges Successful</span>
         </div>
       </div>
     </section>
