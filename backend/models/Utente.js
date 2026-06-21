@@ -26,14 +26,15 @@ const UtenteSchema = new mongoose.Schema({
     type: String,
     required: true,
     select: false
-  }
-,
+  },
   isVerified: {
     type: Boolean,
     default: false
   },
   verificationToken: { type: String },
-  verificationTokenExpires: { type: Date }
+  verificationTokenExpires: { type: Date },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date }
 });
 
 export default mongoose.model("Utente", UtenteSchema);

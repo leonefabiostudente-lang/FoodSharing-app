@@ -412,10 +412,142 @@ width: 100%;
 }
 
 /* -------------------------------------------------------
-   9) LOGIN, 10) REGISTER, 11) ANNUNCI
+   9) LOGIN, 10) REGISTER, 11) RESET PASSWORD, 12) ANNUNCI
 ------------------------------------------------------- */
-.login-wrapper { max-width: 420px; margin: 80px auto; padding: 32px; }
-.register-card { max-width: 760px; margin: 0 auto; padding: 32px; }
+.login-wrapper,
+.forgot-password-wrapper,
+.reset-password-wrapper {
+  max-width: 420px;
+  margin: 80px auto;
+  padding: 32px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.register-card {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: #f8fafc;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(47, 133, 90, 0.08);
+}
+
+.submit-btn,
+.login-btn {
+  width: 100%;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.submit-btn:hover,
+.login-btn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+.forgot-link {
+  margin: 14px 0 20px;
+  text-align: right;
+}
+
+.forgot-link a {
+  color: var(--accent-2);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.forgot-link a:hover {
+  text-decoration: underline;
+}
+
+.error-box,
+.alert {
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+}
+
+.error-box,
+.alert-danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.alert-success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.success-action {
+  margin-top: 12px;
+}
+
+.success-action a {
+  color: var(--accent-2);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.success-action a:hover {
+  text-decoration: underline;
+}
+
+.app-container.dark-mode .login-wrapper,
+.app-container.dark-mode .forgot-password-wrapper,
+.app-container.dark-mode .reset-password-wrapper,
+.app-container.dark-mode .register-card {
+  background: var(--card-dark);
+}
+
+.app-container.dark-mode .form-group input {
+  background: #111827;
+  border-color: rgba(148, 163, 184, 0.25);
+  color: var(--text-darkmode);
+}
+
+.app-container.dark-mode .form-group label {
+  color: #cbd5e1;
+}
+
+.app-container.dark-mode .forgot-link a {
+  color: #93c5fd;
+}
 
 /* Griglia e Struttura Card Annunci */
 .annunci-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }

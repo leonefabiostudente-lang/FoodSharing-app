@@ -168,6 +168,78 @@ export const login = async (req, res) => {
   }
 };
 
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email obbligatoria!' });
+    }
+
+    const utente = await Utente.findOne({ email });
+
+    if (!utente) {
+      return res.status(200).json({
+        message: 'Se l\'email è registrata, riceverai un link per reimpostare la password.'
+      });
+    }
+
+    const resetPasswordToken = crypto.randomBytes(32).toString('hex');
+    const resetPasswordExpires = Date.now() + 60 * 60 * 1000; // 1h
+
+    utente.resetPasswordToken = resetPasswordToken;
+    utente.resetPasswordExpires = resetPasswordExpires;
+
+    await utente.save();
+
+    const emailResult = await sendPasswordResetEmail(email, resetPasswordToken);
+
+    const responsePayload = {
+      message: 'Se l\'email è registrata, riceverai un link per reimpostare la password.'
+    };
+
+    if (emailResult?.resetLink) {
+      responsePayload.resetLink = emailResult.resetLink;
+    }
+
+    res.json(responsePayload);
+  } catch (error) {
+    console.error('ERRORE forgotPassword:', error);
+    res.status(500).json({ error: 'Errore server: ' + error.message });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({ error: 'Token e password sono obbligatori!' });
+    }
+
+    const utente = await Utente.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() }
+    }).select('+password');
+
+    if (!utente) {
+      return res.status(400).json({ error: 'Token non valido o scaduto' });
+    }
+
+    const salt = await bcryptjs.genSalt(10);
+    utente.password = await bcryptjs.hash(password, salt);
+    utente.resetPasswordToken = undefined;
+    utente.resetPasswordExpires = undefined;
+
+    await utente.save();
+
+    res.json({ message: 'Password reimpostata con successo!' });
+  } catch (error) {
+    console.error('ERRORE resetPassword:', error);
+    res.status(500).json({ error: 'Errore server: ' + error.message });
+  }
+};
+
 // Invio email di verifica using SendGrid API
 sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
@@ -198,9 +270,36 @@ async function sendVerificationEmail(email, token) {
   }
 }
 
+async function sendPasswordResetEmail(email, token) {
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  const resetLink = `${frontendUrl}/reset-password?token=${token}`;
+
+  if (!process.env.SENDGRID_API_KEY || !process.env.SENDGRID_FROM) {
+    console.log('SendGrid non configurato. Link reset password:', resetLink);
+    return { resetLink };
+  }
+
+  const msg = {
+    to: email,
+    from: process.env.SENDGRID_FROM,
+    subject: 'Reset password - Antispreco',
+    text: `Segui il link per reimpostare la password: ${resetLink}`,
+    html: `<p>Per reimpostare la password clicca il link seguente:</p><p><a href="${resetLink}">${resetLink}</a></p>`
+  };
+
+  try {
+    await sgMail.send(msg);
+    console.log('Email reset password inviata via SendGrid');
+    return { resetLink };
+  } catch (err) {
+    console.error('Errore invio email reset password (SendGrid):', err);
+    return { resetLink };
+  }
+}
+
 export const verifyEmail = async (req, res) => {
   try {
-    const { token } = req.params;
+    const token = req.params.token || req.query.token;
 
     if (!token) {
       return res.status(400).json({ error: 'Token mancante' });

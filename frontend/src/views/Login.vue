@@ -14,6 +14,10 @@
 
     <button class="login-btn" @click="login">Accedi</button>
 
+    <div class="forgot-link">
+      <router-link to="/forgot-password">Password dimenticata?</router-link>
+    </div>
+
     <div v-if="errore" class="error-box">
       {{ errore }}
     </div>

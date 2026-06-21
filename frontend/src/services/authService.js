@@ -10,3 +10,9 @@ export const registerUser = (data) =>
 export const verifyEmail = (token) =>
   api.get(`/verify/${token}`);
 
+export const forgotPasswordUser = (email) =>
+  api.post("/forgot-password", { email });
+
+export const resetPasswordUser = (token, password) =>
+  api.post("/reset-password", { token, password });
+
