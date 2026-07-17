@@ -32,6 +32,10 @@
   "announcements": {
     "title": "Available Announcements",
     "noAnnouncements": "No announcements yet",
+    "activeSection": "Active announcements",
+    "expiredSection": "Expired announcements",
+    "noActive": "No active announcements",
+    "noExpired": "No expired announcements",
     "create": "Create New Announcement",
     "view": "View Details",
     "delete": "Delete",

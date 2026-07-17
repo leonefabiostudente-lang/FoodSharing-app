@@ -32,6 +32,10 @@
   "announcements": {
     "title": "Annunci Disponibili",
     "noAnnouncements": "Nessun annuncio disponibile",
+    "activeSection": "Annunci attivi",
+    "expiredSection": "Annunci scaduti",
+    "noActive": "Nessun annuncio attivo",
+    "noExpired": "Nessun annuncio scaduto",
     "create": "Crea Nuovo Annuncio",
     "view": "Visualizza Dettagli",
     "delete": "Elimina",

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -13,6 +13,23 @@ const filtroZona = ref("");
 let map;
 let markers = [];
 let userPos = ref(null);
+
+function isAnnuncioScaduto(dataScadenza) {
+  if (!dataScadenza) return false;
+
+  const expiry = new Date(dataScadenza);
+  if (Number.isNaN(expiry.getTime())) return false;
+
+  // La scadenza vale fino a fine giornata per le date inserite senza orario.
+  if (typeof dataScadenza === "string" && dataScadenza.length <= 10) {
+    expiry.setHours(23, 59, 59, 999);
+  }
+
+  return expiry.getTime() < Date.now();
+}
+
+const annunciAttivi = computed(() => annunci.value.filter(a => !isAnnuncioScaduto(a.data_scadenza)));
+const annunciScaduti = computed(() => annunci.value.filter(a => isAnnuncioScaduto(a.data_scadenza)));
 
 // 📌 Nuove icone coordinate, moderne e minimali per categoria
 const icons = {
@@ -154,11 +171,11 @@ onMounted(() => {
     });
 
     // 🎯 Aggiorna marker sulla mappa
-    watch(annunci, () => {
+    watch(annunciAttivi, () => {
       markers.forEach(m => map.removeLayer(m));
       markers = [];
 
-      annunci.value.forEach(a => {
+      annunciAttivi.value.forEach(a => {
         if (a.latitudine && a.longitudine) {
           const marker = L.marker(
       [a.latitudine, a.longitudine],
@@ -206,12 +223,71 @@ onMounted(() => {
   <div v-if="loading">Loading...</div>
   <div v-if="errore">{{ errore }}</div>
 
-  <div v-if="!loading && annunci.length === 0">
+  <div v-if="!loading && annunciAttivi.length === 0 && annunciScaduti.length === 0">
     {{ $t('announcements.noAnnouncements') }}
   </div>
 
-  <div class="annunci-grid">
-    <div v-for="a in annunci" :key="a._id" class="annuncio-card">
+  <h3 v-if="!loading">{{ $t('announcements.activeSection') }}</h3>
+  <div v-if="!loading && annunciAttivi.length === 0" class="empty-section">
+    {{ $t('announcements.noActive') }}
+  </div>
+
+  <div class="annunci-grid" v-if="annunciAttivi.length > 0">
+    <div v-for="a in annunciAttivi" :key="`attivo-${a._id}`" class="annuncio-card">
+      
+      <div class="card-media-wrapper">
+        <img 
+          v-if="a.foto && a.foto.length > 0 && a.foto[0]" 
+          :src="a.foto[0]" 
+          alt="Product photo" 
+          class="prodotto-real-img"
+        />
+        <div v-else class="card-icon-fallback">
+          <img :src="getFallbackIcon(a.categoria)" alt="category" />
+          
+        </div>
+      </div>
+
+      <h3 class="card-title">{{ a.titolo }}</h3>
+
+      <p class="card-desc">{{ a.descrizione }}</p>
+
+      <span class="badge">{{ a.categoria ? a.categoria.charAt(0).toUpperCase() + a.categoria.slice(1) : 'Other' }}</span>
+
+      <div class="card-info">
+        <p><strong>Location:</strong> {{ a.zona }}</p>
+        <p><strong>Quantity:</strong> {{ a.quantita }}</p>
+
+        <p v-if="a.distanza">
+          <strong>Distance:</strong> {{ a.distanza.toFixed(1) }} km
+        </p>
+
+        <p>
+          <strong>Available until:</strong>
+          {{ new Date(a.data_scadenza).toLocaleDateString() }}
+        </p>
+
+        <p>
+          <strong>Pickup:</strong>
+          {{ a.orario_ritiro_inizio }} - {{ a.orario_ritiro_fine }}
+        </p>
+      </div>
+
+      <div class="card-footer">
+        <div class="utente">👤 {{ a.nome_utente || "Unknown user" }}</div>
+        <div class="telefono">📞 {{ a.telefono_utente || "N/A" }}</div>
+      </div>
+
+    </div>
+  </div>
+
+  <h3 v-if="!loading">{{ $t('announcements.expiredSection') }}</h3>
+  <div v-if="!loading && annunciScaduti.length === 0" class="empty-section">
+    {{ $t('announcements.noExpired') }}
+  </div>
+
+  <div class="annunci-grid" v-if="annunciScaduti.length > 0">
+    <div v-for="a in annunciScaduti" :key="`scaduto-${a._id}`" class="annuncio-card annuncio-card--expired">
       
       <div class="card-media-wrapper">
         <img 
