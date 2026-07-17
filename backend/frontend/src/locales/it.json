@@ -36,17 +36,6 @@
     "expiredSection": "Annunci scaduti",
     "noActive": "Nessun annuncio attivo",
     "noExpired": "Nessun annuncio scaduto",
-    "expiredBadge": "Scaduto",
-    "otherCategory": "Altro",
-    "unknownUser": "Utente sconosciuto",
-    "na": "N/D",
-    "card": {
-      "location": "Posizione",
-      "quantity": "Quantità",
-      "distance": "Distanza",
-      "availableUntil": "Valido fino a",
-      "pickup": "Ritiro"
-    },
     "create": "Crea Nuovo Annuncio",
     "view": "Visualizza Dettagli",
     "delete": "Elimina",

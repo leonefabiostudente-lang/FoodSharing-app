@@ -36,17 +36,6 @@
     "expiredSection": "Expired announcements",
     "noActive": "No active announcements",
     "noExpired": "No expired announcements",
-    "expiredBadge": "Expired",
-    "otherCategory": "Other",
-    "unknownUser": "Unknown user",
-    "na": "N/A",
-    "card": {
-      "location": "Location",
-      "quantity": "Quantity",
-      "distance": "Distance",
-      "availableUntil": "Available until",
-      "pickup": "Pickup"
-    },
     "create": "Create New Announcement",
     "view": "View Details",
     "delete": "Delete",

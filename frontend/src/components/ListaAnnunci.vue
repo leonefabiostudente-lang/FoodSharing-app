@@ -252,30 +252,30 @@ onMounted(() => {
 
       <p class="card-desc">{{ a.descrizione }}</p>
 
-      <span class="badge">{{ a.categoria ? a.categoria.charAt(0).toUpperCase() + a.categoria.slice(1) : 'Other' }}</span>
+      <span class="badge">{{ a.categoria ? a.categoria.charAt(0).toUpperCase() + a.categoria.slice(1) : $t('announcements.otherCategory') }}</span>
 
       <div class="card-info">
-        <p><strong>Location:</strong> {{ a.zona }}</p>
-        <p><strong>Quantity:</strong> {{ a.quantita }}</p>
+        <p><strong>{{ $t('announcements.card.location') }}:</strong> {{ a.zona }}</p>
+        <p><strong>{{ $t('announcements.card.quantity') }}:</strong> {{ a.quantita }}</p>
 
         <p v-if="a.distanza">
-          <strong>Distance:</strong> {{ a.distanza.toFixed(1) }} km
+          <strong>{{ $t('announcements.card.distance') }}:</strong> {{ a.distanza.toFixed(1) }} km
         </p>
 
         <p>
-          <strong>Available until:</strong>
+          <strong>{{ $t('announcements.card.availableUntil') }}:</strong>
           {{ new Date(a.data_scadenza).toLocaleDateString() }}
         </p>
 
         <p>
-          <strong>Pickup:</strong>
+          <strong>{{ $t('announcements.card.pickup') }}:</strong>
           {{ a.orario_ritiro_inizio }} - {{ a.orario_ritiro_fine }}
         </p>
       </div>
 
       <div class="card-footer">
-        <div class="utente">👤 {{ a.nome_utente || "Unknown user" }}</div>
-        <div class="telefono">📞 {{ a.telefono_utente || "N/A" }}</div>
+        <div class="utente">👤 {{ a.nome_utente || $t('announcements.unknownUser') }}</div>
+        <div class="telefono">📞 {{ a.telefono_utente || $t('announcements.na') }}</div>
       </div>
 
     </div>
@@ -304,34 +304,72 @@ onMounted(() => {
 
       <h3 class="card-title">{{ a.titolo }}</h3>
 
+      <span class="expired-badge">{{ $t('announcements.expiredBadge') }}</span>
+
       <p class="card-desc">{{ a.descrizione }}</p>
 
-      <span class="badge">{{ a.categoria ? a.categoria.charAt(0).toUpperCase() + a.categoria.slice(1) : 'Other' }}</span>
+      <span class="badge">{{ a.categoria ? a.categoria.charAt(0).toUpperCase() + a.categoria.slice(1) : $t('announcements.otherCategory') }}</span>
 
       <div class="card-info">
-        <p><strong>Location:</strong> {{ a.zona }}</p>
-        <p><strong>Quantity:</strong> {{ a.quantita }}</p>
+        <p><strong>{{ $t('announcements.card.location') }}:</strong> {{ a.zona }}</p>
+        <p><strong>{{ $t('announcements.card.quantity') }}:</strong> {{ a.quantita }}</p>
 
         <p v-if="a.distanza">
-          <strong>Distance:</strong> {{ a.distanza.toFixed(1) }} km
+          <strong>{{ $t('announcements.card.distance') }}:</strong> {{ a.distanza.toFixed(1) }} km
         </p>
 
         <p>
-          <strong>Available until:</strong>
+          <strong>{{ $t('announcements.card.availableUntil') }}:</strong>
           {{ new Date(a.data_scadenza).toLocaleDateString() }}
         </p>
 
         <p>
-          <strong>Pickup:</strong>
+          <strong>{{ $t('announcements.card.pickup') }}:</strong>
           {{ a.orario_ritiro_inizio }} - {{ a.orario_ritiro_fine }}
         </p>
       </div>
 
       <div class="card-footer">
-        <div class="utente">👤 {{ a.nome_utente || "Unknown user" }}</div>
-        <div class="telefono">📞 {{ a.telefono_utente || "N/A" }}</div>
+        <div class="utente">👤 {{ a.nome_utente || $t('announcements.unknownUser') }}</div>
+        <div class="telefono">📞 {{ a.telefono_utente || $t('announcements.na') }}</div>
       </div>
 
     </div>
   </div>
 </template>
+
+<style scoped>
+.annuncio-card--expired {
+  opacity: 0.68;
+  filter: grayscale(0.25);
+  border: 1px solid rgba(239, 68, 68, 0.28);
+  position: relative;
+}
+
+.expired-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.empty-section {
+  margin: 12px 0 20px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .expired-badge {
+    margin-top: 6px;
+  }
+}
+</style>
