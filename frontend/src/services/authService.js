@@ -16,3 +16,6 @@ export const forgotPasswordUser = (email) =>
 export const resetPasswordUser = (token, password) =>
   api.post("/reset-password", { token, password });
 
+export const resendVerificationEmailUser = (email) =>
+  api.post("/resend-verification", { email });
+

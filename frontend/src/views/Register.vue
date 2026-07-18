@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import api from "@/api/axios";
+import { resendVerificationEmailUser } from "@/services/authService";
 
 const tipo = ref("");
 const nome = ref("");
@@ -14,11 +15,16 @@ const password = ref("");
 const errore = ref("");
 const successo = ref("");
 const verificaLink = ref("");
+const resendInfo = ref("");
+const resendError = ref("");
+const resendLoading = ref(false);
 
 async function registra() {
   errore.value = "";
   successo.value = "";
   verificaLink.value = "";
+  resendInfo.value = "";
+  resendError.value = "";
 
   let payload = {
     tipo: tipo.value,
@@ -56,6 +62,29 @@ async function registra() {
     }
   }
 }
+
+async function reinviaEmailConferma() {
+  resendInfo.value = "";
+  resendError.value = "";
+
+  if (!email.value) {
+    resendError.value = "Inserisci prima l'email da verificare.";
+    return;
+  }
+
+  resendLoading.value = true;
+  try {
+    const res = await resendVerificationEmailUser(email.value);
+    resendInfo.value = res.data?.message || "Richiesta inviata. Controlla la casella email.";
+    if (res.data?.verificationLink) {
+      verificaLink.value = res.data.verificationLink;
+    }
+  } catch (err) {
+    resendError.value = err.response?.data?.error || "Impossibile reinviare l'email di conferma.";
+  } finally {
+    resendLoading.value = false;
+  }
+}
 </script>
 
 <template>
@@ -67,6 +96,8 @@ async function registra() {
       <!-- Messaggi -->
       <div v-if="errore" class="alert alert-danger">{{ errore }}</div>
       <div v-if="successo" class="alert alert-success" style="white-space: pre-line;">{{ successo }}</div>
+      <div v-if="resendError" class="alert alert-danger">{{ resendError }}</div>
+      <div v-if="resendInfo" class="alert alert-info" style="white-space: pre-line;">{{ resendInfo }}</div>
       <div v-if="verificaLink" class="alert alert-info">
         Verification link (development):
         <a :href="verificaLink" target="_blank" rel="noopener">{{ verificaLink }}</a>
@@ -144,6 +175,10 @@ async function registra() {
         <!-- Bottone -->
         <button type="submit" class="submit-btn">
           {{ $t('auth.signUp') }}
+        </button>
+
+        <button type="button" class="submit-btn" :disabled="resendLoading" @click="reinviaEmailConferma">
+          {{ resendLoading ? 'Invio in corso...' : 'Reinvia email di conferma' }}
         </button>
 
       </form>
