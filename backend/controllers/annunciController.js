@@ -1,5 +1,6 @@
 import Annuncio from "../models/annunci.js";
 import fetch from "node-fetch";
+import mongoose from "mongoose";
 
 /* ---------------------------------------------
    NORMALIZZAZIONE CATEGORIA
@@ -7,7 +8,7 @@ import fetch from "node-fetch";
 function normalizeCategoria(cat) {
   if (!cat) return "altro";
   const c = cat.toLowerCase().trim().replace(/\s+/g, "_");
-  const valid = ["pane", "dolci", "frutta", "verdura", "pasti_pronti", "bevande", "altro"];
+  const valid = ["musica", "sagra", "cultura", "sport", "famiglia", "notte", "altro"];
   return valid.includes(c) ? c : "altro";
 }
 
@@ -124,5 +125,28 @@ export const creaAnnuncio = async (req, res) => {
       error: "Errore nella creazione dell'annuncio",
       dettagli: err.message
     });
+  }
+};
+
+/* ---------------------------------------------
+   GET /api/annunci/:id
+--------------------------------------------- */
+export const getAnnuncioById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "Evento non trovato" });
+    }
+
+    const annuncio = await Annuncio.findById(id);
+
+    if (!annuncio) {
+      return res.status(404).json({ error: "Evento non trovato" });
+    }
+
+    return res.json(annuncio);
+  } catch (err) {
+    return res.status(500).json({ error: "Errore nel recupero dell'evento" });
   }
 };
