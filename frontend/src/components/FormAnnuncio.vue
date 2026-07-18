@@ -3,21 +3,21 @@
     <h2 class="page-title">{{ $t('newAnnouncement.title') }}</h2>
 
     <div v-if="!token" class="auth-alert">
-      <p>You must be registered to publish an announcement.</p>
-      <router-link to="/login" class="login-link">Go to login</router-link>
+      <p>Devi essere registrato per pubblicare un evento.</p>
+      <router-link to="/login" class="login-link">Vai al login</router-link>
     </div>
 
     <form v-else class="form-box" @submit.prevent="inviaAnnuncio">
       
       <select v-model="categoria" required>
-        <option disabled value="">Select category</option>
-        <option value="pane">Bread</option>
-        <option value="dolci">Sweets</option>
-        <option value="frutta">Fruits</option>
-        <option value="verdura">Vegetables</option>
-        <option value="pasti_pronti">Ready meals</option>
-        <option value="bevande">Beverages</option>
-        <option value="altro">Other</option>
+        <option disabled value="">{{ $t('newAnnouncement.category') }}</option>
+        <option value="musica">Musica e concerti</option>
+        <option value="sagra">Sagre e tradizioni</option>
+        <option value="cultura">Arte e cultura</option>
+        <option value="sport">Sport e outdoor</option>
+        <option value="famiglia">Famiglie e bambini</option>
+        <option value="notte">Nightlife</option>
+        <option value="altro">Altro</option>
       </select>
 
       <input v-model="titolo" type="text" :placeholder="$t('newAnnouncement.food')" required />
@@ -26,7 +26,7 @@
 
       <input v-model="quantita" type="text" :placeholder="$t('newAnnouncement.quantity')" required />
 
-      <input v-model="telefono" type="tel" placeholder="Phone number" required />
+      <input v-model="telefono" type="tel" placeholder="Contatto organizzatore" required />
 
       <div class="autocomplete-container">
         <input 
@@ -55,16 +55,16 @@
       </div>
 
       <div class="datetime-group">
-        <label>Pickup availability:</label>
+        <label>Orario evento:</label>
         <div class="time-range">
           <input v-model="orario_ritiro_inizio" type="time" required />
-          <span>to</span>
+          <span>a</span>
           <input v-model="orario_ritiro_fine" type="time" required />
         </div>
       </div>
 
       <div class="datetime-group">
-        <label>Product photo (Optional):</label>
+        <label>Locandina evento (Opzionale):</label>
         <input 
           type="file" 
           accept="image/*" 
@@ -75,7 +75,7 @@
           <div class="card-media-wrapper">
             <img 
               :src="anteprimaFoto" 
-              alt="Preview" 
+              alt="Anteprima locandina" 
               class="prodotto-real-img" 
             />
           </div>
@@ -84,7 +84,7 @@
             @click="rimuoviFoto" 
             class="btn-rimuovi-foto"
           >
-            Remove photo
+            Rimuovi immagine
           </button>
         </div>
       </div>
@@ -189,7 +189,7 @@ function getCategoriaClass(cat) {
 
 async function inviaAnnuncio() {
   if (!token) {
-    alert("Devi essere loggato per pubblicare un annuncio.");
+    alert("Devi essere loggato per pubblicare un evento.");
     return;
   }
 
@@ -226,7 +226,7 @@ console.log("Valore di categoria selezionato:", categoria.value);
     );
 
     if (res.status === 201 || res.status === 200) {
-      alert("Annuncio pubblicato con successo!");
+      alert("Evento pubblicato con successo!");
       router.push("/annunci");
     }
   } catch (err) {

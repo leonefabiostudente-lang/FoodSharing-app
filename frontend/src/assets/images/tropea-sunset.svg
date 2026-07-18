@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Tramonto su Tropea</title>
+  <desc id="desc">Illustrazione stilizzata del mare con promontorio al tramonto.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffb457"/>
+      <stop offset="55%" stop-color="#ff7b54"/>
+      <stop offset="100%" stop-color="#3a7bd5"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2f8fd6"/>
+      <stop offset="100%" stop-color="#0f4c81"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#sky)"/>
+  <circle cx="870" cy="175" r="74" fill="#ffe39e" opacity="0.92"/>
+  <rect y="370" width="1200" height="330" fill="url(#sea)"/>
+  <path d="M0 460 C120 440 240 500 360 470 C520 430 670 520 810 480 C920 450 1030 500 1200 470 L1200 700 L0 700 Z" fill="#1f5f9a" opacity="0.6"/>
+  <path d="M120 430 L270 240 L420 430 Z" fill="#3e2f26"/>
+  <rect x="255" y="278" width="28" height="152" fill="#2e241e"/>
+  <rect x="220" y="350" width="20" height="80" fill="#2e241e"/>
+  <rect x="305" y="332" width="20" height="98" fill="#2e241e"/>
+  <path d="M0 540 C180 500 320 580 510 545 C680 515 840 590 980 550 C1070 525 1140 565 1200 550" fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="6"/>
+</svg>

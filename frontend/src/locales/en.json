@@ -2,8 +2,8 @@
   "nav": {
     "home": "Home",
     "presentation": "📊 Presentation",
-    "announcements": "Announcements",
-    "newAnnouncement": "New Announcement",
+    "announcements": "Events",
+    "newAnnouncement": "Post Event",
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
@@ -12,58 +12,58 @@
     "language": "Language"
   },
   "footer": {
-    "copyright": "© 2026 Food Sharing – School Project"
+    "copyright": "© 2026 Vivere Tropea Events – School Project"
   },
   "home": {
-    "title": "Welcome to Food Sharing",
-    "subtitle": "Share, Reduce Waste, Help the Community",
-    "description": "Our mission is to create a network of users who share surplus food with those in need. Together we can reduce food waste and build a more sustainable community.",
+    "title": "Welcome to Vivere Tropea Events",
+    "subtitle": "Discover Tropea and Calabria through events and local experiences",
+    "description": "A platform to promote concerts, festivals, cultural activities and local happenings. Registered users can publish events and boost territorial visibility.",
     "features": {
       "title": "How it Works",
-      "feature1": "Post Your Surplus Food",
-      "feature1Desc": "Share what you have - vegetables, fruits, cooked dishes, and more",
-      "feature2": "Connect with Community",
-      "feature2Desc": "Find people near you who need or want to share food",
-      "feature3": "Reduce Waste",
-      "feature3Desc": "Make a positive impact by preventing food waste"
+      "feature1": "Publish your event",
+      "feature1Desc": "Add title, date, schedule, location and useful details in minutes.",
+      "feature2": "Reach locals and tourists",
+      "feature2Desc": "Events are shown on map and searchable by area.",
+      "feature3": "Promote Tropea and Calabria",
+      "feature3Desc": "Highlight cultural, sports and traditional initiatives."
     },
     "cta": "Get Started"
   },
   "announcements": {
-    "title": "Available Announcements",
-    "noAnnouncements": "No announcements yet",
-    "activeSection": "Active announcements",
-    "expiredSection": "Expired announcements",
-    "noActive": "No active announcements",
-    "noExpired": "No expired announcements",
+    "title": "Available events",
+    "noAnnouncements": "No events available yet",
+    "activeSection": "Upcoming events",
+    "expiredSection": "Past events",
+    "noActive": "No upcoming events",
+    "noExpired": "No past events",
     "expiredBadge": "Expired",
     "otherCategory": "Other",
     "unknownUser": "Unknown user",
     "na": "N/A",
     "card": {
       "location": "Location",
-      "quantity": "Quantity",
+      "quantity": "Details",
       "distance": "Distance",
-      "availableUntil": "Available until",
-      "pickup": "Pickup"
+      "availableUntil": "Event date",
+      "pickup": "Schedule"
     },
-    "create": "Create New Announcement",
+    "create": "Post New Event",
     "view": "View Details",
     "delete": "Delete",
     "edit": "Edit"
   },
   "newAnnouncement": {
-    "title": "Create New Announcement",
-    "food": "Food Item",
+    "title": "Post New Event",
+    "food": "Event title",
     "description": "Description",
     "location": "Location",
-    "quantity": "Quantity",
-    "expiry": "Expiry Date",
+    "quantity": "Quick details",
+    "expiry": "Event date",
     "category": "Category",
-    "create": "Create Announcement",
+    "create": "Publish Event",
     "cancel": "Cancel",
-    "success": "Announcement created successfully!",
-    "error": "Error creating announcement"
+    "success": "Event published successfully!",
+    "error": "Error publishing event"
   },
   "auth": {
     "email": "Email",
@@ -86,12 +86,12 @@
     "error": "Error"
   },
   "presentation": {
-    "title": "Antispreco App Presentation",
-    "subtitle": "Discover the social impact of our project",
+    "title": "Vivere Tropea Events Presentation",
+    "subtitle": "Explore the digital project dedicated to local events",
     "openFull": "🔗 Open Full Presentation"
   },
   "form": {
-    "title": "Food Announcement Form",
+    "title": "Event Publication Form",
     "submit": "Submit",
     "cancel": "Cancel",
     "required": "This field is required",

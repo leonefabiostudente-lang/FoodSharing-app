@@ -3,8 +3,8 @@
     <nav class="navbar">
       <div class="brand-wrap">
         <h1 class="logo">
-          <span class="leaf">🍃</span>
-          <span class="brand">Food Sharing</span>
+          <span class="leaf">🎉</span>
+          <span class="brand">Vivere Tropea Eventi</span>
         </h1>
 
         <button class="mobile-toggle" @click="open = !open" aria-label="Toggle menu">

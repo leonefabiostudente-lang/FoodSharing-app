@@ -2,8 +2,8 @@
   "nav": {
     "home": "Home",
     "presentation": "📊 Presentazione",
-    "announcements": "Annunci",
-    "newAnnouncement": "Nuovo annuncio",
+    "announcements": "Eventi",
+    "newAnnouncement": "Pubblica evento",
     "login": "Accedi",
     "register": "Registrati",
     "logout": "Esci",
@@ -12,58 +12,58 @@
     "language": "Lingua"
   },
   "footer": {
-    "copyright": "© 2026 Food Sharing – Progetto scolastico"
+    "copyright": "© 2026 Vivere Tropea Eventi – Progetto scolastico"
   },
   "home": {
-    "title": "Benvenuto a Food Sharing",
-    "subtitle": "Condividi, Riduci gli Sprechi, Aiuta la Comunità",
-    "description": "La nostra missione è creare una rete di utenti che condividono il cibo in eccesso con chi ne ha bisogno. Insieme possiamo ridurre gli sprechi alimentari e costruire una comunità più sostenibile.",
+    "title": "Benvenuto su Vivere Tropea Eventi",
+    "subtitle": "Scopri Tropea e la Calabria attraverso eventi, sagre e manifestazioni",
+    "description": "La piattaforma per promuovere concerti, festival, attività culturali e appuntamenti locali. Gli utenti registrati possono pubblicare eventi e valorizzare il territorio.",
     "features": {
-      "title": "Come Funziona",
-      "feature1": "Condividi il Tuo Cibo in Eccesso",
-      "feature1Desc": "Condividi quello che hai - verdure, frutta, piatti cucinati e altro",
-      "feature2": "Connettiti con la Comunità",
-      "feature2Desc": "Trova persone vicino a te che hanno bisogno o vogliono condividere cibo",
-      "feature3": "Riduci gli Sprechi",
-      "feature3Desc": "Fai un impatto positivo prevenendo gli sprechi alimentari"
+      "title": "Come funziona",
+      "feature1": "Pubblica il tuo evento",
+      "feature1Desc": "Inserisci titolo, data, orari, luogo e dettagli in pochi passaggi.",
+      "feature2": "Raggiungi pubblico locale e turisti",
+      "feature2Desc": "Gli eventi sono visibili su mappa e filtrabili per zona.",
+      "feature3": "Valorizza Tropea e Calabria",
+      "feature3Desc": "Promuovi iniziative culturali, sportive e tradizionali del territorio."
     },
     "cta": "Inizia Subito"
   },
   "announcements": {
-    "title": "Annunci Disponibili",
-    "noAnnouncements": "Nessun annuncio disponibile",
-    "activeSection": "Annunci attivi",
-    "expiredSection": "Annunci scaduti",
-    "noActive": "Nessun annuncio attivo",
-    "noExpired": "Nessun annuncio scaduto",
+    "title": "Eventi disponibili",
+    "noAnnouncements": "Nessun evento disponibile",
+    "activeSection": "Eventi attivi",
+    "expiredSection": "Eventi passati",
+    "noActive": "Nessun evento attivo",
+    "noExpired": "Nessun evento passato",
     "expiredBadge": "Scaduto",
     "otherCategory": "Altro",
     "unknownUser": "Utente sconosciuto",
     "na": "N/D",
     "card": {
-      "location": "Posizione",
-      "quantity": "Quantità",
+      "location": "Luogo",
+      "quantity": "Dettagli",
       "distance": "Distanza",
-      "availableUntil": "Valido fino a",
-      "pickup": "Ritiro"
+      "availableUntil": "Data evento",
+      "pickup": "Orario"
     },
-    "create": "Crea Nuovo Annuncio",
+    "create": "Pubblica nuovo evento",
     "view": "Visualizza Dettagli",
     "delete": "Elimina",
     "edit": "Modifica"
   },
   "newAnnouncement": {
-    "title": "Crea Nuovo Annuncio",
-    "food": "Alimento",
+    "title": "Pubblica nuovo evento",
+    "food": "Titolo evento",
     "description": "Descrizione",
-    "location": "Ubicazione",
-    "quantity": "Quantità",
-    "expiry": "Data di Scadenza",
+    "location": "Localita",
+    "quantity": "Dettagli rapidi",
+    "expiry": "Data evento",
     "category": "Categoria",
-    "create": "Crea Annuncio",
+    "create": "Pubblica evento",
     "cancel": "Annulla",
-    "success": "Annuncio creato con successo!",
-    "error": "Errore nella creazione dell'annuncio"
+    "success": "Evento pubblicato con successo!",
+    "error": "Errore nella pubblicazione dell'evento"
   },
   "auth": {
     "email": "Email",
@@ -86,12 +86,12 @@
     "error": "Errore"
   },
   "presentation": {
-    "title": "Presentazione Antispreco App",
-    "subtitle": "Scopri l'impatto sociale del nostro progetto",
+    "title": "Presentazione Vivere Tropea Eventi",
+    "subtitle": "Scopri il progetto digitale dedicato agli eventi locali",
     "openFull": "🔗 Apri Presentazione Completa"
   },
   "form": {
-    "title": "Modulo Annuncio Cibo",
+    "title": "Modulo pubblicazione evento",
     "submit": "Invia",
     "cancel": "Annulla",
     "required": "Questo campo è obbligatorio",

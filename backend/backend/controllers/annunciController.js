@@ -7,7 +7,7 @@ import fetch from "node-fetch";
 function normalizeCategoria(cat) {
   if (!cat) return "altro";
   const c = cat.toLowerCase().trim().replace(/\s+/g, "_");
-  const valid = ["pane", "dolci", "frutta", "verdura", "pasti_pronti", "bevande", "altro"];
+  const valid = ["musica", "sagra", "cultura", "sport", "famiglia", "notte", "altro"];
   return valid.includes(c) ? c : "altro";
 }
 

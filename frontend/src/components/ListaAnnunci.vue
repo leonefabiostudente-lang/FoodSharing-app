@@ -3,8 +3,6 @@ import { ref, onMounted, watch, computed } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// importa l'SVG dal folder src/assets (il bundler restituirà l'URL)
-import pastiProntiUrl from '@/assets/images/spaghetti.svg';
 const annunci = ref([]);
 const loading = ref(true);
 const errore = ref(null);
@@ -31,21 +29,22 @@ function isAnnuncioScaduto(dataScadenza) {
 const annunciAttivi = computed(() => annunci.value.filter(a => !isAnnuncioScaduto(a.data_scadenza)));
 const annunciScaduti = computed(() => annunci.value.filter(a => isAnnuncioScaduto(a.data_scadenza)));
 
-// 📌 Nuove icone coordinate, moderne e minimali per categoria
 const icons = {
-  pane: "https://cdn-icons-png.flaticon.com/512/3081/3081918.png",         /* Pane moderno flat */
-  dolci: "https://img.icons8.com/fluency/96/cupcake.png",                  /* Cupcake/Dolce coordinato */
-  frutta: "https://cdn-icons-png.flaticon.com/512/3194/3194766.png",       /* Mela/Frutta minimal */
-  verdura: "https://cdn-icons-png.flaticon.com/512/2324/2324343.png",      /* Carota/Verdura minimal */
-  pasti_pronti: pastiProntiUrl,                                          /* Piatto pronto/Cloche */
-  bevande: "https://cdn-icons-png.flaticon.com/512/3050/3050130.png",      /* Bottiglia/Bicchiere flat */
-  altro: "https://cdn-icons-png.flaticon.com/512/11512/11512411.png"       /* Box spesa generico moderno */
+  musica: "🎵",
+  sagra: "🍽️",
+  cultura: "🏛️",
+  sport: "⚽",
+  famiglia: "👨‍👩‍👧",
+  notte: "🌙",
+  altro: "📌"
 };
 
 // 🔧 Funzione per ottenere l’icona giusta sulla mappa
 function getIcon(categoria) {
-  return L.icon({
-    iconUrl: icons[categoria] || icons.altro,
+  const emoji = icons[categoria] || icons.altro;
+  return L.divIcon({
+    className: "event-map-marker",
+    html: `<div style="width:38px;height:38px;border-radius:999px;background:#0d6efd;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35)">${emoji}</div>`,
     iconSize: [38, 38],
     iconAnchor: [19, 38],
     popupAnchor: [0, -38]
@@ -54,11 +53,7 @@ function getIcon(categoria) {
 function getFallbackIcon(categoria) {
   if (!categoria) return icons.altro;
   const catKey = categoria.toLowerCase().trim();
-  
-  // Debug: controlla cosa sta cercando
-  console.log("Cerco icona per categoria:", catKey, "Risultato:", icons[catKey]);
-  
-  
+
   return icons[catKey] || icons.altro;
 }
 
@@ -160,7 +155,7 @@ async function caricaAnnunci() {
 
 // 🗺️ Inizializza mappa
 onMounted(() => {
-  map = L.map("map").setView([45.6983, 9.6773], 12);
+  map = L.map("map").setView([38.6763, 15.8985], 12);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -193,7 +188,7 @@ onMounted(() => {
               <b>${a.titolo}</b><br>
               ${a.zona}<br>
               <i>${a.categoria}</i><br>
-              ${a.distanza ? a.distanza.toFixed(1) + " km away" : ""}
+              ${a.distanza ? a.distanza.toFixed(1) + " km" : ""}
             </div>
           `);
 
@@ -212,7 +207,7 @@ onMounted(() => {
   <input 
     v-model="filtroZona"
     type="text"
-    :placeholder="$t('announcements.title')"
+    placeholder="Cerca per zona (es. Tropea Centro, Capo Vaticano, Pizzo)"
     class="search-input"
   />
 
@@ -239,11 +234,11 @@ onMounted(() => {
         <img 
           v-if="a.foto && a.foto.length > 0 && a.foto[0]" 
           :src="a.foto[0]" 
-          alt="Product photo" 
+          alt="Locandina evento" 
           class="prodotto-real-img"
         />
         <div v-else class="card-icon-fallback">
-          <img :src="getFallbackIcon(a.categoria)" alt="category" />
+          <span style="font-size: 42px;">{{ getFallbackIcon(a.categoria) }}</span>
           
         </div>
       </div>
@@ -293,11 +288,11 @@ onMounted(() => {
         <img 
           v-if="a.foto && a.foto.length > 0 && a.foto[0]" 
           :src="a.foto[0]" 
-          alt="Product photo" 
+          alt="Locandina evento" 
           class="prodotto-real-img"
         />
         <div v-else class="card-icon-fallback">
-          <img :src="getFallbackIcon(a.categoria)" alt="category" />
+          <span style="font-size: 42px;">{{ getFallbackIcon(a.categoria) }}</span>
           
         </div>
       </div>

@@ -13,16 +13,16 @@ const annunciSchema = new mongoose.Schema(
       maxlength: 1000,
     },
 
-    // ⭐ CATEGORIA — aggiornata per combaciare con normalizeCategoria()
+    // Categorie eventi/manifestazioni
     categoria: {
       type: String,
       enum: [
-        'pane',
-        'dolci',
-        'frutta',
-        'verdura',
-        'pasti_pronti',
-        'bevande',
+        'musica',
+        'sagra',
+        'cultura',
+        'sport',
+        'famiglia',
+        'notte',
         'altro'
       ],
       default: 'altro',
