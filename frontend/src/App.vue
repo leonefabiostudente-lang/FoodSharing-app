@@ -50,7 +50,11 @@
     </main>
 
     <footer class="footer">
-      {{ $t('footer.copyright') }}
+      <div>{{ $t('footer.copyright') }}</div>
+      <div class="footer-admin-contact">
+        Contatto amministratore:
+        <a href="mailto:leone.powerclub@gmail.com">leone.powerclub@gmail.com</a>
+      </div>
     </footer>
   </div>
 </template>
@@ -311,6 +315,17 @@ onBeforeUnmount(() => {
   padding: 1.5rem;
   margin-top: 2rem;
   font-size: 0.9rem;
+}
+
+.footer-admin-contact {
+  margin-top: 0.45rem;
+  font-weight: 600;
+}
+
+.footer-admin-contact a {
+  color: #8ce7ff;
+  text-decoration: underline;
+  font-weight: 700;
 }
 
 :global(.dark-mode) .app-container {

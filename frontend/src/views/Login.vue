@@ -30,15 +30,6 @@
       {{ errore }}
     </div>
 
-    <div class="admin-contact-box">
-      <p class="admin-contact-title">Hai bisogno di supporto?</p>
-      <p>
-        Contatta l'amministratore del sito:
-        <a class="admin-contact-link" href="mailto:leone.powerclub@gmail.com">
-          leone.powerclub@gmail.com
-        </a>
-      </p>
-    </div>
   </div>
 </template>
 
@@ -112,27 +103,3 @@ async function login() {
   }
 }
 </script>
-
-<style scoped>
-.admin-contact-box {
-  margin-top: 22px;
-  padding: 14px;
-  border: 2px solid #0d6efd;
-  border-radius: 10px;
-  background: #eef5ff;
-  text-align: center;
-}
-
-.admin-contact-title {
-  margin: 0 0 6px;
-  font-weight: 700;
-  color: #0a58ca;
-}
-
-.admin-contact-link {
-  font-weight: 700;
-  color: #0a58ca;
-  text-decoration: underline;
-  word-break: break-all;
-}
-</style>
