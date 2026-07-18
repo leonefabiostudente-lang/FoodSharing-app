@@ -3,6 +3,7 @@ import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import sgMail from '@sendgrid/mail';
+import nodemailer from 'nodemailer';
 
 /* ============================
    REGISTRAZIONE
@@ -89,8 +90,19 @@ export const register = async (req, res) => {
     };
 
     if (emailResult?.verificationLink) {
-      responsePayload.message = 'Registrazione avvenuta con successo! Usa il link di verifica per completare la registrazione.';
       responsePayload.verificationLink = emailResult.verificationLink;
+    }
+
+    if (emailResult?.deliveryStatus === 'sent') {
+      responsePayload.message = 'Registrazione avvenuta con successo! Ti abbiamo inviato un\'email di conferma.';
+    } else if (emailResult?.deliveryStatus === 'not_configured') {
+      responsePayload.message = 'Registrazione avvenuta con successo! Invio email non configurato: usa il link di verifica per completare la registrazione.';
+    } else if (emailResult?.deliveryStatus === 'failed') {
+      responsePayload.message = 'Registrazione avvenuta con successo, ma l\'invio email non è riuscito. Usa il link di verifica per completare la registrazione.';
+    }
+
+    if (emailResult?.deliveryStatus) {
+      responsePayload.deliveryStatus = emailResult.deliveryStatus;
     }
 
     res.status(201).json(responsePayload);
@@ -202,6 +214,10 @@ export const forgotPassword = async (req, res) => {
       responsePayload.resetLink = emailResult.resetLink;
     }
 
+    if (emailResult?.deliveryStatus) {
+      responsePayload.deliveryStatus = emailResult.deliveryStatus;
+    }
+
     res.json(responsePayload);
   } catch (error) {
     console.error('ERRORE forgotPassword:', error);
@@ -240,61 +256,118 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-// Invio email di verifica using SendGrid API
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+const sendgridConfigured = Boolean(process.env.SENDGRID_API_KEY && process.env.SENDGRID_FROM);
+if (sendgridConfigured) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+}
+
+const smtpConfigured = Boolean(
+  process.env.SMTP_HOST &&
+  process.env.SMTP_PORT &&
+  process.env.SMTP_USER &&
+  process.env.SMTP_PASS &&
+  process.env.SMTP_FROM
+);
+
+let smtpTransporter;
+if (smtpConfigured) {
+  smtpTransporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure: Number(process.env.SMTP_PORT) === 465,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS
+    }
+  });
+}
+
+async function sendViaSendGrid({ to, subject, text, html }) {
+  await sgMail.send({
+    to,
+    from: process.env.SENDGRID_FROM,
+    subject,
+    text,
+    html
+  });
+}
+
+async function sendViaSmtp({ to, subject, text, html }) {
+  await smtpTransporter.sendMail({
+    from: process.env.SMTP_FROM,
+    to,
+    subject,
+    text,
+    html
+  });
+}
+
+async function sendEmailWithFallback({ to, subject, text, html }) {
+  if (sendgridConfigured) {
+    try {
+      await sendViaSendGrid({ to, subject, text, html });
+      console.log('Email inviata via SendGrid');
+      return { deliveryStatus: 'sent', provider: 'sendgrid' };
+    } catch (err) {
+      console.error('Errore invio email (SendGrid):', err?.response?.body || err);
+    }
+  }
+
+  if (smtpConfigured) {
+    try {
+      await sendViaSmtp({ to, subject, text, html });
+      console.log('Email inviata via SMTP');
+      return { deliveryStatus: 'sent', provider: 'smtp' };
+    } catch (err) {
+      console.error('Errore invio email (SMTP):', err);
+      return { deliveryStatus: 'failed', provider: 'smtp' };
+    }
+  }
+
+  if (!sendgridConfigured && !smtpConfigured) {
+    console.warn('Nessun provider email configurato (SendGrid/SMTP).');
+    return { deliveryStatus: 'not_configured' };
+  }
+
+  return { deliveryStatus: 'failed' };
+}
 
 async function sendVerificationEmail(email, token) {
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
   const verificationLink = `${frontendUrl}/verify?token=${token}`;
 
-  if (!process.env.SENDGRID_API_KEY || !process.env.SENDGRID_FROM) {
-    console.log('SendGrid non configurato. Link verifica:', verificationLink);
-    return { verificationLink };
-  }
-
   const msg = {
     to: email,
-    from: process.env.SENDGRID_FROM,
     subject: 'Conferma la tua email - Antispreco',
     text: `Segui il link per confermare la tua email: ${verificationLink}`,
     html: `<p>Per confermare la tua email clicca il link seguente:</p><p><a href="${verificationLink}">${verificationLink}</a></p>`
   };
 
-  try {
-    await sgMail.send(msg);
-    console.log('Email verifica inviata via SendGrid');
-    return { verificationLink };
-  } catch (err) {
-    console.error('Errore invio email verifica (SendGrid):', err);
-    return { verificationLink };
+  const emailDelivery = await sendEmailWithFallback(msg);
+  if (emailDelivery.deliveryStatus !== 'sent') {
+    console.log('Link verifica (fallback):', verificationLink);
   }
+
+  return { verificationLink, ...emailDelivery };
 }
 
 async function sendPasswordResetEmail(email, token) {
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
   const resetLink = `${frontendUrl}/reset-password?token=${token}`;
 
-  if (!process.env.SENDGRID_API_KEY || !process.env.SENDGRID_FROM) {
-    console.log('SendGrid non configurato. Link reset password:', resetLink);
-    return { resetLink };
-  }
-
   const msg = {
     to: email,
-    from: process.env.SENDGRID_FROM,
     subject: 'Reset password - Antispreco',
     text: `Segui il link per reimpostare la password: ${resetLink}`,
     html: `<p>Per reimpostare la password clicca il link seguente:</p><p><a href="${resetLink}">${resetLink}</a></p>`
   };
 
-  try {
-    await sgMail.send(msg);
-    console.log('Email reset password inviata via SendGrid');
-    return { resetLink };
-  } catch (err) {
-    console.error('Errore invio email reset password (SendGrid):', err);
-    return { resetLink };
+  const emailDelivery = await sendEmailWithFallback(msg);
+  if (emailDelivery.deliveryStatus !== 'sent') {
+    console.log('Link reset password (fallback):', resetLink);
   }
+
+  return { resetLink, ...emailDelivery };
 }
 
 export const verifyEmail = async (req, res) => {
