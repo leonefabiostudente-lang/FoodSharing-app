@@ -3,6 +3,7 @@ import { ref, onMounted, watch, computed } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { getEventPath } from "@/services/eventService";
+import { trackEvent } from "@/services/analytics";
 
 const annunci = ref([]);
 const loading = ref(true);
@@ -56,6 +57,14 @@ function getFallbackIcon(categoria) {
   const catKey = categoria.toLowerCase().trim();
 
   return icons[catKey] || icons.altro;
+}
+
+function trackOrganizerContactClick(annuncio, source) {
+  trackEvent("click_contatto_organizzatore", {
+    event_id: annuncio?._id || "",
+    event_title: annuncio?.titolo || "",
+    source
+  });
 }
 
 // 📏 Calcolo distanza (Haversine)
@@ -271,7 +280,15 @@ onMounted(() => {
 
       <div class="card-footer">
         <div class="utente">👤 {{ a.nome_utente || $t('announcements.unknownUser') }}</div>
-        <div class="telefono">📞 {{ a.telefono_utente || $t('announcements.na') }}</div>
+        <a
+          v-if="a.telefono_utente"
+          class="telefono"
+          :href="`tel:${a.telefono_utente}`"
+          @click="trackOrganizerContactClick(a, 'list_active')"
+        >
+          📞 {{ a.telefono_utente }}
+        </a>
+        <div v-else class="telefono">📞 {{ $t('announcements.na') }}</div>
       </div>
 
       <router-link class="event-detail-link" :to="getEventPath(a)">Scopri evento</router-link>
@@ -329,7 +346,15 @@ onMounted(() => {
 
       <div class="card-footer">
         <div class="utente">👤 {{ a.nome_utente || $t('announcements.unknownUser') }}</div>
-        <div class="telefono">📞 {{ a.telefono_utente || $t('announcements.na') }}</div>
+        <a
+          v-if="a.telefono_utente"
+          class="telefono"
+          :href="`tel:${a.telefono_utente}`"
+          @click="trackOrganizerContactClick(a, 'list_expired')"
+        >
+          📞 {{ a.telefono_utente }}
+        </a>
+        <div v-else class="telefono">📞 {{ $t('announcements.na') }}</div>
       </div>
 
       <router-link class="event-detail-link" :to="getEventPath(a)">Dettagli evento</router-link>

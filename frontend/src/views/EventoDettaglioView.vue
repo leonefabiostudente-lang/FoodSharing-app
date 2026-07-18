@@ -24,7 +24,17 @@
         <p><strong>Luogo:</strong> {{ evento.zona }}</p>
         <p><strong>Orario:</strong> {{ evento.orario_ritiro_inizio }} - {{ evento.orario_ritiro_fine }}</p>
         <p><strong>Dettagli:</strong> {{ evento.quantita }}</p>
-        <p><strong>Contatto:</strong> {{ evento.telefono_utente || 'N/D' }}</p>
+        <p>
+          <strong>Contatto:</strong>
+          <a
+            v-if="evento.telefono_utente"
+            :href="`tel:${evento.telefono_utente}`"
+            @click="onContactClick(evento)"
+          >
+            {{ evento.telefono_utente }}
+          </a>
+          <span v-else>N/D</span>
+        </p>
         <p><strong>Pubblicato da:</strong> {{ evento.nome_utente || 'Utente' }}</p>
       </div>
     </article>
@@ -35,6 +45,7 @@
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { fetchEventoById, slugify } from "@/services/eventService";
+import { trackEvent } from "@/services/analytics";
 
 const route = useRoute();
 const loading = ref(true);
@@ -140,6 +151,21 @@ function applySeo(item) {
   upsertCanonical(canonicalUrl);
 
   renderEventSchema(item, canonicalUrl);
+
+  trackEvent("visualizzazione_pagina_evento", {
+    event_id: item._id || "",
+    event_title: item.titolo || "",
+    event_category: item.categoria || "",
+    page_path: path
+  });
+}
+
+function onContactClick(item) {
+  trackEvent("click_contatto_organizzatore", {
+    event_id: item?._id || "",
+    event_title: item?.titolo || "",
+    source: "event_detail"
+  });
 }
 
 onMounted(async () => {

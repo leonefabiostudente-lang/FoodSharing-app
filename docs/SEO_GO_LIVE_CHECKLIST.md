@@ -1,5 +1,16 @@
 # SEO Go-Live Checklist (Vivere Tropea)
 
+## Stato attuale (aggiornato)
+- [x] Redirect host configurati in frontend/vercel.json (da validare live su dominio).
+- [x] robots.txt e sitemap.xml pubblici presenti.
+- [x] Canonical home e canonical dinamico pagine evento implementati.
+- [x] JSON-LD WebSite (home) e JSON-LD Event (dettaglio evento) implementati.
+- [x] Tracking GA4 base implementato: page view SPA + eventi custom.
+- [x] Sitemap con URL evento reali generabile via script npm.
+- [ ] Verifica Search Console Domain property (DNS) e invio sitemap.
+- [ ] Verifica Bing Webmaster Tools.
+- [ ] Verifica finale redirect/canonical/indexing in produzione.
+
 ## 1) Dominio canonico
 - Impostare dominio canonico: https://www.viveretropea.it
 - Reindirizzare con 301:
@@ -54,11 +65,21 @@
 - Backlink locali (portali turistici, associazioni, comuni).
 
 ## 9) Tracking base
-- Attivare analytics (es. Plausible o GA4).
-- Tracciare:
+- [x] Attivare analytics (es. Plausible o GA4).
+- [x] Tracciare:
   - visualizzazione pagina evento
   - click contatto organizzatore
   - click pubblica evento
+
+### Note implementative tracking
+- Inizializzazione GA4 e helper eventi: frontend/src/services/analytics.js
+- Page view su cambio route SPA: frontend/src/main.js
+- Click contatto organizzatore: frontend/src/components/ListaAnnunci.vue, frontend/src/views/EventoDettaglioView.vue
+- Click pubblica evento: frontend/src/components/FormAnnuncio.vue
+
+### Note implementative sitemap
+- Script generazione sitemap con URL evento reali: frontend/scripts/generate-sitemap.mjs
+- Comando: npm run sitemap:generate
 
 ## 10) Verifica finale
 - Testare redirect da .com e non-www.

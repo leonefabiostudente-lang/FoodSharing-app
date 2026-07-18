@@ -98,6 +98,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { trackEvent } from "@/services/analytics";
 
 const token = localStorage.getItem("token");
 const router = useRouter();
@@ -200,6 +201,12 @@ async function inviaAnnuncio() {
   }
 console.log("Valore di categoria selezionato:", categoria.value);
   console.log("Tipo di dato:", typeof categoria.value);
+
+  trackEvent("click_pubblica_evento", {
+    categoria: categoria.value || "",
+    zona: zona.value || ""
+  });
+
   const nuovoAnnuncio = {
     titolo: titolo.value,
     descrizione: descrizione.value,
