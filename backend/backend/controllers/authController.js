@@ -340,7 +340,7 @@ async function sendVerificationEmail(email, token) {
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
   const verificationLink = `${frontendUrl}/verify?token=${token}`;
   const backendPublicUrl = process.env.BACKEND_PUBLIC_URL || process.env.RENDER_EXTERNAL_URL || '';
-  const verificationApiLink = backendPublicUrl ? `${backendPublicUrl}/api/verify/${token}` : null;
+  const verificationApiLink = backendPublicUrl ? `${backendPublicUrl}/api/verify/${token}?redirect=1` : null;
 
   const textBody = verificationApiLink
     ? `Segui il link principale per confermare la tua email: ${verificationLink}\n\nSe il link non funziona, usa questo link alternativo: ${verificationApiLink}`
@@ -387,8 +387,15 @@ async function sendPasswordResetEmail(email, token) {
 export const verifyEmail = async (req, res) => {
   try {
     const token = req.params.token || req.query.token;
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const redirectRequested = req.query.redirect === '1';
+    const acceptsHtml = (req.headers.accept || '').includes('text/html');
+    const shouldRedirect = redirectRequested || acceptsHtml;
 
     if (!token) {
+      if (shouldRedirect) {
+        return res.redirect(`${frontendUrl}/login?verified=0&reason=missing_token`);
+      }
       return res.status(400).json({ error: 'Token mancante' });
     }
 
@@ -398,6 +405,9 @@ export const verifyEmail = async (req, res) => {
     });
 
     if (!utente) {
+      if (shouldRedirect) {
+        return res.redirect(`${frontendUrl}/login?verified=0&reason=invalid_or_expired`);
+      }
       return res.status(400).json({ error: 'Token non valido o scaduto' });
     }
 
@@ -406,6 +416,10 @@ export const verifyEmail = async (req, res) => {
     utente.verificationTokenExpires = undefined;
 
     await utente.save();
+
+    if (shouldRedirect) {
+      return res.redirect(`${frontendUrl}/login?verified=1`);
+    }
 
     res.json({ message: 'Email verificata con successo!' });
   } catch (error) {
