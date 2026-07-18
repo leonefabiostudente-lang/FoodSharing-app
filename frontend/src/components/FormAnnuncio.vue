@@ -227,7 +227,7 @@ console.log("Valore di categoria selezionato:", categoria.value);
 
     if (res.status === 201 || res.status === 200) {
       alert("Evento pubblicato con successo!");
-      router.push("/annunci");
+      router.push("/eventi");
     }
   } catch (err) {
     console.error("Errore invio:", err.response?.data);

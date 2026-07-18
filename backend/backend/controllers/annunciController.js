@@ -126,3 +126,20 @@ export const creaAnnuncio = async (req, res) => {
     });
   }
 };
+
+/* ---------------------------------------------
+   GET /api/annunci/:id
+--------------------------------------------- */
+export const getAnnuncioById = async (req, res) => {
+  try {
+    const annuncio = await Annuncio.findById(req.params.id);
+
+    if (!annuncio) {
+      return res.status(404).json({ error: "Evento non trovato" });
+    }
+
+    return res.json(annuncio);
+  } catch (err) {
+    return res.status(400).json({ error: "ID evento non valido" });
+  }
+};

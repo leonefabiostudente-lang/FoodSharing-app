@@ -9,8 +9,8 @@
         </p>
 
         <nav class="hero-links" aria-label="Azioni principali">
-          <router-link class="btn-primary" to="/annunci">{{ $t('nav.announcements') }}</router-link>
-          <router-link class="btn-primary" to="/nuovo-annuncio">{{ $t('nav.newAnnouncement') }}</router-link>
+          <router-link class="btn-primary" to="/eventi">{{ $t('nav.announcements') }}</router-link>
+          <router-link class="btn-primary" to="/nuovo-evento">{{ $t('nav.newAnnouncement') }}</router-link>
           <router-link v-if="!isLogged" class="btn-outline" to="/login">{{ $t('nav.login') }}</router-link>
           <router-link v-if="!isLogged" class="btn-outline" to="/register">{{ $t('nav.register') }}</router-link>
           <span v-else class="hero-auth-state">{{ $t('nav.authenticated') }}</span>

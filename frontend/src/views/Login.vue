@@ -92,7 +92,7 @@ async function login() {
     const res = await loginUser(email.value, password.value);
     localStorage.setItem("token", res.data.token);
     window.dispatchEvent(new Event("auth-change"));
-    router.push("/annunci");
+    router.push("/eventi");
 
   } catch (err) {
     if (err.response?.data?.error) {

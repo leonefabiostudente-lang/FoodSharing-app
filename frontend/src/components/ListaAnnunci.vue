@@ -2,6 +2,7 @@
 import { ref, onMounted, watch, computed } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { getEventPath } from "@/services/eventService";
 
 const annunci = ref([]);
 const loading = ref(true);
@@ -273,6 +274,8 @@ onMounted(() => {
         <div class="telefono">📞 {{ a.telefono_utente || $t('announcements.na') }}</div>
       </div>
 
+      <router-link class="event-detail-link" :to="getEventPath(a)">Scopri evento</router-link>
+
     </div>
   </div>
 
@@ -329,11 +332,25 @@ onMounted(() => {
         <div class="telefono">📞 {{ a.telefono_utente || $t('announcements.na') }}</div>
       </div>
 
+      <router-link class="event-detail-link" :to="getEventPath(a)">Dettagli evento</router-link>
+
     </div>
   </div>
 </template>
 
 <style scoped>
+.event-detail-link {
+  display: inline-flex;
+  margin-top: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #0a58ca;
+}
+
+.event-detail-link:hover {
+  text-decoration: underline;
+}
+
 .annuncio-card--expired {
   opacity: 0.68;
   filter: grayscale(0.25);

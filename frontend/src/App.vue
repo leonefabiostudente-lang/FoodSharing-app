@@ -16,8 +16,8 @@
       <div class="nav-links" :class="{ open: open }">
         <router-link to="/" @click="open = false">{{ $t('nav.home') }}</router-link>
         <router-link to="/presentazione" @click="open = false">{{ $t('nav.presentation') }}</router-link>
-        <router-link to="/annunci" @click="open = false">{{ $t('nav.announcements') }}</router-link>
-        <router-link to="/nuovo-annuncio" @click="open = false">{{ $t('nav.newAnnouncement') }}</router-link>
+        <router-link to="/eventi" @click="open = false">{{ $t('nav.announcements') }}</router-link>
+        <router-link to="/nuovo-evento" @click="open = false">{{ $t('nav.newAnnouncement') }}</router-link>
 
         <template v-if="isLoggedIn">
           <button class="auth-action-btn auth-switch-btn" type="button" @click="switchAccount">{{ $t('nav.switchAccount') }}</button>

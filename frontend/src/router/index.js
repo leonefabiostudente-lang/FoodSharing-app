@@ -10,11 +10,15 @@ import ResetPassword from "../views/ResetPassword.vue";
 import AnnunciView from "../views/AnnunciView.vue";
 import NuovoAnnuncioView from "../views/NuovoAnnuncioView.vue";
 import PresentationView from "../views/PresentationView.vue";
+import EventoDettaglioView from "../views/EventoDettaglioView.vue";
 
 const routes = [
   { path: "/", component: Home },
-  { path: "/annunci", component: AnnunciView },
-  { path: "/nuovo-annuncio", component: NuovoAnnuncioView },
+  { path: "/eventi", component: AnnunciView },
+  { path: "/annunci", redirect: "/eventi" },
+  { path: "/eventi/:id/:slug", component: EventoDettaglioView },
+  { path: "/nuovo-evento", component: NuovoAnnuncioView },
+  { path: "/nuovo-annuncio", redirect: "/nuovo-evento" },
   { path: "/presentazione", component: PresentationView },
   { path: "/login", component: Login },
   { path: "/register", component: Register },
@@ -34,7 +38,7 @@ router.beforeEach((to) => {
   const authPages = ["/login", "/register"];
 
   if (token && authPages.includes(to.path)) {
-    return "/annunci";
+    return "/eventi";
   }
 
   return true;
