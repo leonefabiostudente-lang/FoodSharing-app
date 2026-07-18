@@ -93,6 +93,10 @@ export const register = async (req, res) => {
       responsePayload.verificationLink = emailResult.verificationLink;
     }
 
+    if (emailResult?.verificationApiLink) {
+      responsePayload.verificationApiLink = emailResult.verificationApiLink;
+    }
+
     if (emailResult?.deliveryStatus === 'sent') {
       responsePayload.message = 'Registrazione avvenuta con successo! Ti abbiamo inviato un\'email di conferma.';
     } else if (emailResult?.deliveryStatus === 'not_configured') {
@@ -335,12 +339,22 @@ async function sendEmailWithFallback({ to, subject, text, html }) {
 async function sendVerificationEmail(email, token) {
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
   const verificationLink = `${frontendUrl}/verify?token=${token}`;
+  const backendPublicUrl = process.env.BACKEND_PUBLIC_URL || process.env.RENDER_EXTERNAL_URL || '';
+  const verificationApiLink = backendPublicUrl ? `${backendPublicUrl}/api/verify/${token}` : null;
+
+  const textBody = verificationApiLink
+    ? `Segui il link principale per confermare la tua email: ${verificationLink}\n\nSe il link non funziona, usa questo link alternativo: ${verificationApiLink}`
+    : `Segui il link per confermare la tua email: ${verificationLink}`;
+
+  const htmlBody = verificationApiLink
+    ? `<p>Per confermare la tua email clicca il link seguente:</p><p><a href="${verificationLink}">${verificationLink}</a></p><p>Se il link non funziona, usa questo link alternativo:</p><p><a href="${verificationApiLink}">${verificationApiLink}</a></p>`
+    : `<p>Per confermare la tua email clicca il link seguente:</p><p><a href="${verificationLink}">${verificationLink}</a></p>`;
 
   const msg = {
     to: email,
     subject: 'Conferma la tua email - Antispreco',
-    text: `Segui il link per confermare la tua email: ${verificationLink}`,
-    html: `<p>Per confermare la tua email clicca il link seguente:</p><p><a href="${verificationLink}">${verificationLink}</a></p>`
+    text: textBody,
+    html: htmlBody
   };
 
   const emailDelivery = await sendEmailWithFallback(msg);
@@ -348,7 +362,7 @@ async function sendVerificationEmail(email, token) {
     console.log('Link verifica (fallback):', verificationLink);
   }
 
-  return { verificationLink, ...emailDelivery };
+  return { verificationLink, verificationApiLink, ...emailDelivery };
 }
 
 async function sendPasswordResetEmail(email, token) {
@@ -438,6 +452,10 @@ export const resendVerificationEmail = async (req, res) => {
 
     if (emailResult?.verificationLink) {
       responsePayload.verificationLink = emailResult.verificationLink;
+    }
+
+    if (emailResult?.verificationApiLink) {
+      responsePayload.verificationApiLink = emailResult.verificationApiLink;
     }
 
     if (emailResult?.deliveryStatus) {
