@@ -11,6 +11,17 @@
 - [ ] Verifica Bing Webmaster Tools.
 - [ ] Verifica finale redirect/canonical/indexing in produzione.
 
+## Esito controlli live (2026-07-18)
+- [x] https://www.viveretropea.it/robots.txt raggiungibile (200).
+- [x] https://www.viveretropea.it/sitemap.xml raggiungibile (200).
+- [x] https://www.viveretropea.it/google9fc7787b9b35a39f.html raggiungibile (200).
+- [x] Home canonical rilevato: https://www.viveretropea.it/
+- [x] Meta google-site-verification rilevata in home.
+- [ ] Redirect dominio incompleti: www.viveretropea.com risponde 200 diretto invece di redirect canonico a www.viveretropea.it.
+- [ ] DNS non risolto per viveretropea.it e viveretropea.com (non-www) nell'ambiente di test.
+- [ ] Pagine dettaglio evento non risolvono il contenuto in produzione: la route frontend mostra "Evento non trovato".
+- [ ] API dettaglio evento non disponibile: GET /api/annunci/:id restituisce 404 (lista eventi invece 200).
+
 ## 1) Dominio canonico
 - Impostare dominio canonico: https://www.viveretropea.it
 - Reindirizzare con 301:
