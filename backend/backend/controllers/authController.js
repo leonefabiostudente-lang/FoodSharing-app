@@ -399,3 +399,54 @@ export const verifyEmail = async (req, res) => {
     res.status(500).json({ error: 'Errore server: ' + error.message });
   }
 };
+
+export const resendVerificationEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email obbligatoria!' });
+    }
+
+    const utente = await Utente.findOne({ email });
+
+    // Evita user enumeration: risposta neutra anche se email non esiste.
+    if (!utente) {
+      return res.status(200).json({
+        message: 'Se l\'account esiste e non è verificato, riceverai una nuova email di conferma.'
+      });
+    }
+
+    if (utente.isVerified) {
+      return res.status(200).json({
+        message: 'Questo account è già verificato.'
+      });
+    }
+
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const verificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000;
+
+    utente.verificationToken = verificationToken;
+    utente.verificationTokenExpires = verificationTokenExpires;
+    await utente.save();
+
+    const emailResult = await sendVerificationEmail(email, verificationToken);
+
+    const responsePayload = {
+      message: 'Se l\'account esiste e non è verificato, riceverai una nuova email di conferma.'
+    };
+
+    if (emailResult?.verificationLink) {
+      responsePayload.verificationLink = emailResult.verificationLink;
+    }
+
+    if (emailResult?.deliveryStatus) {
+      responsePayload.deliveryStatus = emailResult.deliveryStatus;
+    }
+
+    return res.status(200).json(responsePayload);
+  } catch (error) {
+    console.error('ERRORE resendVerificationEmail:', error);
+    return res.status(500).json({ error: 'Errore server: ' + error.message });
+  }
+};

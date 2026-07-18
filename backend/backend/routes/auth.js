@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, verifyEmail, forgotPassword, resetPassword } from '../controllers/authController.js';
+import { register, login, verifyEmail, forgotPassword, resetPassword, resendVerificationEmail } from '../controllers/authController.js';
 
 const router = express.Router();
 
@@ -14,6 +14,9 @@ router.post('/forgot-password/', forgotPassword);
 
 router.post('/reset-password', resetPassword);
 router.post('/reset-password/', resetPassword);
+
+router.post('/resend-verification', resendVerificationEmail);
+router.post('/resend-verification/', resendVerificationEmail);
 
 router.get('/verify/:token', verifyEmail);
 
