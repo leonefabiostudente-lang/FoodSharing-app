@@ -35,6 +35,10 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/google9fc7787b9b35a39f.html",
+      "destination": "/google9fc7787b9b35a39f.html"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
