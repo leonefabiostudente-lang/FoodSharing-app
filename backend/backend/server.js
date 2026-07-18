@@ -11,12 +11,21 @@ import annunciRouter from "./routes/annunci.js";
 
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
+const allowedOrigins = [
+  "http://localhost:5173",
   "https://antispreco-app.vercel.app",
-  "https://foodsharing-app.vercel.app"
-  ],
+  "https://foodsharing-app.vercel.app",
+  "https://www.viveretropea.it",
+  "https://viveretropea.it"
+];
+
+app.use(cors({
+  origin(origin, callback) {
+    // Allow non-browser clients and same-origin requests without Origin header.
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error(`CORS origin non consentita: ${origin}`));
+  },
   credentials: true
 }));
 
