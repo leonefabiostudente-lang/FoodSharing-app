@@ -4,6 +4,7 @@ frontend/node_modules/
 
 # build
 .vite/
+frontend/dist/
 
 # environment
 .env
