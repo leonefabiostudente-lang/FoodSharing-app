@@ -12,7 +12,8 @@
     "language": "Language"
   },
   "footer": {
-    "copyright": "© 2026 Vivere Tropea Events – School Project"
+    "copyright": "© 2026 Vivere Tropea Events – School Project",
+    "visitCount": "Total visits"
   },
   "home": {
     "title": "Welcome to Vivere Tropea Events",

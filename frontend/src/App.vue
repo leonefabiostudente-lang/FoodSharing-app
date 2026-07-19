@@ -55,14 +55,19 @@
         Contatto amministratore:
         <a href="mailto:leone.powerclub@gmail.com">leone.powerclub@gmail.com</a>
       </div>
+      <div class="footer-visit-count" aria-live="polite">
+        {{ $t('footer.visitCount') }}:
+        <span>{{ formattedVisitCount }}</span>
+      </div>
     </footer>
   </div>
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import api from '@/api/axios';
 
 const { locale } = useI18n();
 const router = useRouter();
@@ -71,6 +76,15 @@ const dark = ref(false);
 const open = ref(false);
 const currentLanguage = ref(localStorage.getItem('language') || 'it');
 const isLoggedIn = ref(Boolean(localStorage.getItem('token')));
+const visitCount = ref(null);
+
+const formattedVisitCount = computed(() => {
+  if (visitCount.value === null) {
+    return '...';
+  }
+
+  return new Intl.NumberFormat(currentLanguage.value).format(visitCount.value);
+});
 
 function syncAuthState() {
   isLoggedIn.value = Boolean(localStorage.getItem('token'));
@@ -116,6 +130,13 @@ function handleAuthChange() {
 onMounted(() => {
   window.addEventListener('storage', handleStorageChange);
   window.addEventListener('auth-change', handleAuthChange);
+  api.post('/visits')
+    .then(({ data }) => {
+      visitCount.value = data.count;
+    })
+    .catch((error) => {
+      console.error('Impossibile caricare il contatore delle visite:', error);
+    });
 });
 
 onBeforeUnmount(() => {
@@ -320,6 +341,10 @@ onBeforeUnmount(() => {
 .footer-admin-contact {
   margin-top: 0.45rem;
   font-weight: 600;
+}
+
+.footer-visit-count {
+  margin-top: 0.45rem;
 }
 
 .footer-admin-contact a {

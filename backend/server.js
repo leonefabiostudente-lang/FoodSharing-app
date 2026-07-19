@@ -5,6 +5,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.js';
 import annunciRouter from './routes/annunci.js';
+import visitsRouter from './routes/visits.js';
 
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 
@@ -30,6 +31,7 @@ app.use(express.json({ limit: '8mb' }));
 
 app.use('/api', authRoutes);
 app.use('/api/annunci', annunciRouter);
+app.use('/api/visits', visitsRouter);
 
 app.get('/api/test', (req, res) => {
 	const stato = mongoose.connection.readyState === 1 ? 'connesso' : 'non connesso';
