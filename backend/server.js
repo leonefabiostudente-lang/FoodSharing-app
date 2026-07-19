@@ -10,16 +10,21 @@ dns.setServers(['8.8.8.8', '1.1.1.1']);
 
 const app = express();
 
-app.use(cors({
+const corsOptions = {
 	origin: [
 		'http://localhost:5173',
 		'https://antispreco-app.vercel.app',
 		'https://foodsharing-app.vercel.app',
+		'https://www.viveretropea.com',
+		'https://viveretropea.com',
 		'https://www.viveretropea.it',
 		'https://viveretropea.it'
 	],
 	credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json({ limit: '8mb' }));
 
