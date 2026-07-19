@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Vivere Tropea Eventi | Eventi e Manifestazioni in Calabria</title>
+
     <meta
       name="description"
       content="Vivere Tropea Eventi e la piattaforma per scoprire e pubblicare eventi, sagre e manifestazioni a Tropea e in Calabria."
@@ -14,8 +16,24 @@
       content="eventi Tropea, manifestazioni Calabria, sagre Tropea, concerti Calabria, vivere tropea"
     />
     <meta name="robots" content="index, follow" />
+
     <meta name="google-site-verification" content="google9fc7787b9b35a39f" />
+    <meta name="msvalidate.01" content="283DCAC92043F6C6980F11D8000F3079" />
+
     <link rel="canonical" href="https://www.viveretropea.it/" />
+
+    <!-- 🔵 Aggiunta: Localizzazione Open Graph -->
+    <meta property="og:locale" content="it_IT" />
+
+    <!-- 🔵 Aggiunta: Alt dell'immagine OG -->
+    <meta property="og:image:alt" content="Logo Vivere Tropea Eventi" />
+
+    <!-- 🔵 Aggiunta: autore del sito -->
+    <meta name="author" content="Vivere Tropea Eventi" />
+
+    <!-- 🔵 Aggiunta: colore tema per mobile -->
+    <meta name="theme-color" content="#ffffff" />
+
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Vivere Tropea Eventi" />
     <meta property="og:title" content="Vivere Tropea Eventi" />
@@ -25,13 +43,48 @@
     />
     <meta property="og:url" content="https://www.viveretropea.it/" />
     <meta property="og:image" content="https://www.viveretropea.it/icons/icon-512.png" />
+
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Vivere Tropea Eventi" />
     <meta
       name="twitter:description"
       content="La piattaforma per trovare e pubblicare eventi a Tropea e in Calabria."
     />
-    <meta name="msvalidate.01" content="283DCAC92043F6C6980F11D8000F3079" />
+
+    <!-- 🔵 Aggiunta: Schema.org Organization -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Vivere Tropea Eventi",
+        "url": "https://www.viveretropea.it/",
+        "logo": "https://www.viveretropea.it/icons/icon-512.png"
+      }
+    </script>
+
+    <!-- 🔵 Aggiunta: Schema.org Breadcrumb (aiuta tantissimo la SEO) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.viveretropea.it/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Eventi",
+            "item": "https://www.viveretropea.it/eventi"
+          }
+        ]
+      }
+    </script>
+
+    <!-- 🔵 Schema.org originale (non modificato) -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -46,8 +99,10 @@
       }
     </script>
   </head>
+
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
+
