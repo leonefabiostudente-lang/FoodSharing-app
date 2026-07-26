@@ -22,12 +22,17 @@
       </div>
 
       <div class="hero-right">
-        <div class="carousel-track-container">
+        <div class="carousel-track-container" role="region" aria-label="Galleria immagini home">
           <div class="carousel-track">
-            <div class="carousel-slide"><img :src="chiesa" alt="Chiesa" /></div>
-            <div class="carousel-slide"><img :src="fuochi" alt="Fuochi" /></div>
-            <div class="carousel-slide"><img :src="tramonto" alt="Tramonto" /></div>
-            <div class="carousel-slide"><img :src="mare" alt="Mare" /></div>
+            <div
+              v-for="(image, index) in heroImages"
+              :key="`${image.alt}-${index}`"
+              class="carousel-slide"
+              :class="{ active: index === activeIndex }"
+            >
+              <img :src="image.src" :alt="image.alt" loading="lazy" decoding="async" class="hero-image" />
+              <div class="carousel-caption">{{ image.alt }}</div>
+            </div>
           </div>
         </div>
       </div> 
@@ -82,7 +87,16 @@ import fuochi from "@/assets/images/fuochi.webp";
 import tramonto from "@/assets/images/tramonto.webp";
 import mare from "@/assets/images/mare.webp";
 
+const heroImages = [
+  { src: chiesa, alt: "Chiesa" },
+  { src: fuochi, alt: "Fuochi" },
+  { src: tramonto, alt: "Tramonto" },
+  { src: mare, alt: "Mare" },
+];
+
 const isLogged = ref(Boolean(localStorage.getItem("token")));
+const activeIndex = ref(0);
+let autoplayTimer = null;
 
 function syncAuthState() {
   isLogged.value = Boolean(localStorage.getItem("token"));
@@ -98,13 +112,91 @@ function handleAuthChange() {
   syncAuthState();
 }
 
+function nextSlide() {
+  activeIndex.value = (activeIndex.value + 1) % heroImages.length;
+}
+
+function startAutoplay() {
+  stopAutoplay();
+  autoplayTimer = window.setInterval(() => {
+    nextSlide();
+  }, 3500);
+}
+
+function stopAutoplay() {
+  if (autoplayTimer) {
+    clearInterval(autoplayTimer);
+    autoplayTimer = null;
+  }
+}
+
 onMounted(() => {
+  syncAuthState();
+  startAutoplay();
   window.addEventListener("storage", handleStorageChange);
   window.addEventListener("auth-change", handleAuthChange);
 });
 
 onBeforeUnmount(() => {
+  stopAutoplay();
   window.removeEventListener("storage", handleStorageChange);
   window.removeEventListener("auth-change", handleAuthChange);
 });
 </script>
+
+<style scoped>
+.hero-right {
+  display: flex;
+  justify-content: center;
+}
+
+.carousel-track-container {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 4 / 3;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+}
+
+.carousel-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.hero-image {
+  filter: contrast(1.02) saturate(0.95);
+  bottom: 14px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+</style>
