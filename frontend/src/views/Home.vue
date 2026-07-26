@@ -30,7 +30,14 @@
               class="carousel-slide"
               :class="{ active: index === activeIndex }"
             >
-              <img :src="image.src" :alt="image.alt" loading="lazy" decoding="async" class="hero-image" />
+              <img
+                v-if="index === activeIndex"
+                :src="image.src"
+                :alt="image.alt"
+                loading="lazy"
+                decoding="async"
+                class="hero-image"
+              />
               <div class="carousel-caption">{{ image.alt }}</div>
             </div>
           </div>
@@ -120,7 +127,7 @@ function startAutoplay() {
   stopAutoplay();
   autoplayTimer = window.setInterval(() => {
     nextSlide();
-  }, 3500);
+  }, 6500);
 }
 
 function stopAutoplay() {
@@ -171,12 +178,12 @@ onBeforeUnmount(() => {
   inset: 0;
   opacity: 0;
   transform: scale(0.98);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 1s ease, transform 1s ease;
 }
 
 .carousel-slide.active {
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1.02);
 }
 
 .carousel-slide img {
@@ -191,12 +198,13 @@ onBeforeUnmount(() => {
 .hero-image {
   filter: contrast(1.02) saturate(0.95);
   bottom: 14px;
-  padding: 7px 12px;
+  padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.72);
   color: white;
   font-size: 0.95rem;
   font-weight: 600;
-  backdrop-filter: blur(4px);
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(6px);
 }
 </style>
