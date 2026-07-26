@@ -24,10 +24,9 @@
       <div class="hero-right">
         <div class="carousel-track-container">
           <div class="carousel-track">
-            <div class="carousel-slide"><img :src="chiesa" alt="Chiesa" /></div>
-            <div class="carousel-slide"><img :src="fuochi" alt="Fuochi" /></div>
-            <div class="carousel-slide"><img :src="tramonto" alt="Tramonto" /></div>
-            <div class="carousel-slide"><img :src="mare" alt="Mare" /></div>
+            <div v-for="(slide, index) in carouselSlides" :key="`${slide.alt}-${index}`" class="carousel-slide">
+              <img :src="slide.src" :alt="slide.alt" />
+            </div>
           </div>
         </div>
       </div> 
@@ -82,6 +81,13 @@ import fuochi from "@/assets/images/fuochi.webp";
 import tramonto from "@/assets/images/tramonto.webp";
 import mare from "@/assets/images/mare.webp";
 
+const carouselSlides = [
+  { src: chiesa, alt: "Chiesa" },
+  { src: fuochi, alt: "Fuochi" },
+  { src: tramonto, alt: "Tramonto" },
+  { src: mare, alt: "Mare" },
+].flatMap((slide) => [slide, slide]);
+
 const isLogged = ref(Boolean(localStorage.getItem("token")));
 
 function syncAuthState() {
@@ -108,3 +114,68 @@ onBeforeUnmount(() => {
   window.removeEventListener("auth-change", handleAuthChange);
 });
 </script>
+
+<style scoped>
+.home-root {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hero-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-track-container {
+  width: min(100%, 520px);
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+}
+
+.carousel-track {
+  --slide-width: 320px;
+  --gap: 18px;
+  display: flex;
+  gap: var(--gap);
+  width: max-content;
+  animation: scrollCarousel 24s linear infinite;
+  will-change: transform;
+}
+
+.carousel-slide {
+  flex: 0 0 var(--slide-width);
+  height: 240px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@keyframes scrollCarousel {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-1 * (var(--slide-width) * 4 + var(--gap) * 4)));
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-track {
+    --slide-width: 280px;
+    --gap: 14px;
+  }
+
+  .carousel-slide {
+    height: 220px;
+  }
+}
+</style>
