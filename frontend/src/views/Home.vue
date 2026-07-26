@@ -181,11 +181,11 @@ onBeforeUnmount(() => {
 .carousel-track {
   --slide-width: 320px;
   --gap: 18px;
-  --set-width: calc((var(--slide-width) * 4) + (var(--gap) * 3) + 330px);
+  --set-width: calc((var(--slide-width) * 4) + (var(--gap) * 3) + 520px);
   display: flex;
   gap: var(--gap);
   width: max-content;
-  animation: scrollCarousel 32s linear infinite;
+  animation: scrollCarousel 44s linear infinite;
 }
 
 .carousel-slide {
