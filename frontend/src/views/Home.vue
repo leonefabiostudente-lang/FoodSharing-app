@@ -83,9 +83,9 @@ import mare from "@/assets/images/mare.webp";
 
 const carouselSlides = [
   { src: chiesa, alt: "Chiesa" },
-  { src: fuochi, alt: "Fuochi" },
-  { src: tramonto, alt: "Tramonto" },
   { src: mare, alt: "Mare" },
+  { src: tramonto, alt: "Tramonto" },
+  { src: fuochi, alt: "Fuochi" },
 ].flatMap((slide) => [slide, slide]);
 
 const isLogged = ref(Boolean(localStorage.getItem("token")));
@@ -138,6 +138,7 @@ onBeforeUnmount(() => {
 .carousel-track {
   --slide-width: 320px;
   --gap: 18px;
+  --set-width: calc((var(--slide-width) * 4) + (var(--gap) * 3));
   display: flex;
   gap: var(--gap);
   width: max-content;
@@ -164,7 +165,7 @@ onBeforeUnmount(() => {
     transform: translateX(0);
   }
   to {
-    transform: translateX(calc(-1 * (var(--slide-width) * 4 + var(--gap) * 4)));
+    transform: translateX(calc(-1 * var(--set-width)));
   }
 }
 
