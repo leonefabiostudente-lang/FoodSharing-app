@@ -31,7 +31,6 @@
               :class="{ active: index === activeIndex }"
             >
               <img
-                v-if="index === activeIndex"
                 :src="image.src"
                 :alt="image.alt"
                 loading="lazy"
@@ -177,16 +176,14 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   opacity: 0;
+  pointer-events: none;
   transform: scale(0.98);
   transition: opacity 1s ease, transform 1s ease;
 }
 
 .carousel-slide.active {
   opacity: 1;
-  transform: scale(1.02);
-}
-
-.carousel-slide img {
+  pointer-events: auto;
   width: 100%;
   height: 100%;
   object-fit: cover;
