@@ -3,10 +3,12 @@
     
     <section class="card hero-card" aria-labelledby="hero-title">
       <div class="hero-left">
-        <h3 id="hero-title">{{ $t('home.title') }}</h3>
-        <p class="hero-desc">
-          {{ $t('home.description') }}
-        </p>
+        <div class="hero-glow-card">
+          <h3 id="hero-title">{{ $t('home.title') }}</h3>
+          <p class="hero-desc">
+            {{ $t('home.description') }}
+          </p>
+        </div>
 
         <nav class="hero-links" aria-label="Azioni principali">
           <router-link class="btn-primary" to="/eventi">{{ $t('nav.announcements') }}</router-link>
@@ -130,8 +132,33 @@ onBeforeUnmount(() => {
   align-items: center;
 }
 
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hero-glow-card {
+  position: relative;
+  padding: 1.15rem 1.25rem;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,248,232,0.9));
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.6), 0 0 20px rgba(255, 196, 87, 0.25), 0 0 40px rgba(255, 155, 77, 0.12);
+  overflow: hidden;
+}
+
+.hero-glow-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(120deg, rgba(255,255,255,0.0), rgba(255,196,87,0.35), rgba(255,255,255,0.0));
+  transform: translateX(-100%);
+  animation: shimmer 4s linear infinite;
+  pointer-events: none;
+}
+
 .carousel-track-container {
-  width: min(100%, 520px);
+  width: min(100%, 620px);
   overflow: hidden;
   border-radius: 20px;
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
@@ -140,11 +167,11 @@ onBeforeUnmount(() => {
 .carousel-track {
   --slide-width: 320px;
   --gap: 18px;
-  --set-width: calc((var(--slide-width) * 4) + (var(--gap) * 3));
+  --set-width: calc((var(--slide-width) * 4) + (var(--gap) * 3) + 220px);
   display: flex;
   gap: var(--gap);
   width: max-content;
-  animation: scrollCarousel 28s linear infinite;
+  animation: scrollCarousel 30s linear infinite;
   will-change: transform;
 }
 
@@ -168,6 +195,15 @@ onBeforeUnmount(() => {
   }
   to {
     transform: translateX(calc(-1 * var(--set-width)));
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
   }
 }
 
