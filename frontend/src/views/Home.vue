@@ -23,35 +23,19 @@
       <div class="hero-right">
         <div class="carousel-shell" role="region" aria-label="Galleria immagini home">
           <div class="carousel-track">
-            <div
-              v-for="(image, index) in heroImages"
-              :key="`${image.alt}-${index}`"
-              class="carousel-slide"
-              :class="{ active: index === activeIndex }"
-            >
-              <img :src="image.src" :alt="image.alt" loading="lazy" />
-              <div class="carousel-caption">{{ image.alt }}</div>
+            <div class="carousel-slide">
+              <img :src="chiesa" alt="Chiesa" loading="lazy" />
+            </div>
+            <div class="carousel-slide">
+              <img :src="fuochi" alt="Fuochi" loading="lazy" />
+            </div>
+            <div class="carousel-slide">
+              <img :src="tramonto" alt="Tramonto" loading="lazy" />
+            </div>
+            <div class="carousel-slide">
+              <img :src="mare" alt="Mare" loading="lazy" />
             </div>
           </div>
-
-          <div class="carousel-dots" aria-label="Seleziona immagine">
-            <button
-              v-for="(image, index) in heroImages"
-              :key="`${image.alt}-dot`"
-              type="button"
-              class="dot"
-              :class="{ active: index === activeIndex }"
-              @click="activeIndex = index"
-              :aria-label="`Vai alla slide ${index + 1}`"
-            />
-          </div>
-
-          <button type="button" class="carousel-control prev" @click="prevSlide" aria-label="Immagine precedente">
-            ‹
-          </button>
-          <button type="button" class="carousel-control next" @click="nextSlide" aria-label="Immagine successiva">
-            ›
-          </button>
         </div>
       </div>
     </section>
@@ -104,16 +88,7 @@ import fuochi from "@/assets/images/fuochi.webp";
 import tramonto from "@/assets/images/tramonto.webp";
 import mare from "@/assets/images/mare.webp";
 
-const heroImages = [
-  { src: chiesa, alt: "Chiesa" },
-  { src: fuochi, alt: "Fuochi" },
-  { src: tramonto, alt: "Tramonto" },
-  { src: mare, alt: "Mare" },
-];
-
 const isLogged = ref(Boolean(localStorage.getItem("token")));
-const activeIndex = ref(0);
-let autoplayTimer = null;
 
 function syncAuthState() {
   isLogged.value = Boolean(localStorage.getItem("token"));
@@ -129,37 +104,13 @@ function handleAuthChange() {
   syncAuthState();
 }
 
-function nextSlide() {
-  activeIndex.value = (activeIndex.value + 1) % heroImages.length;
-}
-
-function prevSlide() {
-  activeIndex.value = (activeIndex.value - 1 + heroImages.length) % heroImages.length;
-}
-
-function startAutoplay() {
-  stopAutoplay();
-  autoplayTimer = window.setInterval(() => {
-    nextSlide();
-  }, 4500);
-}
-
-function stopAutoplay() {
-  if (autoplayTimer) {
-    clearInterval(autoplayTimer);
-    autoplayTimer = null;
-  }
-}
-
 onMounted(() => {
   syncAuthState();
-  startAutoplay();
   window.addEventListener("storage", handleStorageChange);
   window.addEventListener("auth-change", handleAuthChange);
 });
 
 onBeforeUnmount(() => {
-  stopAutoplay();
   window.removeEventListener("storage", handleStorageChange);
   window.removeEventListener("auth-change", handleAuthChange);
 });
