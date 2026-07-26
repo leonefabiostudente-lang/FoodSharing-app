@@ -81,12 +81,14 @@ import fuochi from "@/assets/images/fuochi.webp";
 import tramonto from "@/assets/images/tramonto.webp";
 import mare from "@/assets/images/mare.webp";
 
-const carouselSlides = [
+const baseCarouselSlides = [
   { src: chiesa, alt: "Chiesa" },
   { src: mare, alt: "Mare" },
   { src: tramonto, alt: "Tramonto" },
   { src: fuochi, alt: "Fuochi" },
-].flatMap((slide) => [slide, slide]);
+];
+
+const carouselSlides = [...baseCarouselSlides, ...baseCarouselSlides];
 
 const isLogged = ref(Boolean(localStorage.getItem("token")));
 
@@ -142,7 +144,7 @@ onBeforeUnmount(() => {
   display: flex;
   gap: var(--gap);
   width: max-content;
-  animation: scrollCarousel 24s linear infinite;
+  animation: scrollCarousel 28s linear infinite;
   will-change: transform;
 }
 
