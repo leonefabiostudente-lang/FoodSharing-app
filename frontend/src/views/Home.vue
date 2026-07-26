@@ -158,21 +158,34 @@ onBeforeUnmount(() => {
 }
 
 .carousel-track-container {
-  width: min(100%, 620px);
+  width: min(100%, 820px);
   overflow: hidden;
-  border-radius: 20px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+  border-radius: 24px;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,246,224,0.9));
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.65), 0 0 22px rgba(255,190,86,0.24), 0 0 50px rgba(255,150,70,0.16);
+  position: relative;
+}
+
+.carousel-track-container::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 26px;
+  background: linear-gradient(120deg, rgba(255,255,255,0.0), rgba(255,196,87,0.35), rgba(255,255,255,0.0));
+  transform: translateX(-100%);
+  animation: shimmer 5s linear infinite;
+  pointer-events: none;
 }
 
 .carousel-track {
   --slide-width: 320px;
   --gap: 18px;
-  --set-width: calc((var(--slide-width) * 4) + (var(--gap) * 3) + 220px);
+  --set-width: calc((var(--slide-width) * 4) + (var(--gap) * 3) + 330px);
   display: flex;
   gap: var(--gap);
   width: max-content;
-  animation: scrollCarousel 30s linear infinite;
-  will-change: transform;
+  animation: scrollCarousel 32s linear infinite;
 }
 
 .carousel-slide {
