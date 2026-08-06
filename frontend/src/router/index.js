@@ -11,6 +11,9 @@ import AnnunciView from "../views/AnnunciView.vue";
 import NuovoAnnuncioView from "../views/NuovoAnnuncioView.vue";
 import PresentationView from "../views/PresentationView.vue";
 import EventoDettaglioView from "../views/EventoDettaglioView.vue";
+import TropeaParcheggioView from "../views/TropeaParcheggioView.vue";
+import TropeaSpiaggeFamiglieView from "../views/TropeaSpiaggeFamiglieView.vue";
+import TropeaQuandoPioveView from "../views/TropeaQuandoPioveView.vue";
 
 const routes = [
   { path: "/", component: Home },
@@ -20,6 +23,9 @@ const routes = [
   { path: "/nuovo-evento", component: NuovoAnnuncioView },
   { path: "/nuovo-annuncio", redirect: "/nuovo-evento" },
   { path: "/presentazione", component: PresentationView },
+  { path: "/dove-parcheggiare-tropea", component: TropeaParcheggioView },
+  { path: "/migliori-spiagge-tropea-famiglie", component: TropeaSpiaggeFamiglieView },
+  { path: "/cosa-fare-tropea-quando-piove", component: TropeaQuandoPioveView },
   { path: "/login", component: Login },
   { path: "/register", component: Register },
   { path: "/verify", component: Verify },

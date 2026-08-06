@@ -117,6 +117,22 @@ onBeforeUnmount(() => {
   window.removeEventListener("storage", handleStorageChange);
   window.removeEventListener("auth-change", handleAuthChange);
 });
+
+function upsertMeta(name, content, attr = "name") {
+  if (!content) return;
+  let el = document.head.querySelector(`meta[${attr}='${name}']`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, name);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+}
+
+onMounted(() => {
+  document.title = "Eventi e cose da fare a Tropea";
+  upsertMeta("description", "Scopri eventi, sagre e attività a Tropea. Trova concerti, mercatini e appuntamenti locali. Visita la pagina eventi per saperne di più.");
+});
 </script>
 
 <style scoped>

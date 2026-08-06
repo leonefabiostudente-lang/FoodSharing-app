@@ -28,6 +28,21 @@
 <script setup>
 </script>
 
+<script>
+export default {
+  mounted() {
+    document.title = 'Presentazione — Vivere Tropea Eventi';
+    let meta = document.head.querySelector("meta[name='description']");
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'description');
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', 'Scopri il progetto Vivere Tropea Eventi: obiettivi, funzionamento e come partecipare. Guarda la presentazione completa.');
+  }
+}
+</script>
+
 <style scoped>
 .presentation-container {
   max-width: 900px;
